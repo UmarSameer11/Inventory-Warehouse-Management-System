@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using WarehouseManagementSystemApi.MiddleWares.AuditMiddleware;
 using WarehouseManagementSystemApi.Models.Auth;
 using WarehouseManagementSystemApi.Services.Implementations;
 using WarehouseManagementSystemApi.Services.Interfaces;
+using WarehouseManagementSystemApi.Validators.Employee;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<AuditInterceptor>();
+builder.Services.AddValidatorsFromAssemblyContaining<EmployeeCreateValidator>();
 builder.Services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
 {
     var interceptor = serviceProvider.GetRequiredService<AuditInterceptor>();
@@ -113,7 +116,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.MapOpenApi();
+    app.MapOpenApi(); 
 }
 
 

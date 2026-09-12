@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\Department\" />
+    <Folder Include="ViewModels\Designation\" />
+    <Folder Include="ViewModels\InventoryStock\" />
+    <Folder Include="ViewModels\Account\" />
+    <Folder Include="ViewModels\Batch\" />
+    <Folder Include="ViewModels\UnitOfMeasure\" />
+    <Folder Include="ViewModels\ProductCategory\" />
+    <Folder Include="ViewModels\Warehouse\" />
+    <Folder Include="ViewModels\Product\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.13" />
+  </ItemGroup>
+
+</Project>

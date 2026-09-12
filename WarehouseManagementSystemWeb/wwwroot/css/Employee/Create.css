@@ -1,0 +1,113 @@
+﻿
+/* =========================================
+   Employee Create Page
+   ========================================= */
+.create-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(13, 110, 253, 0.10);
+    color: #0d6efd;
+    font-size: 1.25rem;
+}
+
+
+.section-heading h6 {
+    color: #212529;
+}
+
+
+.form-section .form-label {
+    color: #343a40;
+}
+
+
+.form-control,
+.form-select {
+    min-height: 42px;
+    border-color: #dee2e6;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.10);
+    }
+
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+
+.input-group .form-control {
+    border-left: 0;
+}
+
+
+.input-group .input-group-text {
+    border-right: 0;
+}
+
+
+.validation-summary:empty {
+    display: none;
+}
+
+
+.field-validation-error {
+    display: block;
+    margin-top: 5px;
+}
+
+
+.form-control.input-validation-error,
+.form-select.input-validation-error {
+    border-color: #dc3545;
+}
+
+
+.form-control.valid,
+.form-select.valid {
+    border-color: #198754;
+}
+
+
+#createEmployeeBtn {
+    min-width: 170px;
+    transition: all 0.2s ease;
+}
+
+
+    #createEmployeeBtn:hover {
+        transform: translateY(-1px);
+    }
+
+
+    #createEmployeeBtn:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+
+@media (max-width: 576px) {
+
+    .card-body {
+        padding: 1.25rem !important;
+    }
+
+    .create-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+

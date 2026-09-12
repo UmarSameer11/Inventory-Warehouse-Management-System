@@ -1,9 +1,8 @@
-﻿using WarehouseManagementSystemApi.Models.Department;
-using WarehouseManagementSystemApi.Models.Designations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace WarehouseManagementSystemApi.DTOs.Employee
+namespace WarehouseManagementSystemWeb.Application.ViewModels.Employee
 {
-    public class EmployeeCreateDto
+    public class EmployeeCreateViewModel
     {
         public string EmployeeCode { get; set; } = null!;
         public string FirstName { get; set; } = null!;
@@ -11,9 +10,13 @@ namespace WarehouseManagementSystemApi.DTOs.Employee
         public string? CNIC { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
+
         public int DepartmentId { get; set; }
         public int DesignationId { get; set; }
         public DateTime JoiningDate { get; set; }
-        public bool IsActive { get; set; }
+
+        // Dropdowns ke liye
+        public List<SelectListItem> Departments { get; set; } = new();
+        public List<SelectListItem> Designations { get; set; } = new();
     }
 }

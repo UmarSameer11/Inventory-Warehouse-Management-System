@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="WarehouseManagementSystemApi/WarehouseManagementSystemApi.csproj" />
+  <Project Path="WarehouseManagementSystemWeb.Application/WarehouseManagementSystemWeb.Application.csproj" Id="5706935f-9338-4270-8642-7328c88c2cdd" />
+  <Project Path="WarehouseManagementSystemWeb/WarehouseManagementSystemWeb.csproj" Id="6149cc69-50b8-45b4-9c8a-4829a4e32e55" />
 </Solution>

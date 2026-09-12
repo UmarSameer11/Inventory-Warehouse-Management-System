@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "WarehouseManagementSystemApi\\WarehouseManagementSystemApi.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "WarehouseManagementSystemWeb\\WarehouseManagementSystemWeb.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
