@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Department\" />
-    <Folder Include="ViewModels\Designation\" />
     <Folder Include="ViewModels\InventoryStock\" />
     <Folder Include="ViewModels\Account\" />
     <Folder Include="ViewModels\Batch\" />

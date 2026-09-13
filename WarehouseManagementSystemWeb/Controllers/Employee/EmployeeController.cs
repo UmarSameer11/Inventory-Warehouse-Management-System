@@ -12,7 +12,7 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
             _employeeService = employeeService;
         }
         [HttpGet]
-        public async Task<IActionResult> GetEmployeeList()
+        public async Task<IActionResult> Index()
         {
             var employees = await _employeeService.GetAllAsync();
 
@@ -22,14 +22,20 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            
             var employee = new EmployeeCreateViewModel();
 
             return View(employee);
         }
 
-        public IActionResult Index()
+        [HttpPost]
+        public async Task<IActionResult> Create(EmployeeCreateViewModel model)
         {
-            return View();
+            var employee = _employeeService.CreateAsync(model);
+
+            return View(employee);
         }
+
+      
     }
 }
