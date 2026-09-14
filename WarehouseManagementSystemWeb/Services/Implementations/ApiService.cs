@@ -16,7 +16,8 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         }
 
         public async Task<T?> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default) 
-        { using var response = await _httpClient.GetAsync(endpoint, cancellationToken); 
+        { 
+            using var response = await _httpClient.GetAsync(endpoint, cancellationToken); 
             await EnsureSuccessAsync(response); 
             return await ReadResponseAsync<T>(response, cancellationToken); 
         }

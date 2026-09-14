@@ -1,4 +1,5 @@
-﻿using WarehouseManagementSystemWeb.Application.ViewModels.Employee;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using WarehouseManagementSystemWeb.Application.ViewModels.Employee;
 
 namespace WarehouseManagementSystemWeb.Services.Interfaces
 {
@@ -13,5 +14,7 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
         //Task<bool> UpdateAsync(EmployeeUpdateViewModel model); 
 
         //Task<bool> DeleteAsync(int id);
+
+        Task<EmployeeCreateViewModel> GetDeptDesigForDropdownAsync();
     }
 }

@@ -22,8 +22,8 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            
-            var employee = new EmployeeCreateViewModel();
+
+            var employee = await _employeeService.GetDeptDesigForDropdownAsync();
 
             return View(employee);
         }
@@ -31,11 +31,33 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
         [HttpPost]
         public async Task<IActionResult> Create(EmployeeCreateViewModel model)
         {
-            var employee = _employeeService.CreateAsync(model);
+            if (!ModelState.IsValid)
+            {
+                await _employeeService.GetDeptDesigForDropdownAsync();
+                return View(model);
+            }
 
-            return View(employee);
+            var employee = await _employeeService.CreateAsync(model);
+
+            if (employee)
+            {
+                return RedirectToAction(nameof(Index), new
+                {
+                    message = "Employee created successfully",
+                    type = "success"
+                });
+            }
+
+            await _employeeService.GetDeptDesigForDropdownAsync();
+
+            return RedirectToAction(nameof(Index), new
+            {
+                message = "Failed to create employee",
+                type = "error"
+
+            });
         }
 
-      
+
     }
 }
