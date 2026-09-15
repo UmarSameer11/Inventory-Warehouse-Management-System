@@ -19,10 +19,10 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             _designation = designation;
         } 
 
-        public async Task<bool> CreateAsync(EmployeeCreateViewModel model)
+        public async Task<ApiResponseViewModel<Object>?> CreateAsync(EmployeeCreateViewModel model)
         {
             var response =  await _apiService.PostAsync<EmployeeCreateViewModel, ApiResponseViewModel<object>>("/api/Employee", model);
-            return response?.Success == true;
+            return response;
         }
 
         public async Task<IEnumerable<EmployeeListViewModel?>> GetAllAsync()
@@ -31,6 +31,14 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                 return response?.Data ?? Enumerable.Empty<EmployeeListViewModel>();
         }
 
+        public async Task<EmployeeUpdateViewModel?> GetByIdAsync(int id)
+        {
+            var response = await _apiService.GetByIdAsync<ApiResponseViewModel<EmployeeUpdateViewModel>>("/api/Employee", id);
+
+            return response?.Data;
+        }
+
+        ///// Employee list with department and designation name
         public async Task<EmployeeCreateViewModel> GetDeptDesigForDropdownAsync()
         {
             var department = await _department.GetAllAsync();
@@ -51,6 +59,12 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                 }).ToList(),
             };
             return result;
+        }
+
+        public async Task<ApiResponseViewModel<object>?> UpdateAsync(EmployeeUpdateViewModel model)
+        {
+            var response = await _apiService.PutAsync<EmployeeUpdateViewModel, ApiResponseViewModel<Object>>("/api/Employee/{model.EmployeeId}", model);
+            return response;
         }
     }
 }

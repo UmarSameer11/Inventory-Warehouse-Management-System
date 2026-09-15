@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Microsoft.AspNetCore.Http.Json;
+using System.Text.Json;
 using WarehouseManagementSystemWeb.Services.Interfaces;
 
 namespace WarehouseManagementSystemWeb.Services.Implementations
@@ -20,6 +21,16 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             using var response = await _httpClient.GetAsync(endpoint, cancellationToken); 
             await EnsureSuccessAsync(response); 
             return await ReadResponseAsync<T>(response, cancellationToken); 
+        }
+
+        public async Task<T?> GetByIdAsync<T>(string endpoint, int id, CancellationToken cancellationToken = default)
+        {
+            var response = await _httpClient.GetAsync($"{endpoint}/{id}", cancellationToken);
+
+            await EnsureSuccessAsync(response);
+
+            return await ReadResponseAsync<T>(response, cancellationToken);
+            //return await response.Content.ReadFromJsonAsync<T>(JsonOptions, cancellationToken);
         }
 
         public async Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest request, CancellationToken cancellationToken = default) 
@@ -68,6 +79,8 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             } 
             return JsonSerializer.Deserialize<T>(content, JsonOptions);
         }
+
+      
     }
 }
     

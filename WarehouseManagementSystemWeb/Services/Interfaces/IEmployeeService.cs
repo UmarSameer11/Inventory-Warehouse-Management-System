@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using WarehouseManagementSystemWeb.Application.ViewModels.Common;
 using WarehouseManagementSystemWeb.Application.ViewModels.Employee;
 
 namespace WarehouseManagementSystemWeb.Services.Interfaces
@@ -7,11 +8,11 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
     {
         Task<IEnumerable<EmployeeListViewModel?>> GetAllAsync();
 
-        //Task<EmployeeUpdateViewModel?> GetByIdAsync(int id);
+        Task<EmployeeUpdateViewModel?> GetByIdAsync(int id);
 
-        Task<bool> CreateAsync(EmployeeCreateViewModel model);
+        Task<ApiResponseViewModel<Object>?> CreateAsync(EmployeeCreateViewModel model);
 
-        //Task<bool> UpdateAsync(EmployeeUpdateViewModel model); 
+        Task<ApiResponseViewModel<Object>?> UpdateAsync(EmployeeUpdateViewModel model);
 
         //Task<bool> DeleteAsync(int id);
 

@@ -1,0 +1,107 @@
+﻿/* =========================================
+Employee Edit Page
+========================================= */
+
+.edit-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(13, 110, 253, 0.10);
+    color: #0d6efd;
+    font-size: 20px;
+}
+
+/* =========================================
+Form Sections
+========================================= */
+
+.form-section {
+    width: 100%;
+}
+
+.section-heading {
+    border-left: 3px solid #0d6efd;
+    padding-left: 14px;
+}
+
+    .section-heading h6 {
+        color: #212529;
+    }
+
+/* =========================================
+Form Controls
+========================================= */
+
+.form-control,
+.form-select {
+    min-height: 44px;
+    border-radius: 8px;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.10);
+    }
+
+/* =========================================
+Input Group
+========================================= */
+
+.input-group-text {
+    min-width: 44px;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+/* =========================================
+Validation
+========================================= */
+
+.validation-summary {
+    border-radius: 8px;
+}
+
+.field-validation-error {
+    display: block;
+    margin-top: 5px;
+}
+
+/* =========================================
+Buttons
+========================================= */
+
+#updateEmployeeBtn {
+    min-width: 170px;
+    font-weight: 500;
+}
+
+    #updateEmployeeBtn:hover {
+        transform: translateY(-1px);
+    }
+
+/* =========================================
+Responsive
+========================================= */
+
+@media (max-width: 767.98px) {
+
+    ```
+    .container-fluid {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .card-body {
+        padding: 20px !important;
+    }
+
+    #updateEmployeeBtn {
+        width: 100%;
+    }
+
+}

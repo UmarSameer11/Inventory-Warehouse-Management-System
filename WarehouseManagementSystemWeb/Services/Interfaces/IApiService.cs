@@ -10,9 +10,10 @@
 
         //Task<bool> DeleteAsync(string endpoint);
 
-        Task<T?> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default); 
-        Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest request, CancellationToken cancellationToken = default); 
-        Task<TResponse?> PutAsync<TRequest, TResponse>(string endpoint, TRequest request, CancellationToken cancellationToken = default); 
+        Task<T?> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default);
+        Task<T?> GetByIdAsync<T>( string endpoint, int id, CancellationToken cancellationToken = default);
+        Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest request, CancellationToken cancellationToken = default);
+        Task<TResponse?> PutAsync<TRequest, TResponse>(string endpoint, TRequest request, CancellationToken cancellationToken = default);
         Task<bool> DeleteAsync(string endpoint, CancellationToken cancellationToken = default);
     }
 }

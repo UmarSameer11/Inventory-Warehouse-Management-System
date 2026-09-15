@@ -37,27 +37,59 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
                 return View(model);
             }
 
-            var employee = await _employeeService.CreateAsync(model);
+            var response = await _employeeService.CreateAsync(model);
 
-            if (employee)
+            if (response?.Success == true)
             {
-                return RedirectToAction(nameof(Index), new
-                {
-                    message = "Employee created successfully",
-                    type = "success"
-                });
+                TempData["SuccessMessage"] = response.Message;
+
+                return RedirectToAction(nameof(Index));
             }
 
             await _employeeService.GetDeptDesigForDropdownAsync();
 
-            return RedirectToAction(nameof(Index), new
-            {
-                message = "Failed to create employee",
-                type = "error"
+            TempData["ErrorMessage"] =
+                response?.Message ?? "Failed to create employee.";
 
-            });
+            return View(model);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Update(int id)
+        {
+            var employee = await _employeeService.GetByIdAsync(id);
+            if (employee == null)
+            {
+                TempData["Error"] = "Employee not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EmployeeUpdateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var response = await _employeeService.UpdateAsync(model);
+
+            if (response?.Success == true)
+            {
+                TempData["SuccessMessage"] =
+                    response.Message ?? "Employee updated successfully.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["ErrorMessage"] =
+                response?.Message ?? "Failed to update employee.";
+
+            return View(model);
+        }
 
     }
 }

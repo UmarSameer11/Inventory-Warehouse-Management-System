@@ -4,6 +4,20 @@
     ViewData["Title"] = "Index";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage"
+         data-message="@TempData["SuccessMessage"]">
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage"
+         data-message="@TempData["ErrorMessage"]">
+    </div>
+}
+
 <div class="container-fluid px-4 py-4">
 
 
@@ -291,10 +305,10 @@
 
                                         <!-- Edit -->
                                         <a asp-controller="Employee"
-                                           asp-action="Edit"
+                                           asp-action="Update"
                                            asp-route-id="@employee.EmployeeId"
                                            class="btn btn-sm btn-light action-btn"
-                                           title="Edit">
+                                           title="Update">
 
                                             <i class="bi bi-pencil"></i>
 
