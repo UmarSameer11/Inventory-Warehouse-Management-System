@@ -45,7 +45,8 @@ namespace WarehouseManagementSystemApi.Services.Implementations
             if (employee == null)
                 throw new KeyNotFoundException("Employee not found.");
 
-            return _mapper.Map<EmployeeListDto>(employee);
+            var result =  _mapper.Map<EmployeeListDto>(employee);
+            return result;
         }
 
         public async Task<IEnumerable<EmployeeListDto>> GetEmployeeListAsync()

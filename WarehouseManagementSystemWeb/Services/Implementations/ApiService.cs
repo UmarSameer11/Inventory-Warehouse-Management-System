@@ -76,7 +76,8 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             if (string.IsNullOrWhiteSpace(content)) 
             {
                 return default;
-            } 
+            }
+           
             return JsonSerializer.Deserialize<T>(content, JsonOptions);
         }
 

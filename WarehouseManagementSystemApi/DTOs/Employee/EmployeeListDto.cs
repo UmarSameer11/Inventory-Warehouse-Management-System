@@ -1,6 +1,4 @@
-﻿using WarehouseManagementSystemApi.DTOs.Department;
-using WarehouseManagementSystemApi.DTOs.Designation;
-
+﻿
 namespace WarehouseManagementSystemApi.DTOs.Employee
 {
     public class EmployeeListDto
@@ -8,9 +6,10 @@ namespace WarehouseManagementSystemApi.DTOs.Employee
         public int EmployeeId { get; set; }
         public string EmployeeCode { get; set; } = null!;
         public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
+        public string LastName { get; set; } = null!; 
         public string? Phone { get; set; }
         public string? Email { get; set; }
+        public string? CNIC { get; set; }
 
         public string DepartmentName { get; set; } = null!;
         public string DesignationName { get; set; } = null!;

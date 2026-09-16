@@ -63,7 +63,10 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
                 TempData["Error"] = "Employee not found.";
                 return RedirectToAction(nameof(Index));
             }
+            var result = await _employeeService.GetDeptDesigForDropdownAsync();
 
+            employee.Departments = result.Departments;
+            employee.Designations = result.Designations;
             return View(employee);
         }
 
