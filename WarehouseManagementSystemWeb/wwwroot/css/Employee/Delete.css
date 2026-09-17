@@ -1,0 +1,78 @@
+﻿/* =========================================
+Employee Delete Page
+========================================= */
+
+/* Delete Icon */
+
+.delete-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #fff1f2;
+    color: #dc3545;
+    font-size: 20px;
+   
+}
+
+/* Section Heading */
+
+.section-heading h6 {
+    color: #212529;
+}
+
+/* Detail Value */
+
+.detail-value {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    color: #212529;
+    font-size: 0.95rem;
+    word-break: break-word;
+   
+}
+
+    /* Hover Effect */
+
+    .detail-value:hover {
+        background-color: #f1f3f5;
+    }
+
+/* Warning Box */
+
+.alert-warning {
+    border-radius: 8px;
+}
+
+/* Delete Button */
+
+.btn-danger {
+    transition: all 0.2s ease;
+}
+
+    .btn-danger:hover {
+        transform: translateY(-1px);
+    }
+
+/* Responsive */
+
+@media (max-width: 576px) {
+
+  
+    .card-body {
+        padding: 1.25rem !important;
+    }
+
+    .detail-value {
+        font-size: 0.9rem;
+    }
+
+   
+}

@@ -1,0 +1,358 @@
+﻿@model WarehouseManagementSystemWeb.Application.ViewModels.Employee.EmployeeUpdateViewModel
+
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<div class="container-fluid px-4 py-4">
+
+ 
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row
+        justify-content-between
+        align-items-md-center
+        gap-3 mb-4">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+                Employee Details
+            </h3>
+
+            <p class="text-muted mb-0">
+                View the employee's personal, contact and organizational information.
+            </p>
+
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <a asp-controller="Employee"
+               asp-action="Index"
+               class="btn btn-outline-secondary px-4">
+
+                <i class="bi bi-arrow-left me-2"></i>
+                Back to Employees
+
+            </a>
+
+            <a asp-controller="Employee"
+               asp-action="Update"
+               asp-route-id="@Model.EmployeeId"
+               class="btn btn-primary px-4">
+
+                <i class="bi bi-pencil-square me-2"></i>
+                Edit Employee
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Main Card -->
+    <div class="card border-0 shadow-sm">
+
+        <!-- Card Header -->
+        <div class="card-header bg-white border-bottom py-3">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="detail-icon">
+                    <i class="bi bi-person-vcard"></i>
+                </div>
+
+                <div>
+
+                    <h5 class="fw-semibold mb-1">
+                        Employee Information
+                    </h5>
+
+                    <span class="text-muted small">
+                        Complete employee profile and organizational details.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Card Body -->
+        <div class="card-body p-4">
+
+
+            <!-- Personal Information -->
+            <div class="form-section">
+
+                <div class="section-heading mb-4">
+
+                    <h6 class="fw-bold mb-1">
+                        Personal Information
+                    </h6>
+
+                    <p class="text-muted small mb-0">
+                        Basic information about the employee.
+                    </p>
+
+                </div>
+
+
+                <div class="row g-4">
+
+                    <!-- Employee Code -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Employee Code
+                        </label>
+
+                        <div class="detail-value">
+                            @Model.EmployeeCode
+                        </div>
+
+                    </div>
+
+
+                    <!-- First Name -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            First Name
+                        </label>
+
+                        <div class="detail-value">
+                            @Model.FirstName
+                        </div>
+
+                    </div>
+
+
+                    <!-- Last Name -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Last Name
+                        </label>
+
+                        <div class="detail-value">
+                            @Model.LastName
+                        </div>
+
+                    </div>
+
+
+                    <!-- CNIC -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            CNIC
+                        </label>
+
+                        <div class="detail-value">
+                            @(string.IsNullOrWhiteSpace(Model.CNIC)
+                                ? "Not provided"
+                                : Model.CNIC)
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4" />
+
+
+            <!-- Contact Information -->
+            <div class="form-section">
+
+                <div class="section-heading mb-4">
+
+                    <h6 class="fw-bold mb-1">
+                        Contact Information
+                    </h6>
+
+                    <p class="text-muted small mb-0">
+                        Employee contact details.
+                    </p>
+
+                </div>
+
+
+                <div class="row g-4">
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Phone
+                        </label>
+
+                        <div class="detail-value">
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Phone))
+                            {
+                                <i class="bi bi-telephone me-2"></i>
+                                @Model.Phone
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Not provided
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Email
+                        </label>
+
+                        <div class="detail-value">
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Email))
+                            {
+                                <i class="bi bi-envelope me-2"></i>
+                                @Model.Email
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Not provided
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4" />
+
+
+            <!-- Organization Information -->
+            <div class="form-section">
+
+                <div class="section-heading mb-4">
+
+                    <h6 class="fw-bold mb-1">
+                        Organization Information
+                    </h6>
+
+                    <p class="text-muted small mb-0">
+                        Employee department, designation and joining information.
+                    </p>
+
+                </div>
+
+
+                <div class="row g-4">
+
+                    <!-- Department -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Department
+                        </label>
+
+                        <div class="detail-value">
+                            @Model.DepartmentName
+                        </div>
+
+                    </div>
+
+
+                    <!-- Designation -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Designation
+                        </label>
+
+                        <div class="detail-value">
+                            @Model.DesignationName
+                        </div>
+
+                    </div>
+
+
+                    <!-- Joining Date -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Joining Date
+                        </label>
+
+                        <div class="detail-value">
+
+                            <i class="bi bi-calendar3 me-2"></i>
+
+                            @Model.JoiningDate.ToString("dd MMMM yyyy")
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4" />
+
+
+            <!-- Actions -->
+            <div class="d-flex flex-column flex-sm-row
+                justify-content-end gap-2">
+
+                <a asp-controller="Employee"
+                   asp-action="Index"
+                   class="btn btn-light border px-4">
+
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Back
+
+                </a>
+
+
+                <a asp-controller="Employee"
+                   asp-action="Update"
+                   asp-route-id="@Model.EmployeeId"
+                   class="btn btn-primary px-4">
+
+                    <i class="bi bi-pencil-square me-2"></i>
+                    Edit Employee
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+   
+
+</div>
+
+@section Styles {
+
+   
+    <link rel="stylesheet"
+          href="~/css/Employee/Detail.css"
+          asp-append-version="true" />
+  
+
+}

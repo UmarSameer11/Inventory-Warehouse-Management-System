@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using WarehouseManagementSystemWeb.Application.ViewModels.Common;
-using WarehouseManagementSystemWeb.Application.ViewModels.Department;
 using WarehouseManagementSystemWeb.Application.ViewModels.Employee;
 using WarehouseManagementSystemWeb.Services.Interfaces;
 
@@ -23,6 +22,11 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         {
             var response =  await _apiService.PostAsync<EmployeeCreateViewModel, ApiResponseViewModel<object>>("/api/Employee", model);
             return response;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            return await _apiService.DeleteAsync($"/api/Employee/{id}");
         }
 
         public async Task<IEnumerable<EmployeeListViewModel?>> GetAllAsync()
@@ -63,7 +67,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
 
         public async Task<ApiResponseViewModel<object>?> UpdateAsync(EmployeeUpdateViewModel model)
         {
-            var response = await _apiService.PutAsync<EmployeeUpdateViewModel, ApiResponseViewModel<Object>>("/api/Employee/{model.EmployeeId}", model);
+            var response = await _apiService.PutAsync<EmployeeUpdateViewModel, ApiResponseViewModel<Object>>($"/api/Employee/{model.EmployeeId}", model);
             return response;
         }
     }

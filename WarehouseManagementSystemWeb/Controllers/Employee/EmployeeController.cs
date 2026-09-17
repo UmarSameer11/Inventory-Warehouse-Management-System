@@ -36,7 +36,7 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
                 await _employeeService.GetDeptDesigForDropdownAsync();
                 return View(model);
             }
-
+            
             var response = await _employeeService.CreateAsync(model);
 
             if (response?.Success == true)
@@ -54,7 +54,7 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
             return View(model);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
             var employee = await _employeeService.GetByIdAsync(id);
@@ -71,7 +71,7 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EmployeeUpdateViewModel model)
+        public async Task<IActionResult> Update(EmployeeUpdateViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -82,8 +82,7 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
 
             if (response?.Success == true)
             {
-                TempData["SuccessMessage"] =
-                    response.Message ?? "Employee updated successfully.";
+                TempData["SuccessMessage"] = "Employee updated successfully" ?? response.Message;
 
                 return RedirectToAction(nameof(Index));
             }
@@ -93,6 +92,62 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            var employee = await _employeeService.GetByIdAsync(id);
+            if (employee == null)
+            {
+                TempData["Error"] = "Employee not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            var result = await _employeeService.GetDeptDesigForDropdownAsync();
+
+            employee.Departments = result.Departments;
+            employee.Designations = result.Designations;
+            return View(employee);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var employee = await _employeeService.GetByIdAsync(id);
+
+            if (employee == null)
+            {
+                TempData["Error"] = "Employee not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var employee = await _employeeService.GetByIdAsync(id);
+            if (employee == null)
+            {
+                TempData["Error"] = "Employee not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+                var success = await _employeeService.DeleteAsync(id);
+
+            if (!success)
+            {
+                TempData["Error"] = "Employee could not be deleted.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["Success"] = "Employee deleted successfully.";
+
+            return RedirectToAction(nameof(Index));
+
+
+        }
+
 
     }
 }

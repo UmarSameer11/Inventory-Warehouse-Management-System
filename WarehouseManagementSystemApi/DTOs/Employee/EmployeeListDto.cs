@@ -10,7 +10,6 @@ namespace WarehouseManagementSystemApi.DTOs.Employee
         public string? Phone { get; set; }
         public string? Email { get; set; }
         public string? CNIC { get; set; }
-
         public string DepartmentName { get; set; } = null!;
         public string DesignationName { get; set; } = null!;
 

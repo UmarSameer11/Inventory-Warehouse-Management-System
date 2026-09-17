@@ -15,6 +15,9 @@ namespace WarehouseManagementSystemWeb.Application.ViewModels.Employee
 
         public int DepartmentId { get; set; }
         public int DesignationId { get; set; }
+        public string DepartmentName { get; set; } = null!;
+        public string DesignationName { get; set; } = null!;
+
         public DateTime JoiningDate { get; set; }
 
         // Dropdowns ke liye
