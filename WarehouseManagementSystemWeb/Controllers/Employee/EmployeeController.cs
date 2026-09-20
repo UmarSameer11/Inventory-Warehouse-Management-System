@@ -41,7 +41,7 @@ namespace WarehouseManagementSystemWeb.Controllers.Employee
 
             if (response?.Success == true)
             {
-                TempData["SuccessMessage"] = response.Message;
+                TempData["SuccessMessage"] = "Employee created successfully" ?? response.Message;
 
                 return RedirectToAction(nameof(Index));
             }

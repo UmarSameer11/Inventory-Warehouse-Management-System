@@ -69,11 +69,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 createButton.disabled = true;
 
                 createButton.innerHTML = `
-    < span class="spinner-border spinner-border-sm me-2"
-role = "status"
-aria - hidden="true" ></span >
-    Creating...
-`;
+             < span class="spinner-border spinner-border-sm me-2"
+                 role = "status"
+                 aria - hidden="true" ></span >
+                 Creating...
+                              `;
 
             }
 

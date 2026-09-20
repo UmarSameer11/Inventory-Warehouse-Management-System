@@ -21,7 +21,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         public async Task<ApiResponseViewModel<Object>?> CreateAsync(EmployeeCreateViewModel model)
         {
             var response =  await _apiService.PostAsync<EmployeeCreateViewModel, ApiResponseViewModel<object>>("/api/Employee", model);
-            return response;
+            return response; 
         }
 
         public async Task<bool> DeleteAsync(int id)

@@ -1,0 +1,96 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.Warehouse.WarehouseCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Warehouse";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Create Warehouse</h3>
+            <p class="text-muted mb-0">Add a new warehouse to the system.</p>
+        </div>
+        <a asp-controller="Warehouse" asp-action="Index" class="btn btn-outline-secondary px-4">
+            <i class="bi bi-arrow-left me-2"></i>Back
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="create-icon"><i class="bi bi-box-seam"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Warehouse Information</h5>
+                    <span class="text-muted small">Enter the basic information for the new warehouse.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="Warehouse" asp-action="Create" method="post" id="warehouseCreateForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+                <div class="form-section">
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Warehouse Details</h6>
+                        <p class="text-muted small mb-0">Provide the information required to register this warehouse.</p>
+                    </div>
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label asp-for="WarehouseCode" class="form-label fw-semibold">Warehouse Code <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+                                <input asp-for="WarehouseCode" class="form-control" placeholder="e.g. WH-001" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="WarehouseCode" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="WarehouseName" class="form-label fw-semibold">Warehouse Name <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                <input asp-for="WarehouseName" class="form-control" placeholder="e.g. Main Raw Material Warehouse" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="WarehouseName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Location" class="form-label fw-semibold">Location <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input asp-for="Location" class="form-control" placeholder="e.g. Murree" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="Location" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EmployeeId" class="form-label fw-semibold">Warehouse Manager <span class="text-danger">*</span></label>
+                            <select asp-for="EmployeeId" asp-items="Model.Employees" class="form-select">
+                                <option value="0">-- Select Employee --</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Status</label>
+                            <div class="form-check form-switch status-switch">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" id="IsActive" />
+                                <label class="form-check-label" for="IsActive" id="statusLabel">Active</label>
+                            </div>
+                            <small class="text-muted">Enable this record for active use.</small>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="Warehouse" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="createWarehouseBtn"><i class="bi bi-check-lg me-2"></i>Create Warehouse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/Warehouse/Create.css" asp-append-version="true" /> }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/Warehouse/Create.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,342 @@
+﻿@model IEnumerable<WarehouseManagementSystemWeb.Application.ViewModels.Designation.DesignationListViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage"
+         data-message="@TempData["SuccessMessage"]">
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage"
+         data-message="@TempData["ErrorMessage"]">
+    </div>
+}
+
+<div class="container-fluid px-4 py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row
+                justify-content-between
+                align-items-md-center
+                gap-3 mb-4">
+
+        <div>
+            <h3 class="fw-bold mb-1">
+                Designations
+            </h3>
+
+            <p class="text-muted mb-0">
+                Manage your organization designations and their status.
+            </p>
+        </div>
+
+        <a asp-controller="Designation"
+           asp-action="Create"
+           class="btn btn-primary px-4 py-2">
+
+            <i class="bi bi-plus-lg me-2"></i>
+            Add Designation
+
+        </a>
+
+    </div>
+
+
+    <!-- Summary Card -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small">
+                                Total Designations
+                            </span>
+
+                            <h3 class="fw-bold mt-2 mb-0">
+                                @(Model?.Count() ?? 0)
+                            </h3>
+
+                        </div>
+
+                        <div class="designation-summary-icon">
+
+                            <i class="bi bi-person-badge fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Main Card -->
+    <div class="card border-0 shadow-sm overflow-hidden">
+
+        <!-- Toolbar -->
+        <div class="card-body p-4 border-bottom">
+
+            <div class="d-flex flex-column flex-lg-row
+                        justify-content-between
+                        align-items-lg-center
+                        gap-3">
+
+                <div>
+
+                    <h5 class="fw-semibold mb-1">
+                        Designation Directory
+                    </h5>
+
+                    <span class="text-muted small">
+                        A complete list of registered designations
+                    </span>
+
+                </div>
+
+
+                <!-- Search -->
+                <div class="position-relative designation-search">
+
+                    <i class="bi bi-search position-absolute
+                              top-50 start-0 translate-middle-y
+                              ms-3 text-muted"></i>
+
+                    <input type="text"
+                           id="designationSearch"
+                           class="form-control ps-5 py-2"
+                           placeholder="Search designations..." />
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Table -->
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0"
+                   id="designationTable">
+
+                <thead class="bg-light">
+
+                    <tr>
+
+                        <th class="ps-4 text-muted small fw-semibold">
+                            DESIGNATION
+                        </th>
+
+                        <th class="text-muted small fw-semibold">
+                            ID
+                        </th>
+
+                        <th class="text-muted small fw-semibold">
+                            STATUS
+                        </th>
+
+                        <th class="text-end pe-4 text-muted small fw-semibold">
+                            ACTIONS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var designation in Model)
+                        {
+                            <tr>
+
+                                <!-- Designation -->
+                                <td class="ps-4">
+
+                                    <div class="d-flex align-items-center gap-3">
+
+                                        <div class="designation-avatar">
+
+                                            <i class="bi bi-person-badge"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="fw-semibold text-dark">
+                                                @designation.DesignationName
+                                            </div>
+
+                                            <div class="text-muted small">
+                                                Designation
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- ID -->
+                                <td>
+
+                                    <span class="designation-code">
+                                        #@designation.DesignationId
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Status -->
+                                <td>
+
+                                    @if (designation.IsActive)
+                                    {
+                                        <span class="status-badge status-active">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-inactive">
+                                            <i class="bi bi-x-circle me-1"></i>
+                                            Inactive
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- Actions -->
+                                <td class="text-end pe-4">
+
+                                    <div class="d-inline-flex gap-1">
+
+                                        <!-- Details -->
+                                        <a asp-controller="Designation"
+                                           asp-action="Detail"
+                                           asp-route-id="@designation.DesignationId"
+                                           class="btn btn-sm btn-light action-btn"
+                                           title="View">
+
+                                            <i class="bi bi-eye"></i>
+
+                                        </a>
+
+
+                                        <!-- Edit -->
+                                        <a asp-controller="Designation"
+                                           asp-action="Update"
+                                           asp-route-id="@designation.DesignationId"
+                                           class="btn btn-sm btn-light action-btn"
+                                           title="Update">
+
+                                            <i class="bi bi-pencil"></i>
+
+                                        </a>
+
+
+                                        <!-- Delete -->
+                                        <a asp-controller="Designation"
+                                           asp-action="Delete"
+                                           asp-route-id="@designation.DesignationId"
+                                           class="btn btn-sm btn-light action-btn delete-btn"
+                                           title="Delete">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <!-- Empty State -->
+                        <tr>
+
+                            <td colspan="4">
+
+                                <div class="text-center py-5">
+
+                                    <div class="empty-icon mx-auto mb-3">
+
+                                        <i class="bi bi-person-badge"></i>
+
+                                    </div>
+
+                                    <h5 class="fw-semibold">
+                                        No designations found
+                                    </h5>
+
+                                    <p class="text-muted mb-3">
+                                        There are currently no designations available.
+                                    </p>
+
+                                    <a asp-controller="Designation"
+                                       asp-action="Create"
+                                       class="btn btn-primary">
+
+                                        <i class="bi bi-plus-lg me-2"></i>
+                                        Add Designation
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Styles {
+
+    <link rel="stylesheet"
+          href="~/css/Designation/Index.css"
+          asp-append-version="true" />
+
+}
+
+
+@section Scripts {
+
+    <script src="~/js/Designation/Index.js"
+            asp-append-version="true"></script>
+}

@@ -13,6 +13,7 @@ namespace WarehouseManagementSystemWeb.Application.ViewModels.Employee
         public string? Phone { get; set; }
         public string? Email { get; set; }
 
+        public int DesignationId { get; set; }
         public string DepartmentName { get; set; } = null!;
         public string DesignationName { get; set; } = null!;
     }

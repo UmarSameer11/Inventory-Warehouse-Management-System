@@ -1,0 +1,121 @@
+@model IEnumerable<WarehouseManagementSystemWeb.Application.ViewModels.ProductCategory.ProductCategoryListViewModel>
+
+@{
+    ViewData["Title"] = "Product Categories";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" data-message="@TempData["SuccessMessage"]"></div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage" data-message="@TempData["ErrorMessage"]"></div>
+}
+
+<div class="container-fluid px-4 py-4">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Product Categories</h3>
+            <p class="text-muted mb-0">Manage your product categories and their status.</p>
+        </div>
+        <a asp-controller="ProductCategory" asp-action="Create" class="btn btn-primary px-4">
+            <i class="bi bi-plus-lg me-2"></i>Add Product Category
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small">Total Product Categories</span>
+                        <h3 class="fw-bold mt-2 mb-0">@(Model?.Count() ?? 0)</h3>
+                    </div>
+                    <div class="module-summary-icon"><i class="bi bi-tags fs-4"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm overflow-hidden">
+        <div class="card-body p-4 border-bottom">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h5 class="fw-semibold mb-1">Product Category Directory</h5>
+                    <span class="text-muted small">A complete list of registered product categories</span>
+                </div>
+                <div class="position-relative module-search">
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                    <input type="text" id="productCategorySearch" class="form-control ps-5 py-2" placeholder="Search..." />
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="productCategoryTable">
+                <thead class="bg-light">
+                    <tr>
+
+                        <th class="ps-4 text-muted small fw-semibold">CATEGORY</th>
+                        <th class="text-muted small fw-semibold">DESCRIPTION</th>
+                        <th class="text-muted small fw-semibold">STATUS</th>
+                        <th class="text-end pe-4 text-muted small fw-semibold">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="module-avatar"><i class="bi bi-tags"></i></div>
+                                        <div>
+                                            <div class="fw-semibold text-dark">@item.CategoryName</div>
+                                            <div class="text-muted small">Category #@item.ProductCategoryId</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@(string.IsNullOrWhiteSpace(item.Description) ? "Not provided" : item.Description)</td>
+                                <td>
+                                @if (item.IsActive) { <span class="status-badge status-active"><i class="bi bi-check-circle me-1"></i>Active</span> } else { <span class="status-badge status-inactive"><i class="bi bi-x-circle me-1"></i>Inactive</span> }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-1">
+                                        <a asp-controller="ProductCategory" asp-action="Detail" asp-route-id="@item.ProductCategoryId" class="btn btn-sm btn-light action-btn" title="View"><i class="bi bi-eye"></i></a>
+                                        <a asp-controller="ProductCategory" asp-action="Update" asp-route-id="@item.ProductCategoryId" class="btn btn-sm btn-light action-btn" title="Update"><i class="bi bi-pencil"></i></a>
+                                        <a asp-controller="ProductCategory" asp-action="Delete" asp-route-id="@item.ProductCategoryId" class="btn btn-sm btn-light action-btn delete-btn" title="Delete"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">
+                                <div class="text-center py-5">
+                                    <div class="empty-icon mx-auto mb-3"><i class="bi bi-tags"></i></div>
+                                    <h5 class="fw-semibold">No product categories found</h5>
+                                    <p class="text-muted mb-3">There are currently no product categories available.</p>
+                                    <a asp-controller="ProductCategory" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Add Product Category</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ProductCategory/Index.css" asp-append-version="true" />
+}
+@section Scripts {
+    <script src="~/js/ProductCategory/Index.js" asp-append-version="true"></script>
+}

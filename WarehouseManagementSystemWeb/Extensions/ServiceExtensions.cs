@@ -20,6 +20,9 @@ namespace WarehouseManagementSystemWeb.Extensions
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IDesignationService, DesignationService>();
+            services.AddScoped<IWarehouseService, WarehouseService>();
+            services.AddScoped<IUnitOfMeasureService, UnitOfMeasureService>();
+            services.AddScoped<IProductCategoryService, ProductCategoryService>();
 
             return services;
         }

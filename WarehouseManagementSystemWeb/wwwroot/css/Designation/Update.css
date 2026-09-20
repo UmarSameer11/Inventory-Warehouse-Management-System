@@ -1,0 +1,169 @@
+﻿/* ============================================
+   Designation Update Page
+   ============================================ */
+
+.designation-update-page .card {
+    border-radius: 12px;
+}
+
+.designation-update-page .card-header {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+
+/* ============================================
+   Update Icon
+   ============================================ */
+
+.update-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #eef4ff;
+    color: #0d6efd;
+    font-size: 21px;
+}
+
+
+/* ============================================
+   Section
+   ============================================ */
+
+.form-section {
+    padding: 4px 0;
+}
+
+.section-heading h6 {
+    color: #212529;
+}
+
+
+/* ============================================
+   Form Controls
+   ============================================ */
+
+.designation-update-page .form-control,
+.designation-update-page .form-select {
+    min-height: 42px;
+    border-radius: 7px;
+}
+
+    .designation-update-page .form-control:focus,
+    .designation-update-page .form-select:focus {
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.10);
+    }
+
+
+/* ============================================
+   Input Group
+   ============================================ */
+
+.designation-update-page .input-group-text {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+.designation-update-page .input-group .form-control {
+    border-left: 0;
+}
+
+.designation-update-page .input-group:focus-within .input-group-text {
+    border-color: #86b7fe;
+}
+
+
+/* ============================================
+   Readonly Designation ID
+   ============================================ */
+
+.readonly-field {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+
+/* ============================================
+   Status Switch
+   ============================================ */
+
+.status-switch {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .status-switch .form-check-input {
+        width: 2.5em;
+        height: 1.35em;
+        cursor: pointer;
+    }
+
+    .status-switch .form-check-label {
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+
+/* ============================================
+   Validation
+   ============================================ */
+
+.validation-summary:empty {
+    display: none;
+}
+
+.text-danger {
+    font-size: 0.85rem;
+}
+
+
+/* ============================================
+   Buttons
+   ============================================ */
+
+.designation-update-page .btn {
+    border-radius: 7px;
+    min-height: 42px;
+}
+
+.designation-update-page .btn-primary {
+    font-weight: 500;
+}
+
+
+/* ============================================
+   Horizontal Rule
+   ============================================ */
+
+.designation-update-page hr {
+    opacity: 0.12;
+}
+
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 576px) {
+
+    .designation-update-page {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+        .designation-update-page .card-body {
+            padding: 20px !important;
+        }
+
+    .update-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 19px;
+    }
+}

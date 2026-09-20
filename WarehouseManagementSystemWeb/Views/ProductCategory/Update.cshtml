@@ -1,0 +1,81 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.ProductCategory.ProductCategoryUpdateViewModel
+
+@{
+    ViewData["Title"] = "Update Product Category";
+}
+
+<div class="container-fluid px-4 py-4 productCategory-update-page">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Update Product Category</h3>
+            <p class="text-muted mb-0">Update product category information and status.</p>
+        </div>
+        <a asp-controller="ProductCategory" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="update-icon"><i class="bi bi-tags"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Product Category Information</h5>
+                    <span class="text-muted small">Modify the product category's information and current status.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="ProductCategory" asp-action="Update" method="post" id="productCategoryUpdateForm">
+                @Html.AntiForgeryToken()
+                <input asp-for="ProductCategoryId" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+                <div class="form-section">
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Product Category Details</h6>
+                        <p class="text-muted small mb-0">Update the information below.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Product Category ID</label>
+                            <input asp-for="ProductCategoryId" class="form-control readonly-field" readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="CategoryName" class="form-label fw-semibold">Category Name <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-tags"></i></span>
+                                <input asp-for="CategoryName" class="form-control" placeholder="e.g. Beverages" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="CategoryName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Description" class="form-label fw-semibold">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter a short description..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Status</label>
+                            <div class="form-check form-switch status-switch">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" id="IsActive" />
+                                <label class="form-check-label" for="IsActive" id="statusLabel">Active</label>
+                            </div>
+                            <small class="text-muted">Enable or disable this record.</small>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="ProductCategory" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="updateProductCategoryBtn"><i class="bi bi-check-lg me-2"></i>Update Product Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/ProductCategory/Update.css" asp-append-version="true" /> }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/ProductCategory/Update.js" asp-append-version="true"></script>
+}

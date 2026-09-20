@@ -49,7 +49,8 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         public async Task<bool> DeleteAsync(string endpoint, CancellationToken cancellationToken = default) 
         {
             using var response = await _httpClient.DeleteAsync(endpoint, cancellationToken); 
-            await EnsureSuccessAsync(response); return true;
+            await EnsureSuccessAsync(response);
+            return true;
         }
 
 
