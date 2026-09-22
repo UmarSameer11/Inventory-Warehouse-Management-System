@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using WarehouseManagementSystemApi.DTOs.Product;
-using WarehouseManagementSystemApi.DTOs.ProductCategory;
 using WarehouseManagementSystemApi.Services.Interfaces;
 
 namespace WarehouseManagementSystemApi.Controllers.Product

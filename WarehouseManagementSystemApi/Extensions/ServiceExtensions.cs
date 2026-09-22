@@ -27,6 +27,7 @@ namespace WarehouseManagementSystemApi.Extensions
             services.AddScoped<IWarehouseService, WarehouseService>();
             services.AddScoped<IInventoryStockService, InventoryStockService>();
             services.AddScoped<IApiPerformanceService, ApiPerformanceService>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             // Auth Service
             services.AddScoped<IAuthService, AuthService>();

@@ -46,8 +46,16 @@ namespace WarehouseManagementSystemApi.Mappings
 
             /// Product
             CreateMap<ProductCreateDto, Product>().ReverseMap();
-            CreateMap<ProductListDto, Product>().ReverseMap();
             CreateMap<ProductUpdateDto, Product>().ReverseMap();
+            CreateMap<Product, ProductListDto>()
+              .ForMember(
+                   dest => dest.CategoryName,
+                   opt => opt.MapFrom(src => src.ProductCategory.CategoryName)
+                        )
+              .ForMember(
+                   dest => dest.UnitName,
+                   opt => opt.MapFrom(src => src.UnitOfMeasure.UnitName)
+                       );
 
             /// Unit of Messure
             CreateMap<UnitOfMeasureCreateDto, UnitOfMeasures>().ReverseMap();

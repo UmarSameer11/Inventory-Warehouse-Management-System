@@ -1,0 +1,526 @@
+﻿@model IEnumerable<WarehouseManagementSystemWeb.Application.ViewModels.Product.ProductListViewModel>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage"
+         data-message="@TempData["SuccessMessage"]">
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage"
+         data-message="@TempData["ErrorMessage"]">
+    </div>
+}
+
+<div class="container-fluid px-4 py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row
+        justify-content-between align-items-md-center
+        gap-3 mb-4">
+
+        <div>
+            <h3 class="fw-bold mb-1">
+                Products
+            </h3>
+
+            <p class="text-muted mb-0">
+                Manage your products, pricing and inventory settings.
+            </p>
+        </div>
+
+        <a asp-controller="Product"
+           asp-action="Create"
+           class="btn btn-primary px-4 py-2">
+
+            <i class="bi bi-plus-lg me-2"></i>
+            Add Product
+
+        </a>
+
+    </div>
+
+
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+
+        <!-- Total Products -->
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center
+                        justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small">
+                                Total Products
+                            </span>
+
+                            <h3 class="fw-bold mt-2 mb-0">
+                                @(Model?.Count() ?? 0)
+                            </h3>
+
+                        </div>
+
+                        <div class="product-summary-icon
+                            bg-primary bg-opacity-10
+                            text-primary">
+
+                            <i class="bi bi-box-seam fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Active Products -->
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center
+                        justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small">
+                                Active Products
+                            </span>
+
+                            <h3 class="fw-bold mt-2 mb-0">
+                                @(Model?.Count(p => p.IsActive) ?? 0)
+                            </h3>
+
+                        </div>
+
+                        <div class="product-summary-icon
+                            bg-success bg-opacity-10
+                            text-success">
+
+                            <i class="bi bi-check-circle fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Inactive Products -->
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center
+                        justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small">
+                                Inactive Products
+                            </span>
+
+                            <h3 class="fw-bold mt-2 mb-0">
+                                @(Model?.Count(p => !p.IsActive) ?? 0)
+                            </h3>
+
+                        </div>
+
+                        <div class="product-summary-icon
+                            bg-secondary bg-opacity-10
+                            text-secondary">
+
+                            <i class="bi bi-pause-circle fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Reorder Products -->
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center
+                        justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small">
+                                Reorder Level Set
+                            </span>
+
+                            <h3 class="fw-bold mt-2 mb-0">
+                                @(Model?.Count(p => p.ReorderLevel > 0) ?? 0)
+                            </h3>
+
+                        </div>
+
+                        <div class="product-summary-icon
+                            bg-warning bg-opacity-10
+                            text-warning">
+
+                            <i class="bi bi-arrow-repeat fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Main Card -->
+    <div class="card border-0 shadow-sm overflow-hidden">
+
+        <!-- Toolbar -->
+        <div class="card-body p-4 border-bottom">
+
+            <div class="d-flex flex-column flex-lg-row
+                justify-content-between
+                align-items-lg-center gap-3">
+
+                <div>
+
+                    <h5 class="fw-semibold mb-1">
+                        Product Catalog
+                    </h5>
+
+                    <span class="text-muted small">
+                        A complete list of registered products
+                    </span>
+
+                </div>
+
+
+                <!-- Search -->
+                <div class="position-relative product-search">
+
+                    <i class="bi bi-search
+                        position-absolute
+                        top-50 start-0
+                        translate-middle-y
+                        ms-3 text-muted">
+                    </i>
+
+                    <input type="text"
+                           id="productSearch"
+                           class="form-control ps-5 py-2"
+                           placeholder="Search products..." />
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Table -->
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0"
+                   id="productTable">
+
+                <thead class="bg-light">
+
+                    <tr>
+
+                        <th class="ps-4 text-muted small fw-semibold">
+                            PRODUCT
+                        </th>
+
+                        <th class="text-muted small fw-semibold">
+                            CODE
+                        </th>
+
+                        <th class="text-muted small fw-semibold">
+                            CATEGORY
+                        </th>
+
+                        <th class="text-muted small fw-semibold">
+                            UNIT
+                        </th>
+
+                        <th class="text-muted small fw-semibold">
+                            UNIT PRICE
+                        </th>
+
+                        <th class="text-muted small fw-semibold">
+                            REORDER LEVEL
+                        </th>
+
+                        <th class="text-muted small fw-semibold">
+                            STATUS
+                        </th>
+
+                        <th class="text-end pe-4
+                            text-muted small fw-semibold">
+                            ACTIONS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var product in Model)
+                        {
+                            <tr>
+
+                                <!-- Product -->
+                                <td class="ps-4">
+
+                                    <div class="d-flex align-items-center gap-3">
+
+                                        <div class="product-avatar">
+                                            <i class="bi bi-box-seam"></i>
+                                        </div>
+
+                                        <div>
+
+                                            <div class="fw-semibold text-dark">
+                                                @product.ProductName
+                                            </div>
+
+                                            <div class="text-muted small">
+                                                ID: #@product.ProductId
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Product Code -->
+                                <td>
+
+                                    <span class="product-code">
+                                        @product.ProductCode
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Category -->
+                                <td>
+
+                                    <span class="category-badge">
+
+                                        <i class="bi bi-tags me-1"></i>
+                                        @product.CategoryName
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Unit -->
+                                <td>
+
+                                    <span class="text-dark small fw-medium">
+                                        @product.UnitName
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Unit Price -->
+                                <td>
+
+                                    <span class="fw-semibold text-dark">
+                                        @product.UnitPrice.ToString("N2")
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Reorder Level -->
+                                <td>
+
+                                    <span class="reorder-level">
+                                        @product.ReorderLevel.ToString("N2")
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Status -->
+                                <td>
+
+                                    @if (product.IsActive)
+                                    {
+                                        <span class="status-badge status-active">
+
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Active
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-inactive">
+
+                                            <i class="bi bi-x-circle me-1"></i>
+                                            Inactive
+
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- Actions -->
+                                <td class="text-end pe-4">
+
+                                    <div class="d-inline-flex gap-1">
+
+                                        <!-- Details -->
+                                        <a asp-controller="Product"
+                                           asp-action="Detail"
+                                           asp-route-id="@product.ProductId"
+                                           class="btn btn-sm btn-light action-btn"
+                                           title="View">
+
+                                            <i class="bi bi-eye"></i>
+
+                                        </a>
+
+
+                                        <!-- Update -->
+                                        <a asp-controller="Product"
+                                           asp-action="Update"
+                                           asp-route-id="@product.ProductId"
+                                           class="btn btn-sm btn-light action-btn"
+                                           title="Update">
+
+                                            <i class="bi bi-pencil"></i>
+
+                                        </a>
+
+
+                                        <!-- Delete -->
+                                        <a asp-controller="Product"
+                                           asp-action="Delete"
+                                           asp-route-id="@product.ProductId"
+                                           class="btn btn-sm btn-light action-btn delete-btn"
+                                           title="Delete">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <!-- Empty State -->
+                        <tr>
+
+                            <td colspan="8">
+
+                                <div class="text-center py-5">
+
+                                    <div class="empty-icon mx-auto mb-3">
+                                        <i class="bi bi-box-seam"></i>
+                                    </div>
+
+                                    <h5 class="fw-semibold">
+                                        No products found
+                                    </h5>
+
+                                    <p class="text-muted mb-3">
+                                        There are currently no products available.
+                                    </p>
+
+                                    <a asp-controller="Product"
+                                       asp-action="Create"
+                                       class="btn btn-primary">
+
+                                        <i class="bi bi-plus-lg me-2"></i>
+                                        Add Product
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Styles {
+
+    <link rel="stylesheet"
+          href="~/css/Product/Index.css"
+          asp-append-version="true" />
+
+}
+
+
+@section Scripts {
+
+    <script src="~/js/Product/Index.js"
+            asp-append-version="true">
+    </script>
+
+}

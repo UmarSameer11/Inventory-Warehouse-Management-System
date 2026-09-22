@@ -1,0 +1,151 @@
+﻿/* ================================
+   Product Create Page
+   ================================ */
+
+.create-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eef4ff;
+    color: #0d6efd;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+
+/* Form Sections */
+
+.form-section {
+    padding: 4px 0;
+}
+
+.section-heading h6 {
+    color: #212529;
+}
+
+.section-heading p {
+    font-size: 13px;
+}
+
+
+/* Form Controls */
+
+.form-label {
+    color: #343a40;
+    font-size: 14px;
+}
+
+.form-control,
+.form-select {
+    min-height: 44px;
+    border-radius: 8px;
+    border-color: #dee2e6;
+    transition: all 0.2s ease;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.10);
+    }
+
+
+/* Input Group */
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+    min-width: 44px;
+    justify-content: center;
+}
+
+
+/* Status Box */
+
+.status-box {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 14px 16px;
+    background-color: #f8f9fa;
+}
+
+    .status-box small {
+        display: block;
+        margin-top: 5px;
+        font-size: 12px;
+    }
+
+
+/* Switch */
+
+.form-switch .form-check-input {
+    width: 2.5em;
+    height: 1.3em;
+    cursor: pointer;
+}
+
+.form-switch .form-check-label {
+    cursor: pointer;
+}
+
+
+/* Validation */
+
+.validation-summary {
+    display: none;
+    margin-bottom: 24px;
+    border-radius: 8px;
+}
+
+.field-validation-error {
+    display: block;
+    margin-top: 5px;
+}
+
+
+/* Buttons */
+
+.btn {
+    min-height: 42px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+
+/* Card */
+
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #ffffff !important;
+}
+
+
+/* Responsive */
+
+@media (max-width: 767.98px) {
+
+    .container-fluid {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    .card-body {
+        padding: 20px !important;
+    }
+
+    .section-heading {
+        margin-bottom: 20px !important;
+    }
+}

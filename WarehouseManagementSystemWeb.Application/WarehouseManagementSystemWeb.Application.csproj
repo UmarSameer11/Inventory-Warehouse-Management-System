@@ -13,7 +13,6 @@
     <Folder Include="ViewModels\UnitOfMeasure\" />
     <Folder Include="ViewModels\ProductCategory\" />
     <Folder Include="ViewModels\Warehouse\" />
-    <Folder Include="ViewModels\Product\" />
   </ItemGroup>
 
   <ItemGroup>
