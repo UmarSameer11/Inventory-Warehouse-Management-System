@@ -13,6 +13,8 @@ namespace WarehouseManagementSystemWeb.Application.ViewModels.Product
         public int ProductCategoryId { get; set; }
         public int UnitOfMeasureId { get; set; }
         public decimal UnitPrice { get; set; }
+        public string CategoryName { get; set; } = null!;
+        public string UnitName { get; set; } = null!;
         public decimal ReorderLevel { get; set; }
         public bool IsActive { get; set; }
 

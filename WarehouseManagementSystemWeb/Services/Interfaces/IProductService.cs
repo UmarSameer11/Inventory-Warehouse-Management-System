@@ -11,6 +11,6 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
         Task<ApiResponseViewModel<object>?> CreateAsync(ProductCreateViewModel model);
         Task<ProductCreateViewModel> DropdownProductWithUnitAndCategoryAsync();
         Task<ApiResponseViewModel<object>?> UpdateAsync(ProductUpdateViewModel model);
-        //Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }

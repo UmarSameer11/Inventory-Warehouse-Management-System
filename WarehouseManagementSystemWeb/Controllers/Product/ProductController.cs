@@ -93,5 +93,44 @@ namespace WarehouseManagementSystemWeb.Controllers.Product
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _productService.GetByIdAsync(id);
+
+            if (product == null)
+            {
+                TempData["ErrorMessage"] = "Product not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int ProductId)
+        {
+            var product = await _productService.GetByIdAsync(ProductId);
+
+            if (product == null)
+            {
+                TempData["ErrorMessage"] = "Product not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var success = await _productService.DeleteAsync(ProductId);
+
+            if (!success)
+            {
+                TempData["ErrorMessage"] = "Product could not be deleted.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["SuccessMessage"] = "Product deleted successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

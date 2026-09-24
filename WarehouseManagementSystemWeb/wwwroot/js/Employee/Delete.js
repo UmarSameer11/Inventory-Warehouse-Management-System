@@ -9,8 +9,7 @@
     deleteForm.addEventListener("submit", function (event) {
 
         const confirmed = confirm(
-            "Are you sure you want to delete this employee?\n\n" +
-            "This action cannot be undone."
+            "Are you sure you want to delete this employee?"
         );
 
         if (!confirmed) {

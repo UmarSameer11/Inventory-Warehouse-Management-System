@@ -24,6 +24,11 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             return response;
         }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            return await _apiService.DeleteAsync($"/api/Product/{id}");
+        }
+
         public async Task<ProductCreateViewModel> DropdownProductWithUnitAndCategoryAsync()
         {
             var category = await _productCategory.GetAllAsync();
@@ -33,14 +38,14 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             {
                 ProductCategories = category.Select(c => new SelectListItem
                 {
-                    Value = c.ProductCategoryId.ToString(),
-                    Text = c.CategoryName,
+                    Value = c!.ProductCategoryId.ToString(),
+                    Text = c!.CategoryName,
                 }).ToList(),
 
                 UnitOfMeasures = unit.Select(u => new SelectListItem 
                 {
-                    Value = u.UnitOfMeasureId.ToString(),
-                    Text = u.UnitName,
+                    Value = u!.UnitOfMeasureId.ToString(),
+                    Text = u!.UnitName,
                 }).ToList()
             };
 

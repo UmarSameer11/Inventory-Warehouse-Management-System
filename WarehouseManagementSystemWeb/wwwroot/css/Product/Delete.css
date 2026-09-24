@@ -1,0 +1,141 @@
+﻿
+/* ================================
+   Product Delete Page
+   ================================ */
+.delete-card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+/* Delete Icon */
+
+.delete-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff1f1;
+    color: #dc3545;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+
+/* Warning */
+
+.delete-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 18px 20px;
+    background-color: #fff8e1;
+    border: 1px solid #ffe69c;
+    border-radius: 10px;
+}
+
+.warning-icon {
+    color: #f0ad00;
+    font-size: 22px;
+    line-height: 1;
+}
+
+
+/* Details */
+
+.product-details {
+    padding-top: 5px;
+}
+
+.details-heading h6 {
+    color: #212529;
+}
+
+.details-heading p {
+    font-size: 13px;
+}
+
+
+/* Detail Box */
+
+.detail-box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-height: 75px;
+    padding: 14px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.detail-label {
+    color: #6c757d;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.detail-value {
+    color: #212529;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* Status */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+    .status-badge.active {
+        background-color: #d1e7dd;
+        color: #146c43;
+    }
+
+    .status-badge.inactive {
+        background-color: #f8d7da;
+        color: #b02a37;
+    }
+
+
+/* Buttons */
+
+.btn {
+    min-height: 42px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+    transform: translateY(-1px);
+}
+
+
+/* Responsive */
+
+@media (max-width: 767.98px) {
+
+    .container-fluid {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    .card-body {
+        padding: 20px !important;
+    }
+
+    .delete-warning {
+        padding: 15px;
+    }
+}
