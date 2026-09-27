@@ -1,0 +1,139 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.InventoryStock.InventoryStockUpdateViewModel
+
+@{
+    ViewData["Title"] = "Delete Stock";
+}
+
+<div class="container-fluid px-4 py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Delete Stock</h3>
+            <p class="text-muted mb-0">Review the stock information before deleting this record.</p>
+        </div>
+
+        <a asp-controller="InventoryStock" asp-action="Index" class="btn btn-outline-secondary px-4">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Inventory Stock
+        </a>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card border-0 shadow-sm delete-card">
+
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="delete-icon"><i class="bi bi-trash3"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Delete Stock</h5>
+                    <span class="text-muted small">Stock information and deletion confirmation.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+
+            <!-- Warning -->
+            <div class="delete-warning mb-4">
+                <div class="warning-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+                <div>
+                    <h6 class="fw-bold mb-1">Are you sure you want to delete this stock record?</h6>
+                    <p class="mb-0 text-muted">
+                        This action cannot be undone. The stock record will be permanently deleted.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stock Information -->
+            <div class="stock-details">
+
+                <div class="details-heading mb-3">
+                    <h6 class="fw-bold mb-1">Stock Information</h6>
+                    <p class="text-muted small mb-0">Review the following information before continuing.</p>
+                </div>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <div class="detail-box">
+                            <span class="detail-label">Warehouse</span>
+                            <span class="detail-value">@Model.WarehouseName</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="detail-box">
+                            <span class="detail-label">Product</span>
+                            <span class="detail-value">@Model.ProductName</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="detail-box">
+                            <span class="detail-label">Batch</span>
+                            <span class="detail-value">@Model.BatchNumber</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="detail-box">
+                            <span class="detail-label">Quantity</span>
+                            <span class="detail-value">@Model.Quantity.ToString("N2")</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="detail-box">
+                            <span class="detail-label">Reserved Quantity</span>
+                            <span class="detail-value">@Model.ReservedQuantity.ToString("N2")</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="detail-box">
+                            <span class="detail-label">Available Quantity</span>
+                            <span class="detail-value">@Model.AvailableQuantity.ToString("N2")</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Delete Form -->
+            <form asp-controller="InventoryStock"
+                  asp-action="DeleteConfirmed"
+                  asp-route-id="@Model.InventoryStockId"
+                  method="post"
+                  id="deleteStockForm">
+
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="InventoryStock" asp-action="Index" class="btn btn-light border px-4">
+                        <i class="bi bi-x-lg me-2"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-danger px-4" id="deleteStockBtn">
+                        <i class="bi bi-trash3 me-2"></i>
+                        Delete Stock
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/InventoryStock/Delete.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/InventoryStock/Delete.js" asp-append-version="true"></script>
+}

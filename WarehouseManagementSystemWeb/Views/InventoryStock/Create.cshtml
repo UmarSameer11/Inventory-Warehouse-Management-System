@@ -1,0 +1,196 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.InventoryStock.InventoryStockCreateViewModel
+
+@{
+    ViewData["Title"] = "Add Stock";
+}
+
+<div class="container-fluid px-4 py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Add Stock</h3>
+            <p class="text-muted mb-0">Record stock of a product batch in a warehouse.</p>
+        </div>
+
+        <a asp-controller="InventoryStock" asp-action="Index" class="btn btn-outline-secondary px-4">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Inventory Stock
+        </a>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="create-icon">
+                    <i class="bi bi-boxes"></i>
+                </div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Stock Information</h5>
+                    <span class="text-muted small">Select the location and enter the quantities.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form asp-controller="InventoryStock" asp-action="Create" method="post" id="stockCreateForm">
+
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+
+                <!-- Stock Location -->
+                <div class="form-section">
+
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Stock Location</h6>
+                        <p class="text-muted small mb-0">Choose the warehouse, product and batch.</p>
+                    </div>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label asp-for="WarehouseId" class="form-label fw-semibold">
+                                Warehouse <span class="text-danger">*</span>
+                            </label>
+
+                            <select asp-for="WarehouseId" asp-items="Model.Warehouses" class="form-select">
+                                <option value="0">Select Warehouse</option>
+                            </select>
+
+                            <span asp-validation-for="WarehouseId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="ProductId" class="form-label fw-semibold">
+                                Product <span class="text-danger">*</span>
+                            </label>
+
+                            <select asp-for="ProductId" asp-items="Model.Products" class="form-select">
+                                <option value="0">Select Product</option>
+                            </select>
+
+                            <span asp-validation-for="ProductId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="BatchId" class="form-label fw-semibold">
+                                Batch <span class="text-danger">*</span>
+                            </label>
+
+                            <select asp-for="BatchId" class="form-select">
+                                <option value="0">Select Batch</option>
+                                @foreach (var batch in Model.Batches)
+                                {
+                                    <option value="@batch.Value" data-product-id="@batch.ProductId">@batch.Text</option>
+                                }
+                            </select>
+
+                            <div class="form-text">Only batches of the selected product are listed.</div>
+
+                            <span asp-validation-for="BatchId" class="text-danger small"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Quantities -->
+                <div class="form-section">
+
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Quantities</h6>
+                        <p class="text-muted small mb-0">Reserved quantity cannot be greater than the total quantity.</p>
+                    </div>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label asp-for="Quantity" class="form-label fw-semibold">
+                                Quantity <span class="text-danger">*</span>
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-boxes"></i></span>
+                                <input asp-for="Quantity"
+                                       type="number"
+                                       class="form-control"
+                                       placeholder="0.00"
+                                       min="0"
+                                       step="0.01" />
+                            </div>
+
+                            <span asp-validation-for="Quantity" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="ReservedQuantity" class="form-label fw-semibold">
+                                Reserved Quantity <span class="text-danger">*</span>
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input asp-for="ReservedQuantity"
+                                       type="number"
+                                       class="form-control"
+                                       placeholder="0.00"
+                                       min="0"
+                                       step="0.01" />
+                            </div>
+
+                            <span asp-validation-for="ReservedQuantity" class="text-danger small"></span>
+                            <span id="quantityError" class="text-danger quantity-error">
+                                Reserved Quantity cannot be greater than Quantity.
+                            </span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="status-box">
+                                <span class="text-muted small">Available Quantity (Quantity &minus; Reserved)</span>
+                                <div class="available-preview" id="availablePreview">0.00</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Actions -->
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="InventoryStock" asp-action="Index" class="btn btn-light border px-4">
+                        <i class="bi bi-x-lg me-2"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary px-4" id="createStockBtn">
+                        <i class="bi bi-check-lg me-2"></i>
+                        Create Stock
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/InventoryStock/Create.css" asp-append-version="true" />
+}
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/InventoryStock/Create.js" asp-append-version="true"></script>
+}

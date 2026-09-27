@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WarehouseManagementSystemWeb.Application.ViewModels.Common;
+using WarehouseManagementSystemWeb.Application.ViewModels.Department;
+using WarehouseManagementSystemWeb.Application.ViewModels.Designation;
 using WarehouseManagementSystemWeb.Application.ViewModels.Employee;
 using WarehouseManagementSystemWeb.Services.Interfaces;
 
@@ -45,24 +48,50 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         ///// Employee list with department and designation name
         public async Task<EmployeeCreateViewModel> GetDeptDesigForDropdownAsync()
         {
-            var department = await _department.GetAllAsync();
-            var designation = await _designation.GetAllAsync();
+            var department = await GetAllDepartmentsAsync();
+            var designation = await GetAllDesignationsAsync();
 
             var result = new EmployeeCreateViewModel
             {
                 Departments = department.Select(d => new SelectListItem
                 {
-                    Value = d.DepartmentId.ToString(),
+                    Value = d!.DepartmentId.ToString(),
                     Text = d.DepartmentName
                 }).ToList(),
 
                 Designations = designation.Select(s => new SelectListItem
                 {
-                    Value = s.DesignationId.ToString(),
+                    Value = s!.DesignationId.ToString(),
                     Text = s.DesignationName
                 }).ToList(),
             };
             return result;
+        }
+
+        // The API answers 404 when the Department/Designation tables are empty; treat
+        // that the same as an empty list instead of letting the Create/Update page crash.
+        private async Task<List<DepartmentListViewModel?>> GetAllDepartmentsAsync()
+        {
+            try
+            {
+                return (await _department.GetAllAsync()).ToList();
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new List<DepartmentListViewModel?>();
+            }
+        }
+
+        private async Task<List<DesignationListViewModel?>> GetAllDesignationsAsync()
+        {
+            try
+            {
+                return (await _designation.GetAllAsync()).ToList();
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new List<DesignationListViewModel?>();
+            }
         }
 
         public async Task<ApiResponseViewModel<object>?> UpdateAsync(EmployeeUpdateViewModel model)

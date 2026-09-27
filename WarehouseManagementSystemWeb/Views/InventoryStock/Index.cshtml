@@ -1,0 +1,288 @@
+@model IEnumerable<WarehouseManagementSystemWeb.Application.ViewModels.InventoryStock.InventoryStockListViewModel>
+
+@{
+    ViewData["Title"] = "Inventory Stock";
+
+    var warehouseNames = Model?
+        .Select(s => s.WarehouseName)
+        .Distinct()
+        .OrderBy(n => n)
+        .ToList() ?? new List<string>();
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" data-message="@TempData["SuccessMessage"]"></div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage" data-message="@TempData["ErrorMessage"]"></div>
+}
+
+<div class="container-fluid px-4 py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Inventory Stock</h3>
+            <p class="text-muted mb-0">Monitor stock levels of every product batch in each warehouse.</p>
+        </div>
+
+        <a asp-controller="InventoryStock" asp-action="Create" class="btn btn-primary px-4 py-2">
+            <i class="bi bi-plus-lg me-2"></i>
+            Add Stock
+        </a>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small">Stock Records</span>
+                            <h3 class="fw-bold mt-2 mb-0">@(Model?.Count() ?? 0)</h3>
+                        </div>
+                        <div class="stock-summary-icon bg-primary bg-opacity-10 text-primary">
+                            <i class="bi bi-boxes fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small">Total Quantity</span>
+                            <h3 class="fw-bold mt-2 mb-0">@((Model?.Sum(s => s.Quantity) ?? 0).ToString("N2"))</h3>
+                        </div>
+                        <div class="stock-summary-icon bg-info bg-opacity-10 text-info">
+                            <i class="bi bi-stack fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small">Reserved Quantity</span>
+                            <h3 class="fw-bold mt-2 mb-0">@((Model?.Sum(s => s.ReservedQuantity) ?? 0).ToString("N2"))</h3>
+                        </div>
+                        <div class="stock-summary-icon bg-warning bg-opacity-10 text-warning">
+                            <i class="bi bi-lock fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small">Available Quantity</span>
+                            <h3 class="fw-bold mt-2 mb-0">@((Model?.Sum(s => s.AvailableQuantity) ?? 0).ToString("N2"))</h3>
+                        </div>
+                        <div class="stock-summary-icon bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-check2-circle fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Main Card -->
+    <div class="card border-0 shadow-sm overflow-hidden">
+
+        <!-- Toolbar -->
+        <div class="card-body p-4 border-bottom">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+
+                <div>
+                    <h5 class="fw-semibold mb-1">Stock Register</h5>
+                    <span class="text-muted small">Current stock by warehouse, product and batch</span>
+                </div>
+
+                <div class="d-flex flex-column flex-sm-row gap-2 stock-toolbar">
+
+                    <!-- Warehouse filter -->
+                    <select id="stockWarehouseFilter" class="form-select" aria-label="Filter by warehouse">
+                        <option value="">All Warehouses</option>
+                        @foreach (var name in warehouseNames)
+                        {
+                            <option value="@name">@name</option>
+                        }
+                    </select>
+
+                    <!-- Search -->
+                    <div class="position-relative stock-search">
+                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                        <input type="text"
+                               id="stockSearch"
+                               class="form-control ps-5 py-2"
+                               placeholder="Search stock..." />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="stockTable">
+
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 text-muted small fw-semibold">PRODUCT</th>
+                        <th class="text-muted small fw-semibold">WAREHOUSE</th>
+                        <th class="text-muted small fw-semibold">BATCH</th>
+                        <th class="text-muted small fw-semibold text-end">QUANTITY</th>
+                        <th class="text-muted small fw-semibold text-end">RESERVED</th>
+                        <th class="text-muted small fw-semibold text-end">AVAILABLE</th>
+                        <th class="text-muted small fw-semibold">LAST UPDATED</th>
+                        <th class="text-end pe-4 text-muted small fw-semibold">ACTIONS</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var stock in Model)
+                        {
+                            <tr data-warehouse="@stock.WarehouseName">
+
+                                <!-- Product -->
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="stock-avatar">
+                                            <i class="bi bi-boxes"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold text-dark">@stock.ProductName</div>
+                                            <div class="text-muted small">ID: #@stock.InventoryStockId</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Warehouse -->
+                                <td>
+                                    <span class="warehouse-badge">
+                                        <i class="bi bi-building me-1"></i>
+                                        @stock.WarehouseName
+                                    </span>
+                                </td>
+
+                                <!-- Batch -->
+                                <td>
+                                    <span class="batch-code">@stock.BatchNumber</span>
+                                </td>
+
+                                <!-- Quantity -->
+                                <td class="text-end">
+                                    <span class="qty-value">@stock.Quantity.ToString("N2")</span>
+                                </td>
+
+                                <!-- Reserved -->
+                                <td class="text-end">
+                                    <span class="qty-value text-muted">@stock.ReservedQuantity.ToString("N2")</span>
+                                </td>
+
+                                <!-- Available -->
+                                <td class="text-end">
+                                    @if (stock.AvailableQuantity > 0)
+                                    {
+                                        <span class="available-badge available-ok">@stock.AvailableQuantity.ToString("N2")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="available-badge available-zero">@stock.AvailableQuantity.ToString("N2")</span>
+                                    }
+                                </td>
+
+                                <!-- Last Updated -->
+                                <td>
+                                    @if (stock.HasLastUpdated)
+                                    {
+                                        <span class="text-dark small">@stock.LastUpdated.ToString("dd MMM yyyy, hh:mm tt")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">&mdash;</span>
+                                    }
+                                </td>
+
+                                <!-- Actions -->
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-1">
+                                        <a asp-controller="InventoryStock" asp-action="Detail" asp-route-id="@stock.InventoryStockId"
+                                           class="btn btn-sm btn-light action-btn" title="View">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-controller="InventoryStock" asp-action="Update" asp-route-id="@stock.InventoryStockId"
+                                           class="btn btn-sm btn-light action-btn" title="Update">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-controller="InventoryStock" asp-action="Delete" asp-route-id="@stock.InventoryStockId"
+                                           class="btn btn-sm btn-light action-btn" title="Delete">
+                                            <i class="bi bi-trash3 text-danger"></i>
+                                        </a>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <!-- Empty State -->
+                        <tr>
+                            <td colspan="8">
+                                <div class="text-center py-5">
+                                    <div class="empty-icon mx-auto mb-3">
+                                        <i class="bi bi-boxes"></i>
+                                    </div>
+                                    <h5 class="fw-semibold">No stock records found</h5>
+                                    <p class="text-muted mb-3">There is currently no inventory stock available.</p>
+                                    <a asp-controller="InventoryStock" asp-action="Create" class="btn btn-primary">
+                                        <i class="bi bi-plus-lg me-2"></i>
+                                        Add Stock
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+            <!-- Shown by Index.js when search / filter hides every row -->
+            <div id="stockNoResult" class="text-center text-muted py-5 stock-no-result">
+                <i class="bi bi-search fs-3 d-block mb-2"></i>
+                No stock records match your search.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/InventoryStock/Index.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/InventoryStock/Index.js" asp-append-version="true"></script>
+}

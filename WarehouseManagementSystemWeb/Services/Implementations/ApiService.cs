@@ -63,7 +63,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             var errorContent = await response.Content.ReadAsStringAsync(); 
             var statusCode = (int)response.StatusCode;
             var message = string.IsNullOrWhiteSpace(errorContent) ? $"API request failed with status code {statusCode}." : errorContent; 
-            throw new HttpRequestException($"API request failed. " + $"StatusCode: {statusCode} ({response.StatusCode}). " + $"Response: {message}"); 
+            throw new HttpRequestException($"API request failed. " + $"StatusCode: {statusCode} ({response.StatusCode}). " + $"Response: {message}", null, response.StatusCode); 
         }
 
         private static async Task<T?> ReadResponseAsync<T>(HttpResponseMessage response, CancellationToken cancellationToken) 

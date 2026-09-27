@@ -1,5 +1,7 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WarehouseManagementSystemWeb.Application.ViewModels.Common;
+using WarehouseManagementSystemWeb.Application.ViewModels.Employee;
 using WarehouseManagementSystemWeb.Application.ViewModels.Warehouse;
 using WarehouseManagementSystemWeb.Services.Interfaces;
 
@@ -39,7 +41,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
 
         public async Task<List<SelectListItem>> GetEmployeeDropdownAsync()
         {
-            var employees = await _employee.GetAllAsync();
+            var employees = await GetAllEmployeesAsync();
 
             return employees
                 .Where(e => e != null && e.DesignationName == "Asst.Manager")
@@ -49,6 +51,20 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                     Text = $"{e.EmployeeCode} - {e.FirstName} {e.LastName}"
                 })
                 .ToList();
+        }
+
+        // The API answers 404 when the Employee table is empty; treat that the same
+        // as an empty list instead of letting the Warehouse Create/Update page crash.
+        private async Task<List<EmployeeListViewModel?>> GetAllEmployeesAsync()
+        {
+            try
+            {
+                return (await _employee.GetAllAsync()).ToList();
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new List<EmployeeListViewModel?>();
+            }
         }
     }
 }

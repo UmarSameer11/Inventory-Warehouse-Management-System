@@ -1,7 +1,10 @@
 ﻿
+using System.Net;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WarehouseManagementSystemWeb.Application.ViewModels.Common;
 using WarehouseManagementSystemWeb.Application.ViewModels.Product;
+using WarehouseManagementSystemWeb.Application.ViewModels.ProductCategory;
+using WarehouseManagementSystemWeb.Application.ViewModels.UnitOfMeasure;
 using WarehouseManagementSystemWeb.Services.Interfaces;
 
 namespace WarehouseManagementSystemWeb.Services.Implementations
@@ -31,8 +34,8 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
 
         public async Task<ProductCreateViewModel> DropdownProductWithUnitAndCategoryAsync()
         {
-            var category = await _productCategory.GetAllAsync();
-            var unit = await _unitOfMeasure.GetAllAsync();
+            var category = await GetAllProductCategoriesAsync();
+            var unit = await GetAllUnitOfMeasuresAsync();
 
             var result = new ProductCreateViewModel
             {
@@ -50,6 +53,32 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             };
 
             return result;
+        }
+
+        // The API answers 404 when the Category/UnitOfMeasure tables are empty; treat
+        // that the same as an empty list instead of letting the Create/Update page crash.
+        private async Task<List<ProductCategoryListViewModel?>> GetAllProductCategoriesAsync()
+        {
+            try
+            {
+                return (await _productCategory.GetAllAsync()).ToList();
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new List<ProductCategoryListViewModel?>();
+            }
+        }
+
+        private async Task<List<UnitOfMeasureListViewModel?>> GetAllUnitOfMeasuresAsync()
+        {
+            try
+            {
+                return (await _unitOfMeasure.GetAllAsync()).ToList();
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new List<UnitOfMeasureListViewModel?>();
+            }
         }
 
         public async Task<IEnumerable<ProductListViewModel?>> GetAllAsync()

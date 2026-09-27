@@ -24,6 +24,8 @@ namespace WarehouseManagementSystemWeb.Extensions
             services.AddScoped<IUnitOfMeasureService, UnitOfMeasureService>();
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IBatchService, BatchService>();
+            services.AddScoped<IInventoryStockService, InventoryStockService>();
 
             return services;
         }

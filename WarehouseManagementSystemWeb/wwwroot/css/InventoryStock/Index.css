@@ -1,0 +1,184 @@
+/* ============================================
+   Summary Icons
+   ============================================ */
+.stock-summary-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+
+/* ============================================
+   Toolbar (warehouse filter + search)
+   ============================================ */
+
+.stock-toolbar {
+    width: 100%;
+    max-width: 560px;
+}
+
+    .stock-toolbar .form-select {
+        min-width: 180px;
+    }
+
+.stock-search {
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+
+/* ============================================
+   Stock Avatar
+   ============================================ */
+
+.stock-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(13, 110, 253, 0.10);
+    color: #0d6efd;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+
+/* ============================================
+   Warehouse Badge / Batch Code
+   ============================================ */
+
+.warehouse-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 7px;
+    background-color: rgba(13, 110, 253, 0.08);
+    color: #495057;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.batch-code {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    color: #495057;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+
+/* ============================================
+   Quantities
+   ============================================ */
+
+.qty-value {
+    font-size: 14px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.available-badge {
+    display: inline-block;
+    min-width: 72px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.available-ok {
+    background-color: rgba(25, 135, 84, 0.10);
+    color: #198754;
+}
+
+.available-zero {
+    background-color: rgba(220, 53, 69, 0.10);
+    color: #dc3545;
+}
+
+
+/* ============================================
+   Action Buttons
+   ============================================ */
+
+.action-btn {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e9ecef;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+    .action-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+
+/* ============================================
+   Table
+   ============================================ */
+
+#stockTable th {
+    height: 48px;
+    white-space: nowrap;
+}
+
+#stockTable td {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+#stockTable tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+
+/* ============================================
+   Empty State / No Result
+   ============================================ */
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(13, 110, 253, 0.08);
+    color: #0d6efd;
+    font-size: 28px;
+}
+
+.stock-no-result {
+    display: none;
+}
+
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+
+    .stock-toolbar {
+        max-width: 100%;
+    }
+
+    #stockTable {
+        min-width: 1100px;
+    }
+}
