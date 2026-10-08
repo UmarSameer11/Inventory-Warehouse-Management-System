@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+using FluentValidation;
+using WarehouseManagementSystemApi.Common.Constant;
 using WarehouseManagementSystemApi.DTOs.Auth;
 
 namespace WarehouseManagementSystemApi.Validators.Auth
@@ -18,21 +19,12 @@ namespace WarehouseManagementSystemApi.Validators.Auth
                 .NotEmpty()
                 .WithMessage("Email is required.")
                 .EmailAddress()
-                .WithMessage("Please enter a valid email address.");
+                .WithMessage("Please enter a valid email address.")
+                .MaximumLength(256)
+                .WithMessage("Email cannot exceed 256 characters.");
 
             RuleFor(x => x.Password)
-                .NotEmpty()
-                .WithMessage("Password is required.")
-                .MinimumLength(8)
-                .WithMessage("Password must be at least 8 characters long.")
-                .Matches("[A-Z]")
-                .WithMessage("Password must contain at least one uppercase letter.")
-                .Matches("[a-z]")
-                .WithMessage("Password must contain at least one lowercase letter.")
-                .Matches("[0-9]")
-                .WithMessage("Password must contain at least one number.")
-                .Matches("[^a-zA-Z0-9]")
-                .WithMessage("Password must contain at least one special character.");
+                .MustBeStrongPassword();
 
             RuleFor(x => x.ConfirmPassword)
                 .NotEmpty()
@@ -43,8 +35,8 @@ namespace WarehouseManagementSystemApi.Validators.Auth
             RuleFor(x => x.Role)
                 .NotEmpty()
                 .WithMessage("Role is required.")
-                .MaximumLength(50)
-                .WithMessage("Role cannot exceed 50 characters.");
+                .Must(Roles.IsValid)
+                .WithMessage($"Role must be one of: {string.Join(", ", Roles.All)}.");
         }
     }
 }

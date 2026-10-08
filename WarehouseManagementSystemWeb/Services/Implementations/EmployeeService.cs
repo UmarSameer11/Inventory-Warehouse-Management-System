@@ -43,7 +43,32 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             var response = await _apiService.GetByIdAsync<ApiResponseViewModel<EmployeeUpdateViewModel>>("/api/Employee", id);
 
             return response?.Data;
+            //var employee =  response?.Data;
+            //if(employee != null)
+            //{
+            //    await ResolveIdsAsync(employee);
+            //}
+            //return employee;
         }
+
+        //private async Task ResolveIdsAsync(EmployeeUpdateViewModel model)
+        //{
+        //    if (model.DepartmentId == 0)
+        //    {
+        //        var departments = await GetAllDepartmentsAsync();
+
+        //        model.DepartmentId = departments
+        //            .FirstOrDefault(d => d.DepartmentName == model.DepartmentName)?.DepartmentId ?? 0;
+        //    }
+
+        //    if (model.DesignationId == 0)
+        //    {
+        //        var designations = await GetAllDesignationsAsync();
+
+        //        model.DesignationId = designations
+        //            .FirstOrDefault(d => d.DesignationName == model.DesignationName)?.DesignationId ?? 0;
+        //    }
+        //}
 
         ///// Employee list with department and designation name
         public async Task<EmployeeCreateViewModel> GetDeptDesigForDropdownAsync()

@@ -1,4 +1,5 @@
-﻿using WarehouseManagementSystemWeb.Services.Implementations;
+using WarehouseManagementSystemWeb.Auth;
+using WarehouseManagementSystemWeb.Services.Implementations;
 using WarehouseManagementSystemWeb.Services.Interfaces;
 
 namespace WarehouseManagementSystemWeb.Extensions
@@ -9,12 +10,27 @@ namespace WarehouseManagementSystemWeb.Extensions
            this IServiceCollection services,
            IConfiguration configuration)
         {
-            // API HttpClient
+            // Auth plumbing: reads the access token from the auth cookie and attaches it to API calls
+            services.AddHttpContextAccessor();
+            services.AddMemoryCache();
+            services.AddTransient<BearerTokenHandler>();
+            services.AddSingleton<ITokenRefresher, TokenRefresher>();
+
+            // API HttpClient (sends "Authorization: Bearer <access token>")
             services.AddHttpClient<IApiService, ApiService>(client =>
             {
                 client.BaseAddress = new Uri(
                     configuration["ApiSettings:BaseUrl"]!);
-            });
+            })
+            .AddHttpMessageHandler<BearerTokenHandler>();
+
+            // Login / Logout / Refresh / Sessions / ChangePassword / Registration
+            services.AddHttpClient<IAuthApiClient, AuthApiClient>(client =>
+            {
+                client.BaseAddress = new Uri(
+                    configuration["ApiSettings:BaseUrl"]!);
+            })
+            .AddHttpMessageHandler<BearerTokenHandler>();
 
             // Application Services
             services.AddScoped<IEmployeeService, EmployeeService>();

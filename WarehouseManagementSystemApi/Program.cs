@@ -1,17 +1,11 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Serilog;
-using System.Security.Claims;
-using System.Text;
 using WarehouseManagementSystemApi.Data;
 using WarehouseManagementSystemApi.Extensions;
 using WarehouseManagementSystemApi.MiddleWares;
 using WarehouseManagementSystemApi.MiddleWares.AuditMiddleware;
-using WarehouseManagementSystemApi.Models.Auth;
 using WarehouseManagementSystemApi.Services.Implementations;
 using WarehouseManagementSystemApi.Services.Interfaces;
 using WarehouseManagementSystemApi.Validators.Employee;
@@ -21,18 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices();
-var jwt = builder.Configuration.GetSection("JwtSettings");
 
-builder.Services.AddIdentity<AppUser, AppRole>(options =>
-{
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-}).AddEntityFrameworkStores<ApplicationDbContext>()
-  .AddDefaultTokenProviders();
+// ---- Authentication & authorization (Identity + JWT + sessions + rate limiting) ----
+builder.Services.AddIdentityServices();                              // must come before AddJwtAuthentication
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddAuthRateLimiting(builder.Configuration);
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -49,29 +38,6 @@ builder.Services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =
 
     options.AddInterceptors(interceptor);
 });
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwt["Issuer"],
-        ValidAudience = jwt["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["SecretKey"])),
-        RoleClaimType = ClaimTypes.Role,
-        NameClaimType = ClaimTypes.NameIdentifier,
-      
-    };
-});
-
-builder.Services.AddAuthorization();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -88,7 +54,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Enter your JWT token."
+        Description = "Paste only the access token (Login response -> token). Swagger adds the 'Bearer ' prefix."
     });
 
     options.AddSecurityRequirement(document =>
@@ -116,7 +82,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.MapOpenApi(); 
+    app.MapOpenApi().AllowAnonymous();
 }
 
 
@@ -124,6 +90,7 @@ app.UseGlobelExceptionHandling();
 app.CorrelationMiddleWare();
 app.UseHttpsRedirection();
 
+app.UseRateLimiter();
 app.UseAuthentication();
 app.RequestLogging();
 app.ResponseWrapping();

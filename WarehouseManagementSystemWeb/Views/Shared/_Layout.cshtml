@@ -1,79 +1,176 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WarehouseManagementSystemWeb</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - Warehouse Management System</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Account/Layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WarehouseManagementSystemWeb.styles.css" asp-append-version="true" />
+
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WarehouseManagementSystemWeb</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm wms-navbar">
+            <div class="container-fluid px-3 px-lg-4">
+                <a class="navbar-brand d-flex align-items-center gap-2 fw-bold"
+                   asp-controller="Employee" asp-action="Index">
+                    <span class="brand-icon"><i class="bi bi-box-seam"></i></span>
+                    <span>Warehouse Management</span>
+                </a>
+
+                <button class="navbar-toggler border-0 shadow-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#wmsMainNav"
+                        aria-controls="wmsMainNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <i class="bi bi-list fs-3"></i>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Index">Department</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Designation" asp-action="Index">Designation</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Warehouse" asp-action="Index">Warehouse</a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ProductCategory" asp-action="Index">Product Category</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="UnitOfMeasure" asp-action="Index">Unit Of Measure</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Batch" asp-action="Index">Batch</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="InventoryStock" asp-action="Index">Inventory Stock</a>
-                        </li>
-                    </ul>
+
+                <div class="collapse navbar-collapse" id="wmsMainNav">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Employee" asp-action="Index">
+                                    <i class="bi bi-people me-1"></i> Employees
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Department" asp-action="Index">
+                                    <i class="bi bi-building me-1"></i> Departments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Designation" asp-action="Index">
+                                    <i class="bi bi-person-badge me-1"></i> Designations
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Warehouse" asp-action="Index">
+                                    <i class="bi bi-house-gear me-1"></i> Warehouses
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-boxes me-1"></i> Inventory
+                                </a>
+                                <ul class="dropdown-menu border-0 shadow-sm">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Product" asp-action="Index">
+                                            <i class="bi bi-box me-2"></i> Products
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="ProductCategory" asp-action="Index">
+                                            <i class="bi bi-tags me-2"></i> Product Categories
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="UnitOfMeasure" asp-action="Index">
+                                            <i class="bi bi-rulers me-2"></i> Units of Measure
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Batch" asp-action="Index">
+                                            <i class="bi bi-layers me-2"></i> Batches
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="InventoryStock" asp-action="Index">
+                                            <i class="bi bi-clipboard-data me-2"></i> Inventory Stock
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link user-menu d-flex align-items-center gap-2"
+                                   href="#"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <span class="user-avatar">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <span class="d-none d-xl-inline">
+                                        <span class="d-block user-name">@User.Identity.Name</span>
+                                        <span class="d-block user-role">
+                                            @(User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "User")
+                                        </span>
+                                    </span>
+                                    <i class="bi bi-chevron-down small"></i>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm account-menu">
+                                    <li class="px-3 py-2 border-bottom">
+                                        <div class="fw-semibold">@User.Identity.Name</div>
+                                        <div class="text-muted small">@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
+                                            <i class="bi bi-person-vcard me-2"></i> My Profile & Devices
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">
+                                            <i class="bi bi-key me-2"></i> Change Password
+                                        </a>
+                                    </li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="Register">
+                                                <i class="bi bi-person-plus me-2"></i> Register User
+                                            </a>
+                                        </li>
+                                    }
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li class="px-2 pb-2">
+                                        <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-outline-danger btn-sm w-100 js-logout">
+                                                <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>
-        <link rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-        @RenderSection("Styles", required: false)
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div class="container-fluid px-0">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - WarehouseManagementSystemWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container-fluid px-4">
+            &copy; 2026 - Warehouse Management System
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
-    <!-- Global Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="~/js/Alert/showSuccessToast.js"></script>
+    <script src="~/js/Alert/showSuccessToast.js" asp-append-version="true"></script>
+    <script src="~/js/Account/Layout.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

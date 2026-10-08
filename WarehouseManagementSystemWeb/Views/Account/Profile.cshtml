@@ -1,0 +1,189 @@
+@model WarehouseManagementSystemWeb.Models.Auth.ProfilePageViewModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container-fluid px-4 py-4 account-page">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div id="successMessage" data-message="@TempData["SuccessMessage"]"></div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div id="errorMessage" data-message="@TempData["ErrorMessage"]"></div>
+    }
+
+    <div class="page-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <span class="page-eyebrow">ACCOUNT SECURITY</span>
+            <h3 class="fw-bold mb-1">My Profile</h3>
+            <p class="text-muted mb-0">Manage your account, password and active login sessions.</p>
+        </div>
+        <a asp-action="ChangePassword" class="btn btn-primary px-4">
+            <i class="bi bi-key me-2"></i> Change Password
+        </a>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-xl-8">
+            <div class="account-card h-100">
+                <div class="account-card-header">
+                    <div class="account-icon"><i class="bi bi-person-vcard"></i></div>
+                    <div>
+                        <h5 class="mb-1">Account Information</h5>
+                        <p class="text-muted small mb-0">Your authenticated profile details.</p>
+                    </div>
+                </div>
+                <div class="account-card-body">
+                    <div class="profile-hero mb-4">
+                        <div class="profile-avatar"><i class="bi bi-person"></i></div>
+                        <div>
+                            <h4 class="fw-bold mb-1">@Model.Profile.Name</h4>
+                            <div class="text-muted">@Model.Profile.Email</div>
+                            <div class="mt-2">
+                                @foreach (var role in Model.Profile.Roles)
+                                {
+                                    <span class="status-badge status-active me-1">
+                                        <i class="bi bi-shield-check me-1"></i>@role
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4 profile-info">
+                            <span>Name</span>
+                            <strong>@Model.Profile.Name</strong>
+                        </div>
+                        <div class="col-md-4 profile-info">
+                            <span>Email</span>
+                            <strong class="text-break">@Model.Profile.Email</strong>
+                        </div>
+                        <div class="col-md-4 profile-info">
+                            <span>Last login</span>
+                            <strong>@(Model.Profile.LastLoginAtUtc?.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt") ?? "-")</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="security-card h-100">
+                <div class="security-icon"><i class="bi bi-shield-lock"></i></div>
+                <h5 class="fw-bold mt-3">Session Security</h5>
+                <p class="text-muted small">
+                    Your browser session uses a secure authentication cookie containing the API token pair.
+                    Access tokens are refreshed automatically before expiry.
+                </p>
+                <div class="security-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>JWT access token</span>
+                </div>
+                <div class="security-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Refresh token rotation</span>
+                </div>
+                <div class="security-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Device/session control</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="account-card">
+        <div class="account-card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="account-icon"><i class="bi bi-laptop"></i></div>
+                <div>
+                    <h5 class="mb-1">Active Sessions</h5>
+                    <p class="text-muted small mb-0">Review and revoke devices currently signed in.</p>
+                </div>
+            </div>
+
+            <form asp-action="LogoutAll" method="post" id="logoutAllForm">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i> Log out all devices
+                </button>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table session-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">DEVICE</th>
+                        <th>IP ADDRESS</th>
+                        <th>SIGNED IN</th>
+                        <th>LAST ACTIVITY</th>
+                        <th class="text-end pe-4">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model.Sessions)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="device-icon">
+                                        <i class="bi bi-display"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold text-dark text-truncate session-device"
+                                             title="@s.DeviceInfo">
+                                            @(string.IsNullOrWhiteSpace(s.DeviceInfo) ? "Unknown device" : s.DeviceInfo)
+                                        </div>
+                                        @if (s.IsCurrent)
+                                        {
+                                            <span class="status-badge status-active mt-1">
+                                                <i class="bi bi-dot"></i> This device
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-muted">@(s.IpAddress ?? "-")</td>
+                            <td>@s.CreatedAtUtc.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                            <td>@s.LastActivityUtc.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                            <td class="text-end pe-4">
+                                <form asp-action="RevokeSession" method="post" class="d-inline js-revoke-session">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="sessionId" value="@s.Id" />
+                                    <input type="hidden" name="isCurrent" value="@s.IsCurrent" />
+                                    <button type="submit" class="btn btn-sm btn-light action-btn text-danger"
+                                            title="@(s.IsCurrent ? "Log out" : "Log out device")">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Sessions.Any())
+                    {
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state py-5">
+                                    <div class="empty-icon"><i class="bi bi-laptop"></i></div>
+                                    <h6 class="fw-semibold mt-3">No active sessions</h6>
+                                    <p class="text-muted small mb-0">There are no active login sessions to display.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Account/Account.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/Account/Profile.js" asp-append-version="true"></script>
+}

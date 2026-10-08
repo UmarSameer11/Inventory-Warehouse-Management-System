@@ -292,6 +292,14 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<DateTime?>("LastLoginAtUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -353,15 +361,71 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedByIp")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReplacedByTokenHash")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RevokedReason")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SessionId");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Auth.UserSession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeviceInfo")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("LastActivityUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("RevokedAtUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RevokedReason")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -369,9 +433,9 @@ namespace WarehouseManagementSystemApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "RevokedAtUtc");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("UserSessions", (string)null);
                 });
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Batch.Batches", b =>
@@ -400,6 +464,51 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Batches");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Customer.Customers", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ContactPerson")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("CustomerCode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("CustomerId");
+
+                    b.HasIndex("CustomerCode")
+                        .IsUnique();
+
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Department.Departments", b =>
@@ -440,6 +549,91 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.HasKey("DesignationId");
 
                     b.ToTable("Designations");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Dispatch.DispatchDetails", b =>
+                {
+                    b.Property<int>("DispatchDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DispatchDetailId"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DispatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.HasKey("DispatchDetailId");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("DispatchId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("DispatchDetails");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Dispatch.Dispatches", b =>
+                {
+                    b.Property<int>("DispatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DispatchId"));
+
+                    b.Property<DateTime>("DispatchDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DispatchNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int?>("DriverEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("SalesOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DispatchId");
+
+                    b.HasIndex("DispatchNumber")
+                        .IsUnique();
+
+                    b.HasIndex("DriverEmployeeId");
+
+                    b.HasIndex("SalesOrderId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("Dispatches");
                 });
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Employee.Employees", b =>
@@ -490,6 +684,90 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.HasIndex("DesignationId");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.GoodsReceipt.GoodsReceiptDetails", b =>
+                {
+                    b.Property<int>("GoodsReceiptDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GoodsReceiptDetailId"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoodsReceiptId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PurchaseOrderDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("QuantityReceived")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.HasKey("GoodsReceiptDetailId");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("GoodsReceiptId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PurchaseOrderDetailId");
+
+                    b.ToTable("GoodsReceiptDetails");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.GoodsReceipt.GoodsReceipts", b =>
+                {
+                    b.Property<int>("GoodsReceiptId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GoodsReceiptId"));
+
+                    b.Property<string>("GoodsReceiptNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("PurchaseOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReceivedByEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReceivedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("SupplierInvoiceNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GoodsReceiptId");
+
+                    b.HasIndex("GoodsReceiptNumber")
+                        .IsUnique();
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.HasIndex("ReceivedByEmployeeId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("GoodsReceipts");
                 });
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.InventoryStock.InventoryStocks", b =>
@@ -592,6 +870,578 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.PurchaseOrder.PurchaseOrderDetails", b =>
+                {
+                    b.Property<int>("PurchaseOrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseOrderDetailId"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PurchaseOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("PurchaseOrderDetailId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.ToTable("PurchaseOrderDetails");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.PurchaseOrder.PurchaseOrders", b =>
+                {
+                    b.Property<int>("PurchaseOrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseOrderId"));
+
+                    b.Property<DateTime?>("ExpectedDeliveryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PurchaseOrderNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PurchaseOrderId");
+
+                    b.HasIndex("PurchaseOrderNumber")
+                        .IsUnique();
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("PurchaseOrders");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.ReturnReason.ReturnReasons", b =>
+                {
+                    b.Property<int>("ReturnReasonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReturnReasonId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReasonName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ReturnReasonId");
+
+                    b.HasIndex("ReasonName")
+                        .IsUnique();
+
+                    b.ToTable("ReturnReasons");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesOrder.SalesOrderDetails", b =>
+                {
+                    b.Property<int>("SalesOrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalesOrderDetailId"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int>("SalesOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("SalesOrderDetailId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SalesOrderId");
+
+                    b.ToTable("SalesOrderDetails");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesOrder.SalesOrders", b =>
+                {
+                    b.Property<int>("SalesOrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalesOrderId"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("SalesOrderNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("SalesmanId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("SalesOrderId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("SalesOrderNumber")
+                        .IsUnique();
+
+                    b.HasIndex("SalesmanId");
+
+                    b.ToTable("SalesOrders");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesReturn.SalesReturnDetails", b =>
+                {
+                    b.Property<int>("SalesReturnDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalesReturnDetailId"));
+
+                    b.Property<int?>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DamagedQuantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<decimal>("GoodQuantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int>("ReturnReasonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalesReturnId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SalesReturnDetailId");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ReturnReasonId");
+
+                    b.HasIndex("SalesReturnId");
+
+                    b.ToTable("SalesReturnDetails");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesReturn.SalesReturns", b =>
+                {
+                    b.Property<int>("SalesReturnId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalesReturnId"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("InspectedByEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("InspectionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReturnNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int?>("SalesOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SalesmanId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SalesReturnId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("InspectedByEmployeeId");
+
+                    b.HasIndex("ReturnNumber")
+                        .IsUnique();
+
+                    b.HasIndex("SalesOrderId");
+
+                    b.HasIndex("SalesmanId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("SalesReturns");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Salesman.Salesmen", b =>
+                {
+                    b.Property<int>("SalesmanId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalesmanId"));
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SalesArea")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SalesmanCode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("SalesmanId");
+
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
+                    b.HasIndex("SalesmanCode")
+                        .IsUnique();
+
+                    b.ToTable("Salesmen");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockAdjustment.StockAdjustmentDetails", b =>
+                {
+                    b.Property<int>("StockAdjustmentDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StockAdjustmentDetailId"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Difference")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)")
+                        .HasComputedColumnSql("[PhysicalQuantity] - [SystemQuantity]", true);
+
+                    b.Property<decimal>("PhysicalQuantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StockAdjustmentId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SystemQuantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.HasKey("StockAdjustmentDetailId");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StockAdjustmentId");
+
+                    b.ToTable("StockAdjustmentDetails");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockAdjustment.StockAdjustments", b =>
+                {
+                    b.Property<int>("StockAdjustmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StockAdjustmentId"));
+
+                    b.Property<DateTime>("AdjustmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AdjustmentNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StockAdjustmentId");
+
+                    b.HasIndex("AdjustmentNumber")
+                        .IsUnique();
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("StockAdjustments");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockMovement.StockMovements", b =>
+                {
+                    b.Property<long>("StockMovementId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("StockMovementId"));
+
+                    b.Property<int?>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("MovementDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MovementType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("ReferenceNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StockMovementId");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("MovementDate");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ReferenceNumber");
+
+                    b.HasIndex("WarehouseId", "ProductId", "BatchId");
+
+                    b.ToTable("StockMovements");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockTransfer.StockTransferDetails", b =>
+                {
+                    b.Property<int>("StockTransferDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StockTransferDetailId"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int>("StockTransferId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StockTransferDetailId");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StockTransferId");
+
+                    b.ToTable("StockTransferDetails");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockTransfer.StockTransfers", b =>
+                {
+                    b.Property<int>("StockTransferId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StockTransferId"));
+
+                    b.Property<int>("FromWarehouseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("ToWarehouseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TransferDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransferNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("StockTransferId");
+
+                    b.HasIndex("FromWarehouseId");
+
+                    b.HasIndex("ToWarehouseId");
+
+                    b.HasIndex("TransferNumber")
+                        .IsUnique();
+
+                    b.ToTable("StockTransfers");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Supplier.Suppliers", b =>
+                {
+                    b.Property<int>("SupplierId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplierId"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("ContactPerson")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("SupplierCode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("SupplierName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("SupplierId");
+
+                    b.HasIndex("SupplierCode")
+                        .IsUnique();
+
+                    b.ToTable("Suppliers");
+                });
+
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.UnitOfMeasure.UnitOfMeasures", b =>
                 {
                     b.Property<int>("UnitOfMeasureId")
@@ -610,6 +1460,103 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.HasKey("UnitOfMeasureId");
 
                     b.ToTable("UnitOfMeasures");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Vehicle.Vehicles", b =>
+                {
+                    b.Property<int>("VehicleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleId"));
+
+                    b.Property<decimal?>("Capacity")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RegistrationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("VehicleNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("VehicleTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VehicleId");
+
+                    b.HasIndex("VehicleNumber")
+                        .IsUnique();
+
+                    b.HasIndex("VehicleTypeId");
+
+                    b.ToTable("Vehicles");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.VehicleAssignment.VehicleAssignments", b =>
+                {
+                    b.Property<int>("VehicleAssignmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleAssignmentId"));
+
+                    b.Property<DateTime>("AssignmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VehicleAssignmentId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("VehicleAssignments");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.VehicleType.VehicleTypes", b =>
+                {
+                    b.Property<int>("VehicleTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleTypeId"));
+
+                    b.Property<decimal?>("Capacity")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("VehicleTypeId");
+
+                    b.HasIndex("TypeName")
+                        .IsUnique();
+
+                    b.ToTable("VehicleTypes");
                 });
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", b =>
@@ -697,6 +1644,17 @@ namespace WarehouseManagementSystemApi.Migrations
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Auth.RefreshToken", b =>
                 {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Auth.UserSession", "Session")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Session");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Auth.UserSession", b =>
+                {
                     b.HasOne("WarehouseManagementSystemApi.Models.Auth.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -717,6 +1675,67 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Dispatch.DispatchDetails", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Batch.Batches", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Dispatch.Dispatches", "Dispatch")
+                        .WithMany("Details")
+                        .HasForeignKey("DispatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Dispatch");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Dispatch.Dispatches", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Employee.Employees", "DriverEmployee")
+                        .WithMany()
+                        .HasForeignKey("DriverEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.SalesOrder.SalesOrders", "SalesOrder")
+                        .WithMany("Dispatches")
+                        .HasForeignKey("SalesOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Vehicle.Vehicles", "Vehicle")
+                        .WithMany("Dispatches")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DriverEmployee");
+
+                    b.Navigation("SalesOrder");
+
+                    b.Navigation("Vehicle");
+
+                    b.Navigation("Warehouse");
+                });
+
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Employee.Employees", b =>
                 {
                     b.HasOne("WarehouseManagementSystemApi.Models.Department.Departments", "Department")
@@ -734,6 +1753,68 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("Designation");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.GoodsReceipt.GoodsReceiptDetails", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Batch.Batches", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.GoodsReceipt.GoodsReceipts", "GoodsReceipt")
+                        .WithMany("Details")
+                        .HasForeignKey("GoodsReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.PurchaseOrder.PurchaseOrderDetails", "PurchaseOrderDetail")
+                        .WithMany("GoodsReceiptDetails")
+                        .HasForeignKey("PurchaseOrderDetailId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("GoodsReceipt");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("PurchaseOrderDetail");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.GoodsReceipt.GoodsReceipts", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.PurchaseOrder.PurchaseOrders", "PurchaseOrder")
+                        .WithMany("GoodsReceipts")
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Employee.Employees", "ReceivedByEmployee")
+                        .WithMany()
+                        .HasForeignKey("ReceivedByEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PurchaseOrder");
+
+                    b.Navigation("ReceivedByEmployee");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.InventoryStock.InventoryStocks", b =>
@@ -782,6 +1863,314 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.Navigation("UnitOfMeasure");
                 });
 
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.PurchaseOrder.PurchaseOrderDetails", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.PurchaseOrder.PurchaseOrders", "PurchaseOrder")
+                        .WithMany("Details")
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("PurchaseOrder");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.PurchaseOrder.PurchaseOrders", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Supplier.Suppliers", "Supplier")
+                        .WithMany("PurchaseOrders")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesOrder.SalesOrderDetails", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.SalesOrder.SalesOrders", "SalesOrder")
+                        .WithMany("Details")
+                        .HasForeignKey("SalesOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SalesOrder");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesOrder.SalesOrders", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Customer.Customers", "Customer")
+                        .WithMany("SalesOrders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Salesman.Salesmen", "Salesman")
+                        .WithMany("SalesOrders")
+                        .HasForeignKey("SalesmanId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Salesman");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesReturn.SalesReturnDetails", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Batch.Batches", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.ReturnReason.ReturnReasons", "ReturnReason")
+                        .WithMany("SalesReturnDetails")
+                        .HasForeignKey("ReturnReasonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.SalesReturn.SalesReturns", "SalesReturn")
+                        .WithMany("Details")
+                        .HasForeignKey("SalesReturnId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ReturnReason");
+
+                    b.Navigation("SalesReturn");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesReturn.SalesReturns", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Customer.Customers", "Customer")
+                        .WithMany("SalesReturns")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Employee.Employees", "InspectedByEmployee")
+                        .WithMany()
+                        .HasForeignKey("InspectedByEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.SalesOrder.SalesOrders", "SalesOrder")
+                        .WithMany()
+                        .HasForeignKey("SalesOrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Salesman.Salesmen", "Salesman")
+                        .WithMany("SalesReturns")
+                        .HasForeignKey("SalesmanId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("InspectedByEmployee");
+
+                    b.Navigation("SalesOrder");
+
+                    b.Navigation("Salesman");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Salesman.Salesmen", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Employee.Employees", "Employee")
+                        .WithOne()
+                        .HasForeignKey("WarehouseManagementSystemApi.Models.Salesman.Salesmen", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockAdjustment.StockAdjustmentDetails", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Batch.Batches", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.StockAdjustment.StockAdjustments", "StockAdjustment")
+                        .WithMany("Details")
+                        .HasForeignKey("StockAdjustmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("StockAdjustment");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockAdjustment.StockAdjustments", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Employee.Employees", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockMovement.StockMovements", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Batch.Batches", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Employee.Employees", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockTransfer.StockTransferDetails", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Batch.Batches", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.StockTransfer.StockTransfers", "StockTransfer")
+                        .WithMany("Details")
+                        .HasForeignKey("StockTransferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("StockTransfer");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockTransfer.StockTransfers", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", "FromWarehouse")
+                        .WithMany()
+                        .HasForeignKey("FromWarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", "ToWarehouse")
+                        .WithMany()
+                        .HasForeignKey("ToWarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FromWarehouse");
+
+                    b.Navigation("ToWarehouse");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Vehicle.Vehicles", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.VehicleType.VehicleTypes", "VehicleType")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("VehicleTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("VehicleType");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.VehicleAssignment.VehicleAssignments", b =>
+                {
+                    b.HasOne("WarehouseManagementSystemApi.Models.Employee.Employees", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WarehouseManagementSystemApi.Models.Vehicle.Vehicles", "Vehicle")
+                        .WithMany("Assignments")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Vehicle");
+                });
+
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", b =>
                 {
                     b.HasOne("WarehouseManagementSystemApi.Models.Employee.Employees", "Employee")
@@ -793,9 +2182,21 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Auth.UserSession", b =>
+                {
+                    b.Navigation("RefreshTokens");
+                });
+
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Batch.Batches", b =>
                 {
                     b.Navigation("InventoryStocks");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Customer.Customers", b =>
+                {
+                    b.Navigation("SalesOrders");
+
+                    b.Navigation("SalesReturns");
                 });
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Department.Departments", b =>
@@ -806,6 +2207,16 @@ namespace WarehouseManagementSystemApi.Migrations
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Designations.Designation", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Dispatch.Dispatches", b =>
+                {
+                    b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.GoodsReceipt.GoodsReceipts", b =>
+                {
+                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.ProductCategory.ProductCategories", b =>
@@ -820,9 +2231,72 @@ namespace WarehouseManagementSystemApi.Migrations
                     b.Navigation("InventoryStocks");
                 });
 
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.PurchaseOrder.PurchaseOrderDetails", b =>
+                {
+                    b.Navigation("GoodsReceiptDetails");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.PurchaseOrder.PurchaseOrders", b =>
+                {
+                    b.Navigation("Details");
+
+                    b.Navigation("GoodsReceipts");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.ReturnReason.ReturnReasons", b =>
+                {
+                    b.Navigation("SalesReturnDetails");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesOrder.SalesOrders", b =>
+                {
+                    b.Navigation("Details");
+
+                    b.Navigation("Dispatches");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.SalesReturn.SalesReturns", b =>
+                {
+                    b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Salesman.Salesmen", b =>
+                {
+                    b.Navigation("SalesOrders");
+
+                    b.Navigation("SalesReturns");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockAdjustment.StockAdjustments", b =>
+                {
+                    b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.StockTransfer.StockTransfers", b =>
+                {
+                    b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Supplier.Suppliers", b =>
+                {
+                    b.Navigation("PurchaseOrders");
+                });
+
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.UnitOfMeasure.UnitOfMeasures", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.Vehicle.Vehicles", b =>
+                {
+                    b.Navigation("Assignments");
+
+                    b.Navigation("Dispatches");
+                });
+
+            modelBuilder.Entity("WarehouseManagementSystemApi.Models.VehicleType.VehicleTypes", b =>
+                {
+                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("WarehouseManagementSystemApi.Models.Warehouse.Warehouses", b =>

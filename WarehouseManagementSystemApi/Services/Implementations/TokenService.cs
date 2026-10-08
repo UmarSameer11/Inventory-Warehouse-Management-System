@@ -1,8 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using WarehouseManagementSystemApi.Common.Constant;
+using WarehouseManagementSystemApi.Common.Settings;
 using WarehouseManagementSystemApi.Models.Auth;
 using WarehouseManagementSystemApi.Services.Interfaces;
 
@@ -10,48 +14,52 @@ namespace WarehouseManagementSystemApi.Services.Implementations
 {
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _config;
+        private readonly JwtSettings _jwt;
 
-        public TokenService(IConfiguration config)
+        public TokenService(IOptions<JwtSettings> jwtOptions)
         {
-            _config = config;
+            _jwt = jwtOptions.Value;
         }
 
-        public (string token, DateTime expiresAtUtc) GenerateAccessToken(AppUser user, string role)
+        public (string token, DateTime expiresAtUtc) GenerateAccessToken(AppUser user, IEnumerable<string> roles, Guid sessionId)
         {
-            var jwtSettings = _config.GetSection("JwtSettings");
-            var expiresAtUtc = DateTime.UtcNow.AddMinutes(
-                jwtSettings.GetValue<int?>("AccessTokenExpiryMinutes") ?? 15);
+            var now = DateTime.UtcNow;
+            var expiresAtUtc = now.AddMinutes(_jwt.AccessTokenExpiryMinutes);
 
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Sub, user.Id),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(AuthClaims.SessionId, sessionId.ToString()),
                 new(ClaimTypes.NameIdentifier, user.Id),
                 new(ClaimTypes.Email, user.Email ?? string.Empty),
-                new(ClaimTypes.Name, user.Name ?? string.Empty),
-                new(ClaimTypes.Role, role)
+                new(ClaimTypes.Name, user.Name ?? user.UserName ?? string.Empty)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SecretKey));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: jwtSettings["Issuer"],
-                audience: jwtSettings["Audience"],
+                issuer: _jwt.Issuer,
+                audience: _jwt.Audience,
                 claims: claims,
+                notBefore: now,
                 expires: expiresAtUtc,
-                signingCredentials: creds
-            );
+                signingCredentials: credentials);
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            return (tokenString, expiresAtUtc);
+            return (new JwtSecurityTokenHandler().WriteToken(token), expiresAtUtc);
         }
 
         public string GenerateRefreshToken()
         {
-            var bytes = RandomNumberGenerator.GetBytes(64);
-            return Convert.ToBase64String(bytes);
+            return WebEncoders.Base64UrlEncode(RandomNumberGenerator.GetBytes(64));
+        }
+
+        public string HashToken(string token)
+        {
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
         }
     }
 }

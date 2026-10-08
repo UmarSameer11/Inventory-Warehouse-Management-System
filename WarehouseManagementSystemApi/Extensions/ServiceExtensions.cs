@@ -1,8 +1,9 @@
-﻿using WarehouseManagementSystemApi.Repositories.Implementations;
+using WarehouseManagementSystemApi.Repositories.Implementations;
 using WarehouseManagementSystemApi.Repositories.Interfaces;
 using WarehouseManagementSystemApi.Services.Implementations;
 using WarehouseManagementSystemApi.Services.Interfaces;
 using WarehouseManagementSystemApi.Mappings;
+using WarehouseManagementSystemApi.Filters;
 
 namespace WarehouseManagementSystemApi.Extensions
 {
@@ -32,6 +33,8 @@ namespace WarehouseManagementSystemApi.Extensions
             // Auth Service
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ValidationFilter>();
+            services.AddHostedService<ExpiredSessionCleanupService>();
 
 
             // AutoMapper

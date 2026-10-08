@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\InventoryStock\" />
-    <Folder Include="ViewModels\Account\" />
     <Folder Include="ViewModels\Batch\" />
     <Folder Include="ViewModels\UnitOfMeasure\" />
     <Folder Include="ViewModels\ProductCategory\" />

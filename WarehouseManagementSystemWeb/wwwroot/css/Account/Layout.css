@@ -1,0 +1,28 @@
+
+.wms-navbar { min-height: 67px; }
+.brand-icon {
+    width: 36px; height: 36px; display: grid; place-items: center;
+    border-radius: 10px; background: #0d6efd; color: #fff;
+}
+.navbar-brand { font-size: .94rem; color: #182235 !important; }
+.wms-navbar .nav-link {
+    color: #596475 !important; font-size: .80rem; font-weight: 600;
+    padding: 9px 10px !important; border-radius: 8px;
+}
+.wms-navbar .nav-link:hover,
+.wms-navbar .nav-link:focus { color: #0d6efd !important; background: #f2f6fc; }
+.user-menu { color: #263246 !important; }
+.user-avatar {
+    width: 36px; height: 36px; display: grid; place-items: center;
+    border-radius: 11px; background: #eaf2ff; color: #0d6efd;
+}
+.user-name { font-size: .78rem; font-weight: 700; line-height: 1.1; }
+.user-role { font-size: .66rem; color: #7b8593; line-height: 1.1; }
+.account-menu { min-width: 255px; border-radius: 12px; padding: 7px; }
+.account-menu .dropdown-item {
+    border-radius: 8px; padding: 9px 10px; font-size: .80rem;
+}
+.account-menu .dropdown-item:hover { background: #f2f6fc; color: #0d6efd; }
+.wms-navbar .dropdown-menu { border-radius: 11px; }
+.wms-navbar .dropdown-item { font-size: .79rem; padding: 8px 11px; }
+.footer { padding: 14px 0; font-size: .75rem; background: #fff; }

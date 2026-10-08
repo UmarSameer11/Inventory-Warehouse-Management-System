@@ -1,0 +1,213 @@
+
+.account-page { max-width: 1600px; margin: 0 auto; }
+
+.page-header h3 { font-size: 1.55rem; }
+.account-card {
+    background: #fff;
+    border: 1px solid #e8ecf2;
+    border-radius: 16px;
+    box-shadow: 0 5px 22px rgba(30, 45, 70, .055);
+    overflow: hidden;
+}
+.account-card-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 19px 22px;
+    border-bottom: 1px solid #edf0f4;
+}
+.account-card-body { padding: 24px; }
+
+.account-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(13,110,253,.09);
+    color: #0d6efd;
+    font-size: 1.15rem;
+}
+
+.account-card .form-label {
+    font-size: .82rem;
+    font-weight: 650;
+    color: #343a40;
+}
+
+.account-card .form-control,
+.account-card .form-select {
+    min-height: 45px;
+    border-color: #e1e6ed;
+    border-radius: 9px;
+    box-shadow: none;
+}
+.account-card .form-control:focus,
+.account-card .form-select:focus {
+    border-color: rgba(13,110,253,.55);
+    box-shadow: 0 0 0 .20rem rgba(13,110,253,.09);
+}
+
+.role-hint, .password-policy {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f7f9fc;
+    border: 1px solid #e8edf3;
+    color: #6c757d;
+    font-size: .78rem;
+}
+
+.profile-hero {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #edf0f4;
+}
+.profile-avatar {
+    width: 66px;
+    height: 66px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #0d6efd, #4d94ff);
+    color: white;
+    font-size: 1.65rem;
+    box-shadow: 0 9px 20px rgba(13,110,253,.18);
+}
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.profile-info span {
+    color: #7b8593;
+    font-size: .73rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+.profile-info strong { font-size: .88rem; }
+
+.security-card {
+    border-radius: 16px;
+    padding: 25px;
+    background: linear-gradient(145deg, #f7fbff, #fff);
+    border: 1px solid #e4edf8;
+}
+.security-icon {
+    width: 47px;
+    height: 47px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    background: #e7f1ff;
+    color: #0d6efd;
+    font-size: 1.25rem;
+}
+.security-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: .82rem;
+    margin-top: 12px;
+    color: #4c5665;
+}
+.security-item i { color: #198754; }
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: .69rem;
+    font-weight: 650;
+}
+.status-active { background: #e9f7ef; color: #167344; }
+.status-inactive { background: #f8d7da; color: #842029; }
+
+.session-table thead th {
+    background: #f8f9fb;
+    border-bottom: 1px solid #e8ecf1;
+    color: #7a8492;
+    font-size: .69rem;
+    letter-spacing: .05em;
+    font-weight: 750;
+    padding: 12px 10px;
+    white-space: nowrap;
+}
+.session-table tbody td {
+    border-color: #edf0f4;
+    padding: 14px 10px;
+    font-size: .80rem;
+}
+.device-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: #f1f5fa;
+    color: #5c6878;
+}
+.session-device { max-width: 320px; }
+
+.action-btn {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid #e6eaf0;
+}
+.action-btn:hover {
+    background: #fff1f2;
+    border-color: #f1b5bb;
+}
+
+.empty-state { text-align: center; }
+.empty-icon {
+    width: 55px;
+    height: 55px;
+    display: grid;
+    place-items: center;
+    margin: auto;
+    border-radius: 16px;
+    background: #f2f5f9;
+    color: #8993a1;
+    font-size: 1.4rem;
+}
+
+.access-denied-page {
+    min-height: calc(100vh - 130px);
+    display: grid;
+    place-items: center;
+    padding: 30px 16px;
+}
+.access-denied-card {
+    width: min(100%, 520px);
+    text-align: center;
+    background: #fff;
+    border: 1px solid #e8ecf2;
+    border-radius: 18px;
+    padding: 45px 30px;
+    box-shadow: 0 15px 45px rgba(30,45,70,.08);
+}
+.access-denied-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 18px;
+    display: grid;
+    place-items: center;
+    border-radius: 22px;
+    background: #fff0f1;
+    color: #dc3545;
+    font-size: 2rem;
+}
+.access-denied-card h2 { font-weight: 750; }
+
+@media (max-width: 767.98px) {
+    .account-card-body { padding: 18px; }
+    .profile-hero { align-items: flex-start; }
+    .session-device { max-width: 190px; }
+    .session-table { min-width: 820px; }
+}
