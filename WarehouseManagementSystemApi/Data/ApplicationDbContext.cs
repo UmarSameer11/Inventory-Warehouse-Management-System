@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WarehouseManagementSystemApi.MiddleWares.AuditMiddleware;
 using WarehouseManagementSystemApi.Data.Configurations;
 using WarehouseManagementSystemApi.Models.Customer;
 using WarehouseManagementSystemApi.Models.Dispatch;

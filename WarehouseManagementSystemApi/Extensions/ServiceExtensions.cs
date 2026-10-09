@@ -29,6 +29,20 @@ namespace WarehouseManagementSystemApi.Extensions
             services.AddScoped<IInventoryStockService, InventoryStockService>();
             services.AddScoped<IApiPerformanceService, ApiPerformanceService>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<IVehicleTypeService, VehicleTypeService>();
+            services.AddScoped<IVehicleService, VehicleService>();
+            services.AddScoped<IVehicleAssignmentService, VehicleAssignmentService>();
+            services.AddScoped<IStockTransferService, StockTransferService>();
+            services.AddScoped<IStockAdjustmentService, StockAdjustmentService>();
+            services.AddScoped<ISalesReturnService, SalesReturnService>();
+            services.AddScoped<ISalesOrderService, SalesOrderService>();
+            services.AddScoped<ISalesmanService, SalesmanService>();
+            services.AddScoped<IReturnReasonService, ReturnReasonService>();
+            services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
+            services.AddScoped<IGoodsReceiptService, GoodsReceiptService>();
+            services.AddScoped<IDispatchService, DispatchService>();
+            services.AddScoped<ICustomerService, CustomerService>();
 
             // Auth Service
             services.AddScoped<IAuthService, AuthService>();

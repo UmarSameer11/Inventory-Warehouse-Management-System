@@ -18,6 +18,34 @@ using WarehouseManagementSystemApi.Models.Products;
 using WarehouseManagementSystemApi.Models.UnitOfMeasure;
 using WarehouseManagementSystemApi.Models.Warehouse;
 
+using WarehouseManagementSystemApi.DTOs.Customer;
+using WarehouseManagementSystemApi.Models.Customer;
+using WarehouseManagementSystemApi.DTOs.Dispatch;
+using WarehouseManagementSystemApi.Models.Dispatch;
+using WarehouseManagementSystemApi.DTOs.GoodsReceipt;
+using WarehouseManagementSystemApi.Models.GoodsReceipt;
+using WarehouseManagementSystemApi.DTOs.PurchaseOrder;
+using WarehouseManagementSystemApi.Models.PurchaseOrder;
+using WarehouseManagementSystemApi.DTOs.ReturnReason;
+using WarehouseManagementSystemApi.Models.ReturnReason;
+using WarehouseManagementSystemApi.DTOs.Salesman;
+using WarehouseManagementSystemApi.Models.Salesman;
+using WarehouseManagementSystemApi.DTOs.SalesOrder;
+using WarehouseManagementSystemApi.Models.SalesOrder;
+using WarehouseManagementSystemApi.DTOs.SalesReturn;
+using WarehouseManagementSystemApi.Models.SalesReturn;
+using WarehouseManagementSystemApi.DTOs.StockAdjustment;
+using WarehouseManagementSystemApi.Models.StockAdjustment;
+using WarehouseManagementSystemApi.DTOs.StockTransfer;
+using WarehouseManagementSystemApi.Models.StockTransfer;
+using WarehouseManagementSystemApi.DTOs.Supplier;
+using WarehouseManagementSystemApi.Models.Supplier;
+using WarehouseManagementSystemApi.DTOs.Vehicle;
+using WarehouseManagementSystemApi.Models.Vehicle;
+using WarehouseManagementSystemApi.DTOs.VehicleAssignment;
+using WarehouseManagementSystemApi.Models.VehicleAssignment;
+using WarehouseManagementSystemApi.DTOs.VehicleType;
+using WarehouseManagementSystemApi.Models.VehicleType;
 namespace WarehouseManagementSystemApi.Mappings
 {
     public class MappingProfile : Profile
@@ -91,6 +119,84 @@ namespace WarehouseManagementSystemApi.Mappings
                  .ForMember(b => b.EmployeeName,
                 o => o.MapFrom(b => b.Employee.FirstName));
             CreateMap<WarehouseUpdateDto, Warehouses>().ReverseMap();
+
+            // Newly added operational modules
+            CreateMap<CustomerCreateDto, Customers>().ReverseMap();
+            CreateMap<Customers, CustomerListDto>().ReverseMap();
+            CreateMap<CustomerUpdateDto, Customers>().ReverseMap();
+            CreateMap<DispatchCreateDto, Dispatches>().ReverseMap();
+            CreateMap<Dispatches, DispatchListDto>().ReverseMap();
+            CreateMap<DispatchUpdateDto, Dispatches>().ReverseMap();
+            CreateMap<GoodsReceiptCreateDto, GoodsReceipts>().ReverseMap();
+            CreateMap<GoodsReceipts, GoodsReceiptListDto>().ReverseMap();
+            CreateMap<PurchaseOrderCreateDto, PurchaseOrders>().ReverseMap();
+            CreateMap<PurchaseOrders, PurchaseOrderListDto>().ReverseMap();
+            CreateMap<PurchaseOrderUpdateDto, PurchaseOrders>().ReverseMap();
+            CreateMap<ReturnReasonCreateDto, ReturnReasons>().ReverseMap();
+            CreateMap<ReturnReasons, ReturnReasonListDto>().ReverseMap();
+            CreateMap<ReturnReasonUpdateDto, ReturnReasons>().ReverseMap();
+            CreateMap<SalesmanCreateDto, Salesmen>().ReverseMap();
+            CreateMap<Salesmen, SalesmanListDto>().ReverseMap();
+            CreateMap<SalesmanUpdateDto, Salesmen>().ReverseMap();
+            CreateMap<SalesOrderCreateDto, SalesOrders>().ReverseMap();
+            CreateMap<SalesOrders, SalesOrderListDto>().ReverseMap();
+            CreateMap<SalesOrderUpdateDto, SalesOrders>().ReverseMap();
+            CreateMap<SalesReturnCreateDto, SalesReturns>().ReverseMap();
+            CreateMap<SalesReturns, SalesReturnListDto>().ReverseMap();
+            CreateMap<StockAdjustmentCreateDto, StockAdjustments>().ReverseMap();
+            CreateMap<StockAdjustments, StockAdjustmentListDto>().ReverseMap();
+            CreateMap<StockTransferCreateDto, StockTransfers>().ReverseMap();
+            CreateMap<StockTransfers, StockTransferListDto>().ReverseMap();
+            CreateMap<StockTransferUpdateDto, StockTransfers>().ReverseMap();
+            CreateMap<SupplierCreateDto, Suppliers>().ReverseMap();
+            CreateMap<Suppliers, SupplierListDto>().ReverseMap();
+            CreateMap<SupplierUpdateDto, Suppliers>().ReverseMap();
+            CreateMap<VehicleCreateDto, Vehicles>().ReverseMap();
+            CreateMap<Vehicles, VehicleListDto>().ReverseMap();
+            CreateMap<VehicleUpdateDto, Vehicles>().ReverseMap();
+            CreateMap<VehicleAssignmentCreateDto, VehicleAssignments>().ReverseMap();
+            CreateMap<VehicleAssignments, VehicleAssignmentListDto>().ReverseMap();
+            CreateMap<VehicleAssignmentUpdateDto, VehicleAssignments>().ReverseMap();
+            CreateMap<VehicleTypeCreateDto, VehicleTypes>().ReverseMap();
+            CreateMap<VehicleTypes, VehicleTypeListDto>().ReverseMap();
+            CreateMap<VehicleTypeUpdateDto, VehicleTypes>().ReverseMap();
+
+            // Operational detail mappings (used by aggregate workflows)
+            CreateMap<DispatchDetailCreateDto, DispatchDetails>().ReverseMap();
+            CreateMap<DispatchDetails, DispatchDetailListDto>()
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+                .ForMember(d => d.BatchNumber, o => o.MapFrom(s => s.Batch.BatchNumber))
+                .ForMember(d => d.ExpiryDate, o => o.MapFrom(s => s.Batch.ExpiryDate));
+            CreateMap<GoodsReceiptDetailCreateDto, GoodsReceiptDetails>();
+            CreateMap<GoodsReceiptDetails, GoodsReceiptDetailListDto>()
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+                .ForMember(d => d.BatchNumber, o => o.MapFrom(s => s.Batch.BatchNumber))
+                .ForMember(d => d.ManufacturingDate, o => o.MapFrom(s => s.Batch.ManufacturingDate))
+                .ForMember(d => d.ExpiryDate, o => o.MapFrom(s => s.Batch.ExpiryDate));
+            CreateMap<PurchaseOrderDetailCreateDto, PurchaseOrderDetails>().ReverseMap();
+            CreateMap<PurchaseOrderDetails, PurchaseOrderDetailListDto>()
+                .ForMember(d => d.ProductCode, o => o.MapFrom(s => s.Product.ProductCode))
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+                .ForMember(d => d.UnitName, o => o.MapFrom(s => s.Product.UnitOfMeasure.UnitName))
+                .ForMember(d => d.LineTotal, o => o.MapFrom(s => s.Quantity * s.UnitPrice));
+            CreateMap<SalesOrderDetailCreateDto, SalesOrderDetails>().ReverseMap();
+            CreateMap<SalesOrderDetails, SalesOrderDetailListDto>()
+                .ForMember(d => d.ProductCode, o => o.MapFrom(s => s.Product.ProductCode))
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+                .ForMember(d => d.LineTotal, o => o.MapFrom(s => s.Quantity * s.UnitPrice));
+            CreateMap<SalesReturnDetailCreateDto, SalesReturnDetails>().ReverseMap();
+            CreateMap<SalesReturnDetails, SalesReturnDetailListDto>()
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+                .ForMember(d => d.BatchNumber, o => o.MapFrom(s => s.Batch == null ? null : s.Batch.BatchNumber))
+                .ForMember(d => d.ReasonName, o => o.MapFrom(s => s.ReturnReason.ReasonName));
+            CreateMap<StockAdjustmentDetailCreateDto, StockAdjustmentDetails>();
+            CreateMap<StockAdjustmentDetails, StockAdjustmentDetailListDto>()
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+                .ForMember(d => d.BatchNumber, o => o.MapFrom(s => s.Batch.BatchNumber));
+            CreateMap<StockTransferDetailCreateDto, StockTransferDetails>().ReverseMap();
+            CreateMap<StockTransferDetails, StockTransferDetailListDto>()
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+                .ForMember(d => d.BatchNumber, o => o.MapFrom(s => s.Batch.BatchNumber));
 
         }
     }

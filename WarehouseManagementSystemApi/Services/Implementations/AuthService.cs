@@ -332,7 +332,7 @@ namespace WarehouseManagementSystemApi.Services.Implementations
 
             var user = await _userManager.FindByIdAsync(targetUserId)
                        ?? throw new KeyNotFoundException("User not found.");
-
+            
             user.IsActive = isActive;
 
             var result = await _userManager.UpdateAsync(user);
