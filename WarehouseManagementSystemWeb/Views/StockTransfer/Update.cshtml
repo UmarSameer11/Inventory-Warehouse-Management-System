@@ -1,0 +1,97 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.StockTransfer.StockTransferUpdateViewModel
+
+@{
+    ViewData["Title"] = "Update Stock Transfer";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Update Stock Transfer</h3>
+            <p class="text-muted mb-0">Update stock transfer information.</p>
+        </div>
+        <a asp-controller="StockTransfer" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="update-icon"><i class="bi bi-arrow-repeat"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Stock Transfer Information</h5>
+                    <span class="text-muted small">Modify the stock transfer information below.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="StockTransfer" asp-action="Update" method="post" id="stockTransferUpdateForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+                <div class="form-section">
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Stock Transfer Details</h6>
+                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Stock Transfer ID</label>
+                            <input asp-for="StockTransferId" class="form-control readonly-field" readonly />
+                        </div>
+                        <div class="col-md-8 d-none d-md-block"></div>
+                        <div class="col-md-6">
+                            <label asp-for="TransferNumber" class="form-label fw-semibold">Transfer Number <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                <input asp-for="TransferNumber" type="text" class="form-control" placeholder="Enter transfer number" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="TransferNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="FromWarehouseId" class="form-label fw-semibold">From Warehouse <span class="text-danger">*</span></label>
+                            <select asp-for="FromWarehouseId" asp-items="Model.Warehouses" class="form-select">
+                                <option value="">-- Select From Warehouse --</option>
+                            </select>
+                            <span asp-validation-for="FromWarehouseId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ToWarehouseId" class="form-label fw-semibold">To Warehouse <span class="text-danger">*</span></label>
+                            <select asp-for="ToWarehouseId" asp-items="Model.Warehouses" class="form-select">
+                                <option value="">-- Select To Warehouse --</option>
+                            </select>
+                            <span asp-validation-for="ToWarehouseId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="TransferDate" class="form-label fw-semibold">Transfer Date <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                                <input asp-for="TransferDate" type="date" class="form-control" />
+                            </div>
+                            <span asp-validation-for="TransferDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-flag"></i></span>
+                                <input asp-for="Status" type="text" class="form-control" placeholder="e.g. Pending" autocomplete="off" list="statusOptions" />
+                                <datalist id="statusOptions"><option value="Pending"></option><option value="Approved"></option><option value="Completed"></option><option value="Cancelled"></option></datalist>
+                            </div>
+                            <span asp-validation-for="Status" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="StockTransfer" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="updateStockTransferBtn"><i class="bi bi-check-lg me-2"></i>Update Stock Transfer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/StockTransfer/Update.css" asp-append-version="true" /> }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/StockTransfer/Update.js" asp-append-version="true"></script>
+}

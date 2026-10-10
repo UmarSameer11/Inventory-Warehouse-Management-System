@@ -1,0 +1,91 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.StockAdjustment.StockAdjustmentCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Stock Adjustment";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Create Stock Adjustment</h3>
+            <p class="text-muted mb-0">Add a new stock adjustment to the system.</p>
+        </div>
+        <a asp-controller="StockAdjustment" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="create-icon"><i class="bi bi-sliders"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Stock Adjustment Information</h5>
+                    <span class="text-muted small">Enter the information for the new stock adjustment.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="StockAdjustment" asp-action="Create" method="post" id="stockAdjustmentCreateForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+                <div class="form-section">
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Stock Adjustment Details</h6>
+                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label asp-for="AdjustmentNumber" class="form-label fw-semibold">Adjustment Number <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                <input asp-for="AdjustmentNumber" type="text" class="form-control" placeholder="Enter adjustment number" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="AdjustmentNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="WarehouseId" class="form-label fw-semibold">Warehouse <span class="text-danger">*</span></label>
+                            <select asp-for="WarehouseId" asp-items="Model.Warehouses" class="form-select">
+                                <option value="">-- Select Warehouse --</option>
+                            </select>
+                            <span asp-validation-for="WarehouseId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="AdjustmentDate" class="form-label fw-semibold">Adjustment Date <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                                <input asp-for="AdjustmentDate" type="date" class="form-control" />
+                            </div>
+                            <span asp-validation-for="AdjustmentDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Reason" class="form-label fw-semibold">Reason <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-chat-left-text"></i></span>
+                                <textarea asp-for="Reason" class="form-control" rows="3" placeholder="Reason for this record"></textarea>
+                            </div>
+                            <span asp-validation-for="Reason" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EmployeeId" class="form-label fw-semibold">Employee <span class="text-danger">*</span></label>
+                            <select asp-for="EmployeeId" asp-items="Model.Employees" class="form-select">
+                                <option value="">-- Select Employee --</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="StockAdjustment" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="createStockAdjustmentBtn"><i class="bi bi-check-lg me-2"></i>Create Stock Adjustment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/StockAdjustment/Create.css" asp-append-version="true" /> }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/StockAdjustment/Create.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,89 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.Salesman.SalesmanUpdateViewModel
+
+@{
+    ViewData["Title"] = "Update Salesman";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Update Salesman</h3>
+            <p class="text-muted mb-0">Update salesman information.</p>
+        </div>
+        <a asp-controller="Salesman" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="update-icon"><i class="bi bi-person-workspace"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Salesman Information</h5>
+                    <span class="text-muted small">Modify the salesman information below.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="Salesman" asp-action="Update" method="post" id="salesmanUpdateForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+                <div class="form-section">
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Salesman Details</h6>
+                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Salesman ID</label>
+                            <input asp-for="SalesmanId" class="form-control readonly-field" readonly />
+                        </div>
+                        <div class="col-md-8 d-none d-md-block"></div>
+                        <div class="col-md-6">
+                            <label asp-for="EmployeeId" class="form-label fw-semibold">Employee <span class="text-danger">*</span></label>
+                            <select asp-for="EmployeeId" asp-items="Model.Employees" class="form-select">
+                                <option value="">-- Select Employee --</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="SalesmanCode" class="form-label fw-semibold">Salesman Code <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+                                <input asp-for="SalesmanCode" type="text" class="form-control" placeholder="e.g. SAL-001" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="SalesmanCode" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="SalesArea" class="form-label fw-semibold">Sales Area</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input asp-for="SalesArea" type="text" class="form-control" placeholder="Enter sales area (optional)" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="SalesArea" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Status</label>
+                            <div class="form-check form-switch status-switch">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" id="IsActive" />
+                                <label class="form-check-label" for="IsActive" id="statusLabel">Active</label>
+                            </div>
+                            <small class="text-muted">Enable or disable this record.</small>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="Salesman" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="updateSalesmanBtn"><i class="bi bi-check-lg me-2"></i>Update Salesman</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/Salesman/Update.css" asp-append-version="true" /> }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/Salesman/Update.js" asp-append-version="true"></script>
+}

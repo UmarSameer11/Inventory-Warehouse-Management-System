@@ -1,0 +1,97 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.SalesOrder.SalesOrderUpdateViewModel
+
+@{
+    ViewData["Title"] = "Update Sales Order";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Update Sales Order</h3>
+            <p class="text-muted mb-0">Update sales order information.</p>
+        </div>
+        <a asp-controller="SalesOrder" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="update-icon"><i class="bi bi-receipt"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Sales Order Information</h5>
+                    <span class="text-muted small">Modify the sales order information below.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="SalesOrder" asp-action="Update" method="post" id="salesOrderUpdateForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+                <div class="form-section">
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Sales Order Details</h6>
+                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Sales Order ID</label>
+                            <input asp-for="SalesOrderId" class="form-control readonly-field" readonly />
+                        </div>
+                        <div class="col-md-8 d-none d-md-block"></div>
+                        <div class="col-md-6">
+                            <label asp-for="SalesOrderNumber" class="form-label fw-semibold">Sales Order Number <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                <input asp-for="SalesOrderNumber" type="text" class="form-control" placeholder="Enter sales order number" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="SalesOrderNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CustomerId" class="form-label fw-semibold">Customer <span class="text-danger">*</span></label>
+                            <select asp-for="CustomerId" asp-items="Model.Customers" class="form-select">
+                                <option value="">-- Select Customer --</option>
+                            </select>
+                            <span asp-validation-for="CustomerId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="SalesmanId" class="form-label fw-semibold">Salesman <span class="text-danger">*</span></label>
+                            <select asp-for="SalesmanId" asp-items="Model.Salesmen" class="form-select">
+                                <option value="">-- Select Salesman --</option>
+                            </select>
+                            <span asp-validation-for="SalesmanId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="OrderDate" class="form-label fw-semibold">Order Date <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                                <input asp-for="OrderDate" type="date" class="form-control" />
+                            </div>
+                            <span asp-validation-for="OrderDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-flag"></i></span>
+                                <input asp-for="Status" type="text" class="form-control" placeholder="e.g. Pending" autocomplete="off" list="statusOptions" />
+                                <datalist id="statusOptions"><option value="Pending"></option><option value="Approved"></option><option value="Completed"></option><option value="Cancelled"></option></datalist>
+                            </div>
+                            <span asp-validation-for="Status" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="SalesOrder" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="updateSalesOrderBtn"><i class="bi bi-check-lg me-2"></i>Update Sales Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/SalesOrder/Update.css" asp-append-version="true" /> }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/SalesOrder/Update.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,147 @@
+@model IEnumerable<WarehouseManagementSystemWeb.Application.ViewModels.Supplier.SupplierListViewModel>
+
+@{
+    ViewData["Title"] = "Suppliers";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" data-message="@TempData["SuccessMessage"]"></div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage" data-message="@TempData["ErrorMessage"]"></div>
+}
+
+<div class="container-fluid px-4 py-4">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Suppliers</h3>
+            <p class="text-muted mb-0">Manage suppliers and their contact details.</p>
+        </div>
+        <a asp-controller="Supplier" asp-action="Create" class="btn btn-primary px-4">
+            <i class="bi bi-plus-lg me-2"></i>Add Supplier
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small">Total Suppliers</span>
+                        <h3 class="fw-bold mt-2 mb-0">@(Model?.Count() ?? 0)</h3>
+                    </div>
+                    <div class="module-summary-icon"><i class="bi bi-truck fs-4"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small">Active</span>
+                        <h3 class="fw-bold mt-2 mb-0">@(Model?.Count(x => x.IsActive) ?? 0)</h3>
+                    </div>
+                    <div class="module-summary-icon"><i class="bi bi-check-circle fs-4"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small">Inactive</span>
+                        <h3 class="fw-bold mt-2 mb-0">@(Model?.Count(x => !x.IsActive) ?? 0)</h3>
+                    </div>
+                    <div class="module-summary-icon"><i class="bi bi-x-circle fs-4"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm overflow-hidden">
+        <div class="card-body p-4 border-bottom">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h5 class="fw-semibold mb-1">Supplier Directory</h5>
+                    <span class="text-muted small">A complete list of suppliers</span>
+                </div>
+                <div class="position-relative module-search">
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                    <input type="text" id="supplierSearch" class="form-control ps-5 py-2" placeholder="Search..." />
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="supplierTable">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 text-muted small fw-semibold">SUPPLIER</th>
+                        <th class="text-muted small fw-semibold">SUPPLIER CODE</th>
+                        <th class="text-muted small fw-semibold">CONTACT PERSON</th>
+                        <th class="text-muted small fw-semibold">PHONE</th>
+                        <th class="text-muted small fw-semibold">EMAIL</th>
+                        <th class="text-muted small fw-semibold">ADDRESS</th>
+                        <th class="text-muted small fw-semibold">STATUS</th>
+                        <th class="text-end pe-4 text-muted small fw-semibold">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="module-avatar"><i class="bi bi-truck"></i></div>
+                                        <div>
+                                            <div class="fw-semibold text-dark">@item.SupplierName</div>
+                                            <div class="text-muted small">Supplier #@item.SupplierId</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="module-code">@item.SupplierCode</span></td>
+                                <td>@(string.IsNullOrWhiteSpace(item.ContactPerson) ? "—" : item.ContactPerson)</td>
+                                <td>@(string.IsNullOrWhiteSpace(item.Phone) ? "—" : item.Phone)</td>
+                                <td>@(string.IsNullOrWhiteSpace(item.Email) ? "—" : item.Email)</td>
+                                <td>@(string.IsNullOrWhiteSpace(item.Address) ? "—" : item.Address)</td>
+                                <td>@if (item.IsActive) { <span class="status-badge status-active"><i class="bi bi-check-circle me-1"></i>Active</span> } else { <span class="status-badge status-inactive"><i class="bi bi-x-circle me-1"></i>Inactive</span> }</td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-1">
+                                        <a asp-controller="Supplier" asp-action="Detail" asp-route-id="@item.SupplierId" class="btn btn-sm btn-light action-btn" title="View"><i class="bi bi-eye"></i></a>
+                                        <a asp-controller="Supplier" asp-action="Update" asp-route-id="@item.SupplierId" class="btn btn-sm btn-light action-btn" title="Update"><i class="bi bi-pencil"></i></a>
+                                        <a asp-controller="Supplier" asp-action="Delete" asp-route-id="@item.SupplierId" class="btn btn-sm btn-light action-btn delete-btn" title="Delete"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8">
+                                <div class="text-center py-5">
+                                    <div class="empty-icon mx-auto mb-3"><i class="bi bi-truck"></i></div>
+                                    <h5 class="fw-semibold">No suppliers found</h5>
+                                    <p class="text-muted mb-3">There are currently no suppliers available.</p>
+                                    <a asp-controller="Supplier" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Add Supplier</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Supplier/Index.css" asp-append-version="true" />
+}
+@section Scripts {
+    <script src="~/js/Supplier/Index.js" asp-append-version="true"></script>
+}

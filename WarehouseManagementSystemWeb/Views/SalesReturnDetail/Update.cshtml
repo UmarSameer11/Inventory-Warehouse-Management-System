@@ -1,0 +1,102 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.SalesReturnDetail.SalesReturnDetailUpdateViewModel
+
+@{
+    ViewData["Title"] = "Update Sales Return Detail";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Update Sales Return Detail</h3>
+            <p class="text-muted mb-0">Update sales return detail information.</p>
+        </div>
+        <a asp-controller="SalesReturnDetail" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="update-icon"><i class="bi bi-card-list"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Sales Return Detail Information</h5>
+                    <span class="text-muted small">Modify the sales return detail information below.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="SalesReturnDetail" asp-action="Update" method="post" id="salesReturnDetailUpdateForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+                <div class="form-section">
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Line Item Details</h6>
+                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Sales Return Detail ID</label>
+                            <input asp-for="SalesReturnDetailId" class="form-control readonly-field" readonly />
+                        </div>
+                        <div class="col-md-8 d-none d-md-block"></div>
+                        <div class="col-md-6">
+                            <label asp-for="SalesReturnId" class="form-label fw-semibold">Sales Return <span class="text-danger">*</span></label>
+                            <select asp-for="SalesReturnId" asp-items="Model.SalesReturns" class="form-select">
+                                <option value="">-- Select Sales Return --</option>
+                            </select>
+                            <span asp-validation-for="SalesReturnId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ProductId" class="form-label fw-semibold">Product <span class="text-danger">*</span></label>
+                            <select asp-for="ProductId" asp-items="Model.Products" class="form-select">
+                                <option value="">-- Select Product --</option>
+                            </select>
+                            <span asp-validation-for="ProductId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="BatchId" class="form-label fw-semibold">Batch</label>
+                            <select asp-for="BatchId" asp-items="Model.Batches" class="form-select">
+                                <option value="">-- None --</option>
+                            </select>
+                            <span asp-validation-for="BatchId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Quantity" class="form-label fw-semibold">Quantity <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-123"></i></span>
+                                <input asp-for="Quantity" type="number" step="0.01" min="0" class="form-control" placeholder="0.00" />
+                            </div>
+                            <span asp-validation-for="Quantity" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ReturnReasonId" class="form-label fw-semibold">Return Reason <span class="text-danger">*</span></label>
+                            <select asp-for="ReturnReasonId" asp-items="Model.ReturnReasons" class="form-select">
+                                <option value="">-- Select Return Reason --</option>
+                            </select>
+                            <span asp-validation-for="ReturnReasonId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Condition" class="form-label fw-semibold">Condition</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-chat-left-text"></i></span>
+                                <input asp-for="Condition" type="text" class="form-control" placeholder="Enter condition (optional)" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="Condition" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="SalesReturnDetail" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="updateSalesReturnDetailBtn"><i class="bi bi-check-lg me-2"></i>Update Sales Return Detail</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/SalesReturnDetail/Update.css" asp-append-version="true" /> }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/SalesReturnDetail/Update.js" asp-append-version="true"></script>
+}

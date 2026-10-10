@@ -1,0 +1,61 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.ReturnReason.ReturnReasonCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Return Reason";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Create Return Reason</h3>
+            <p class="text-muted mb-0">Add a new return reason to the system.</p>
+        </div>
+        <a asp-controller="ReturnReason" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="create-icon"><i class="bi bi-arrow-return-left"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Return Reason Information</h5>
+                    <span class="text-muted small">Enter the information for the new return reason.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="ReturnReason" asp-action="Create" method="post" id="returnReasonCreateForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+                <div class="form-section">
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Return Reason Details</h6>
+                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label asp-for="ReasonName" class="form-label fw-semibold">Reason Name <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-chat-left-text"></i></span>
+                                <input asp-for="ReasonName" type="text" class="form-control" placeholder="Enter reason name" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="ReasonName" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="ReturnReason" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="createReturnReasonBtn"><i class="bi bi-check-lg me-2"></i>Create Return Reason</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/ReturnReason/Create.css" asp-append-version="true" /> }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/ReturnReason/Create.js" asp-append-version="true"></script>
+}

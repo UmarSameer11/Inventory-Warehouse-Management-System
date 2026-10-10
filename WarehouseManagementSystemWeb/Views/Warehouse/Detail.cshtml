@@ -40,35 +40,24 @@
                         <div class="detail-value">@Model.WarehouseId</div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Warehouse Name</label>
-                        <div class="detail-value">@Model.WarehouseName</div>
-                    </div>
-
-                    <div class="col-md-6">
                         <label class="form-label fw-semibold">Warehouse Code</label>
                         <div class="detail-value">@Model.WarehouseCode</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Warehouse Name</label>
+                        <div class="detail-value">@Model.WarehouseName</div>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Location</label>
                         <div class="detail-value">@(string.IsNullOrWhiteSpace(Model.Location) ? "Not provided" : Model.Location)</div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Warehouse Manager</label>
-                        <div class="detail-value">@(string.IsNullOrWhiteSpace(Model.EmployeeName) ? "Not provided" : Model.EmployeeName)</div>
+                        <label class="form-label fw-semibold">Manager</label>
+                        <div class="detail-value">@(Model.Employees.FirstOrDefault(x => x.Value == Model.ManagerEmployeeId.ToString())?.Text ?? (Model.ManagerEmployeeId.HasValue ? "#" + Model.ManagerEmployeeId : "Not provided"))</div>
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Status</label>
-                        <div class="detail-value">
-                            @if (Model.IsActive)
-                            {
-                                <span class="badge bg-success-subtle text-success"><i class="bi bi-check-circle me-1"></i>Active</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary-subtle text-secondary"><i class="bi bi-x-circle me-1"></i>Inactive</span>
-                            }
-                        </div>
+                        <div class="detail-value">@if (Model.IsActive) { <span class="badge bg-success-subtle text-success"><i class="bi bi-check-circle me-1"></i>Active</span> } else { <span class="badge bg-secondary-subtle text-secondary"><i class="bi bi-x-circle me-1"></i>Inactive</span> }</div>
                     </div>
                 </div>
             </div>

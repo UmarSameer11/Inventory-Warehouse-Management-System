@@ -42,7 +42,28 @@ namespace WarehouseManagementSystemWeb.Extensions
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IBatchService, BatchService>();
             services.AddScoped<IInventoryStockService, InventoryStockService>();
-
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<IReturnReasonService, ReturnReasonService>();
+            services.AddScoped<IVehicleTypeService, VehicleTypeService>();
+            services.AddScoped<ISalesmanService, SalesmanService>();
+            services.AddScoped<IVehicleService, VehicleService>();
+            services.AddScoped<IVehicleAssignmentService, VehicleAssignmentService>();
+            services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
+            services.AddScoped<IPurchaseOrderDetailService, PurchaseOrderDetailService>();
+            services.AddScoped<IGoodsReceiptService, GoodsReceiptService>();
+            services.AddScoped<IGoodsReceiptDetailService, GoodsReceiptDetailService>();
+            services.AddScoped<ISalesOrderService, SalesOrderService>();
+            services.AddScoped<ISalesOrderDetailService, SalesOrderDetailService>();
+            services.AddScoped<ISalesReturnService, SalesReturnService>();
+            services.AddScoped<ISalesReturnDetailService, SalesReturnDetailService>();
+            services.AddScoped<IDispatchService, DispatchService>();
+            services.AddScoped<IDispatchDetailService, DispatchDetailService>();
+            services.AddScoped<IStockAdjustmentService, StockAdjustmentService>();
+            services.AddScoped<IStockAdjustmentDetailService, StockAdjustmentDetailService>();
+            services.AddScoped<IStockMovementService, StockMovementService>();
+            services.AddScoped<IStockTransferService, StockTransferService>();
+            services.AddScoped<IStockTransferDetailService, StockTransferDetailService>();
             return services;
         }
     }

@@ -16,7 +16,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm wms-navbar">
+        <nav class="navbar navbar-expand-xl navbar-light bg-white border-bottom shadow-sm wms-navbar">
             <div class="container-fluid px-3 px-lg-4">
                 <a class="navbar-brand d-flex align-items-center gap-2 fw-bold"
                    asp-controller="Employee" asp-action="Index">
@@ -37,26 +37,34 @@
                 <div class="collapse navbar-collapse" id="wmsMainNav">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Employee" asp-action="Index">
-                                    <i class="bi bi-people me-1"></i> Employees
+                        <ul class="navbar-nav me-auto mb-2 mb-xl-0 ms-xl-3">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-diagram-3 me-1"></i> Organization
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Department" asp-action="Index">
-                                    <i class="bi bi-building me-1"></i> Departments
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Designation" asp-action="Index">
-                                    <i class="bi bi-person-badge me-1"></i> Designations
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Warehouse" asp-action="Index">
-                                    <i class="bi bi-house-gear me-1"></i> Warehouses
-                                </a>
+                                <ul class="dropdown-menu border-0 shadow-sm">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Employee" asp-action="Index">
+                                            <i class="bi bi-people me-2"></i> Employees
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Department" asp-action="Index">
+                                            <i class="bi bi-building me-2"></i> Departments
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Designation" asp-action="Index">
+                                            <i class="bi bi-person-badge me-2"></i> Designations
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Warehouse" asp-action="Index">
+                                            <i class="bi bi-house-gear me-2"></i> Warehouses
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button"
@@ -87,6 +95,148 @@
                                     <li>
                                         <a class="dropdown-item" asp-controller="InventoryStock" asp-action="Index">
                                             <i class="bi bi-clipboard-data me-2"></i> Inventory Stock
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-cart me-1"></i> Purchasing
+                                </a>
+                                <ul class="dropdown-menu border-0 shadow-sm">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Supplier" asp-action="Index">
+                                            <i class="bi bi-truck me-2"></i> Suppliers
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="PurchaseOrder" asp-action="Index">
+                                            <i class="bi bi-cart-plus me-2"></i> Purchase Orders
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="PurchaseOrderDetail" asp-action="Index">
+                                            <i class="bi bi-list-check me-2"></i> Purchase Order Details
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="GoodsReceipt" asp-action="Index">
+                                            <i class="bi bi-box-arrow-in-down me-2"></i> Goods Receipts
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="GoodsReceiptDetail" asp-action="Index">
+                                            <i class="bi bi-card-checklist me-2"></i> Goods Receipt Details
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-receipt me-1"></i> Sales
+                                </a>
+                                <ul class="dropdown-menu border-0 shadow-sm">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Customer" asp-action="Index">
+                                            <i class="bi bi-person-lines-fill me-2"></i> Customers
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Salesman" asp-action="Index">
+                                            <i class="bi bi-person-workspace me-2"></i> Salesmen
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="SalesOrder" asp-action="Index">
+                                            <i class="bi bi-receipt me-2"></i> Sales Orders
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="SalesOrderDetail" asp-action="Index">
+                                            <i class="bi bi-list-ul me-2"></i> Sales Order Details
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="SalesReturn" asp-action="Index">
+                                            <i class="bi bi-arrow-counterclockwise me-2"></i> Sales Returns
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="SalesReturnDetail" asp-action="Index">
+                                            <i class="bi bi-card-list me-2"></i> Sales Return Details
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="ReturnReason" asp-action="Index">
+                                            <i class="bi bi-arrow-return-left me-2"></i> Return Reasons
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-truck me-1"></i> Logistics
+                                </a>
+                                <ul class="dropdown-menu border-0 shadow-sm">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="VehicleType" asp-action="Index">
+                                            <i class="bi bi-bus-front me-2"></i> Vehicle Types
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Vehicle" asp-action="Index">
+                                            <i class="bi bi-truck-front me-2"></i> Vehicles
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="VehicleAssignment" asp-action="Index">
+                                            <i class="bi bi-person-check me-2"></i> Vehicle Assignments
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Dispatch" asp-action="Index">
+                                            <i class="bi bi-send me-2"></i> Dispatches
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="DispatchDetail" asp-action="Index">
+                                            <i class="bi bi-list-task me-2"></i> Dispatch Details
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-arrow-left-right me-1"></i> Stock Control
+                                </a>
+                                <ul class="dropdown-menu border-0 shadow-sm">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="StockMovement" asp-action="Index">
+                                            <i class="bi bi-arrow-left-right me-2"></i> Stock Movements
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="StockAdjustment" asp-action="Index">
+                                            <i class="bi bi-sliders me-2"></i> Stock Adjustments
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="StockAdjustmentDetail" asp-action="Index">
+                                            <i class="bi bi-clipboard-check me-2"></i> Stock Adjustment Details
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="StockTransfer" asp-action="Index">
+                                            <i class="bi bi-arrow-repeat me-2"></i> Stock Transfers
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="StockTransferDetail" asp-action="Index">
+                                            <i class="bi bi-clipboard2-data me-2"></i> Stock Transfer Details
                                         </a>
                                     </li>
                                 </ul>

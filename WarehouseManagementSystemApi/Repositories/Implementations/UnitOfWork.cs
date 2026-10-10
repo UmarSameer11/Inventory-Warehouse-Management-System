@@ -52,7 +52,13 @@ namespace WarehouseManagementSystemApi.Repositories.Implementations
         public IGenericRepository<Dispatches> Dispatches { get; }
         public IGenericRepository<Customers> Customers { get; }
 
-      
+        public IGenericRepository<DispatchDetails> DispatchDetails { get; }
+        public IGenericRepository<GoodsReceiptDetails> GoodsReceiptDetails { get; }
+        public IGenericRepository<PurchaseOrderDetails> PurchaseOrderDetails { get; }
+        public IGenericRepository<SalesOrderDetails> SalesOrderDetails { get; }
+        public IGenericRepository<SalesReturnDetails> SalesReturnDetails { get; }
+        public IGenericRepository<StockAdjustmentDetails> StockAdjustmentDetails { get; }
+        public IGenericRepository<StockTransferDetails> StockTransferDetails { get; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -71,13 +77,19 @@ namespace WarehouseManagementSystemApi.Repositories.Implementations
             Vehicles = new GenericRepository<Vehicles>(context);
             Suppliers = new GenericRepository<Suppliers>(context);
             StockTransfers = new GenericRepository<StockTransfers>(context);
+            StockTransferDetails = new GenericRepository<StockTransferDetails>(context);
             StockAdjustments = new GenericRepository<StockAdjustments>(context);
+            StockAdjustmentDetails = new GenericRepository<StockAdjustmentDetails>(context);
             SalesReturns = new GenericRepository<SalesReturns>(context);
+            SalesReturnDetails = new GenericRepository<SalesReturnDetails>(context);
             SalesOrders = new GenericRepository<SalesOrders>(context);
+            SalesOrderDetails = new GenericRepository<SalesOrderDetails>(context);
             Salesmen = new GenericRepository<Salesmen>(context);
             ReturnReasons = new GenericRepository<ReturnReasons>(context);
             PurchaseOrders = new GenericRepository<PurchaseOrders>(context);
+            PurchaseOrderDetails = new GenericRepository<PurchaseOrderDetails>(context);
             GoodsReceipts = new GenericRepository<GoodsReceipts>(context);
+            GoodsReceiptDetails = new GenericRepository<GoodsReceiptDetails>(context);
             Dispatches = new GenericRepository<Dispatches>(context);
             Customers = new GenericRepository<Customers>(context);
         }

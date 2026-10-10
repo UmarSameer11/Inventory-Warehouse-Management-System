@@ -1,0 +1,104 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.Vehicle.VehicleUpdateViewModel
+
+@{
+    ViewData["Title"] = "Update Vehicle";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Update Vehicle</h3>
+            <p class="text-muted mb-0">Update vehicle information.</p>
+        </div>
+        <a asp-controller="Vehicle" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="update-icon"><i class="bi bi-truck-front"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Vehicle Information</h5>
+                    <span class="text-muted small">Modify the vehicle information below.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <form asp-controller="Vehicle" asp-action="Update" method="post" id="vehicleUpdateForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
+                <div class="form-section">
+                    <div class="section-heading mb-4">
+                        <h6 class="fw-bold mb-1">Vehicle Details</h6>
+                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Vehicle ID</label>
+                            <input asp-for="VehicleId" class="form-control readonly-field" readonly />
+                        </div>
+                        <div class="col-md-8 d-none d-md-block"></div>
+                        <div class="col-md-6">
+                            <label asp-for="VehicleNumber" class="form-label fw-semibold">Vehicle Number <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                <input asp-for="VehicleNumber" type="text" class="form-control" placeholder="Enter vehicle number" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="VehicleNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="RegistrationNumber" class="form-label fw-semibold">Registration Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                <input asp-for="RegistrationNumber" type="text" class="form-control" placeholder="Enter registration number (optional)" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="RegistrationNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="VehicleTypeId" class="form-label fw-semibold">Vehicle Type <span class="text-danger">*</span></label>
+                            <select asp-for="VehicleTypeId" asp-items="Model.VehicleTypes" class="form-select">
+                                <option value="">-- Select Vehicle Type --</option>
+                            </select>
+                            <span asp-validation-for="VehicleTypeId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Capacity" class="form-label fw-semibold">Capacity</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input asp-for="Capacity" type="number" step="0.01" min="0" class="form-control" placeholder="0.00" />
+                            </div>
+                            <span asp-validation-for="Capacity" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="DriverEmployeeId" class="form-label fw-semibold">Driver</label>
+                            <select asp-for="DriverEmployeeId" asp-items="Model.Employees" class="form-select">
+                                <option value="">-- None --</option>
+                            </select>
+                            <span asp-validation-for="DriverEmployeeId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Status</label>
+                            <div class="form-check form-switch status-switch">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" id="IsActive" />
+                                <label class="form-check-label" for="IsActive" id="statusLabel">Active</label>
+                            </div>
+                            <small class="text-muted">Enable or disable this record.</small>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="Vehicle" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="updateVehicleBtn"><i class="bi bi-check-lg me-2"></i>Update Vehicle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/Vehicle/Update.css" asp-append-version="true" /> }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/Vehicle/Update.js" asp-append-version="true"></script>
+}

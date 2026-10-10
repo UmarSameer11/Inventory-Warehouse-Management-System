@@ -1,0 +1,152 @@
+/* ============================================
+   Module Form Page
+   ============================================ */
+
+.card {
+    border-radius: 12px;
+}
+
+.card-header {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.create-icon,
+.update-icon,
+.detail-icon,
+.delete-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 21px;
+}
+
+.create-icon,
+.update-icon,
+.detail-icon {
+    background-color: #eef4ff;
+    color: #0d6efd;
+}
+
+.delete-icon {
+    background-color: #fff1f2;
+    color: #dc3545;
+}
+
+.form-section {
+    padding: 4px 0;
+}
+
+.section-heading h6 {
+    color: #212529;
+}
+
+.form-control,
+.form-select {
+    min-height: 42px;
+    border-radius: 7px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.10);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+.input-group .form-control {
+    border-left: 0;
+}
+
+.input-group:focus-within .input-group-text {
+    border-color: #86b7fe;
+}
+
+.status-switch {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-switch .form-check-input {
+    width: 2.5em;
+    height: 1.35em;
+    cursor: pointer;
+}
+
+.status-switch .form-check-label {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.readonly-field,
+.detail-value {
+    background-color: #f8f9fa;
+}
+
+.detail-value {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 10px 13px;
+    border: 1px solid #e9ecef;
+    border-radius: 7px;
+    color: #343a40;
+    font-size: 0.95rem;
+}
+
+.validation-summary:empty {
+    display: none;
+}
+
+.text-danger {
+    font-size: 0.85rem;
+}
+
+.btn {
+    min-height: 42px;
+    border-radius: 7px;
+}
+
+hr {
+    opacity: 0.12;
+}
+
+.alert-warning {
+    border-radius: 8px;
+    border: 1px solid #ffe69c;
+}
+
+.badge {
+    font-size: 0.82rem;
+    padding: 7px 10px;
+    border-radius: 6px;
+}
+
+@media (max-width: 576px) {
+    .container-fluid {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .card-body {
+        padding: 20px !important;
+    }
+
+    .create-icon,
+    .update-icon,
+    .detail-icon,
+    .delete-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 19px;
+    }
+}

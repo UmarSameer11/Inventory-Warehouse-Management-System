@@ -33,14 +33,21 @@ namespace WarehouseManagementSystemApi.Repositories.Interfaces
         IInventoryStockRepository InventoryStocks { get; }
         IGenericRepository<Customers> Customers { get; }
         IGenericRepository<Dispatches> Dispatches { get; }
+        IGenericRepository<DispatchDetails> DispatchDetails { get; }
         IGenericRepository<GoodsReceipts> GoodsReceipts { get; }
+        IGenericRepository<GoodsReceiptDetails> GoodsReceiptDetails { get; }
         IGenericRepository<PurchaseOrders> PurchaseOrders { get; }
+        IGenericRepository<PurchaseOrderDetails> PurchaseOrderDetails { get; }
         IGenericRepository<ReturnReasons> ReturnReasons { get; }
         IGenericRepository<Salesmen> Salesmen { get; }
         IGenericRepository<SalesOrders> SalesOrders { get; }
+        IGenericRepository<SalesOrderDetails> SalesOrderDetails { get; }
         IGenericRepository<SalesReturns> SalesReturns { get; }
+        IGenericRepository<SalesReturnDetails> SalesReturnDetails { get; }
         IGenericRepository<StockAdjustments> StockAdjustments { get; }
+        IGenericRepository<StockAdjustmentDetails> StockAdjustmentDetails { get; }
         IGenericRepository<StockTransfers> StockTransfers { get; }
+        IGenericRepository<StockTransferDetails> StockTransferDetails { get; }
         IGenericRepository<Suppliers> Suppliers { get; }
         IGenericRepository<Vehicles> Vehicles { get; }
         IGenericRepository<VehicleAssignments> VehicleAssignments { get; }

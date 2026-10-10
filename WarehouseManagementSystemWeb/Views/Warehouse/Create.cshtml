@@ -10,9 +10,7 @@
             <h3 class="fw-bold mb-1">Create Warehouse</h3>
             <p class="text-muted mb-0">Add a new warehouse to the system.</p>
         </div>
-        <a asp-controller="Warehouse" asp-action="Index" class="btn btn-outline-secondary px-4">
-            <i class="bi bi-arrow-left me-2"></i>Back
-        </a>
+        <a asp-controller="Warehouse" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
     </div>
 
     <div class="card border-0 shadow-sm">
@@ -21,7 +19,7 @@
                 <div class="create-icon"><i class="bi bi-box-seam"></i></div>
                 <div>
                     <h5 class="fw-semibold mb-1">Warehouse Information</h5>
-                    <span class="text-muted small">Enter the basic information for the new warehouse.</span>
+                    <span class="text-muted small">Enter the information for the new warehouse.</span>
                 </div>
             </div>
         </div>
@@ -33,49 +31,47 @@
                 <div class="form-section">
                     <div class="section-heading mb-4">
                         <h6 class="fw-bold mb-1">Warehouse Details</h6>
-                        <p class="text-muted small mb-0">Provide the information required to register this warehouse.</p>
+                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
                     </div>
                     <div class="row g-4">
-
                         <div class="col-md-6">
                             <label asp-for="WarehouseCode" class="form-label fw-semibold">Warehouse Code <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
-                                <input asp-for="WarehouseCode" class="form-control" placeholder="e.g. WH-001" autocomplete="off" />
+                                <input asp-for="WarehouseCode" type="text" class="form-control" placeholder="e.g. WAR-001" autocomplete="off" />
                             </div>
                             <span asp-validation-for="WarehouseCode" class="text-danger small"></span>
                         </div>
                         <div class="col-md-6">
                             <label asp-for="WarehouseName" class="form-label fw-semibold">Warehouse Name <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-building"></i></span>
-                                <input asp-for="WarehouseName" class="form-control" placeholder="e.g. Main Raw Material Warehouse" autocomplete="off" />
+                                <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                                <input asp-for="WarehouseName" type="text" class="form-control" placeholder="Enter warehouse name" autocomplete="off" />
                             </div>
                             <span asp-validation-for="WarehouseName" class="text-danger small"></span>
                         </div>
                         <div class="col-md-6">
-                            <label asp-for="Location" class="form-label fw-semibold">Location <span class="text-danger">*</span></label>
+                            <label asp-for="Location" class="form-label fw-semibold">Location</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                <input asp-for="Location" class="form-control" placeholder="e.g. Murree" autocomplete="off" />
+                                <span class="input-group-text"><i class="bi bi-pencil"></i></span>
+                                <input asp-for="Location" type="text" class="form-control" placeholder="Enter location (optional)" autocomplete="off" />
                             </div>
                             <span asp-validation-for="Location" class="text-danger small"></span>
                         </div>
                         <div class="col-md-6">
-                            <label asp-for="EmployeeId" class="form-label fw-semibold">Warehouse Manager <span class="text-danger">*</span></label>
-                            <select asp-for="EmployeeId" asp-items="Model.Employees" class="form-select">
-                                <option value="0">-- Select Employee --</option>
+                            <label asp-for="ManagerEmployeeId" class="form-label fw-semibold">Manager</label>
+                            <select asp-for="ManagerEmployeeId" asp-items="Model.Employees" class="form-select">
+                                <option value="">-- None --</option>
                             </select>
-                            <span asp-validation-for="EmployeeId" class="text-danger small"></span>
+                            <span asp-validation-for="ManagerEmployeeId" class="text-danger small"></span>
                         </div>
-
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Status</label>
                             <div class="form-check form-switch status-switch">
                                 <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" id="IsActive" />
                                 <label class="form-check-label" for="IsActive" id="statusLabel">Active</label>
                             </div>
-                            <small class="text-muted">Enable this record for active use.</small>
+                            <small class="text-muted">Enable or disable this record.</small>
                         </div>
                     </div>
                 </div>

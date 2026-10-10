@@ -1,0 +1,75 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.StockTransfer.StockTransferUpdateViewModel
+
+@{
+    ViewData["Title"] = "Stock Transfer Details";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Stock Transfer Details</h3>
+            <p class="text-muted mb-0">View complete stock transfer information.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-controller="StockTransfer" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+            <a asp-controller="StockTransfer" asp-action="Update" asp-route-id="@Model.StockTransferId" class="btn btn-primary px-4"><i class="bi bi-pencil-square me-2"></i>Edit</a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="detail-icon"><i class="bi bi-arrow-repeat"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Stock Transfer Information</h5>
+                    <span class="text-muted small">Complete information and current status.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="form-section">
+                <div class="section-heading mb-4">
+                    <h6 class="fw-bold mb-1">Stock Transfer Details</h6>
+                    <p class="text-muted small mb-0">Basic information about this record.</p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Stock Transfer ID</label>
+                        <div class="detail-value">@Model.StockTransferId</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Transfer Number</label>
+                        <div class="detail-value">@Model.TransferNumber</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">From Warehouse</label>
+                        <div class="detail-value">@(Model.Warehouses.FirstOrDefault(x => x.Value == Model.FromWarehouseId.ToString())?.Text ?? ("#" + Model.FromWarehouseId))</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">To Warehouse</label>
+                        <div class="detail-value">@(Model.Warehouses.FirstOrDefault(x => x.Value == Model.ToWarehouseId.ToString())?.Text ?? ("#" + Model.ToWarehouseId))</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Transfer Date</label>
+                        <div class="detail-value">@Model.TransferDate.ToString("dd MMM yyyy")</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Status</label>
+                        <div class="detail-value"><span class="status-badge status-pill" data-status="@Model.Status.ToLowerInvariant()">@Model.Status</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                <a asp-controller="StockTransfer" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+                <a asp-controller="StockTransfer" asp-action="Update" asp-route-id="@Model.StockTransferId" class="btn btn-primary px-4"><i class="bi bi-pencil-square me-2"></i>Edit Stock Transfer</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/StockTransfer/Detail.css" asp-append-version="true" /> }

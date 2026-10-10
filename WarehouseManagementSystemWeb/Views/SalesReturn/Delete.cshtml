@@ -1,0 +1,91 @@
+@model WarehouseManagementSystemWeb.Application.ViewModels.SalesReturn.SalesReturnUpdateViewModel
+
+@{
+    ViewData["Title"] = "Delete Sales Return";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Delete Sales Return</h3>
+            <p class="text-muted mb-0">Review the information before permanently deleting this record.</p>
+        </div>
+        <a asp-controller="SalesReturn" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="delete-icon"><i class="bi bi-arrow-counterclockwise"></i></div>
+                <div>
+                    <h5 class="fw-semibold mb-1">Sales Return Information</h5>
+                    <span class="text-muted small">Verify the record you want to delete.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="alert alert-warning d-flex align-items-start gap-3" role="alert">
+                <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                <div>
+                    <strong>Are you sure you want to delete this sales return?</strong>
+                    <div class="small mt-1">This action cannot be undone. Please verify the information below before continuing.</div>
+                </div>
+            </div>
+
+            <div class="form-section mt-4">
+                <div class="section-heading mb-4">
+                    <h6 class="fw-bold mb-1">Sales Return Details</h6>
+                    <p class="text-muted small mb-0">Basic information about this record.</p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Sales Return ID</label>
+                        <div class="detail-value">@Model.SalesReturnId</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Return Number</label>
+                        <div class="detail-value">@Model.ReturnNumber</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Customer</label>
+                        <div class="detail-value">@(Model.Customers.FirstOrDefault(x => x.Value == Model.CustomerId.ToString())?.Text ?? ("#" + Model.CustomerId))</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Sales Order</label>
+                        <div class="detail-value">@(Model.SalesOrders.FirstOrDefault(x => x.Value == Model.SalesOrderId.ToString())?.Text ?? (Model.SalesOrderId.HasValue ? "#" + Model.SalesOrderId : "Not provided"))</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Salesman</label>
+                        <div class="detail-value">@(Model.Salesmen.FirstOrDefault(x => x.Value == Model.SalesmanId.ToString())?.Text ?? (Model.SalesmanId.HasValue ? "#" + Model.SalesmanId : "Not provided"))</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Return Date</label>
+                        <div class="detail-value">@Model.ReturnDate.ToString("dd MMM yyyy")</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Remarks</label>
+                        <div class="detail-value">@(string.IsNullOrWhiteSpace(Model.Remarks) ? "Not provided" : Model.Remarks)</div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <form asp-controller="SalesReturn" asp-action="DeleteConfirmed" method="post" id="deleteSalesReturnForm">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.SalesReturnId" />
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-controller="SalesReturn" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+                    <button type="submit" class="btn btn-danger px-4" id="deleteSalesReturnBtn"><i class="bi bi-trash3 me-2"></i>Delete Sales Return</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles { <link rel="stylesheet" href="~/css/SalesReturn/Delete.css" asp-append-version="true" /> }
+@section Scripts {
+    <script src="~/js/SalesReturn/Delete.js" asp-append-version="true"></script>
+}
