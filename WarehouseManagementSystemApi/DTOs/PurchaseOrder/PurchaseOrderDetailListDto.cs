@@ -2,7 +2,7 @@ namespace WarehouseManagementSystemApi.DTOs.PurchaseOrder
 {
     public class PurchaseOrderDetailListDto
     {
-        public int PurchaseOrderDetailId { get; set; }
+        public int PurchaseOrderDetailId { get; set; } 
         public int ProductId { get; set; }
         public string ProductCode { get; set; } = null!;
         public string ProductName { get; set; } = null!;

@@ -65,6 +65,14 @@
                             <span asp-validation-for="ReceiptDate" class="text-danger small"></span>
                         </div>
                         <div class="col-md-6">
+                            <label asp-for="ReceivedByEmployeeId" class="form-label fw-semibold">Employee Id <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                <input asp-for="ReceivedByEmployeeId" type="text" class="form-control" placeholder="Enter employee id" autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="ReceivedByEmployeeId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
                             <label asp-for="Status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-flag"></i></span>

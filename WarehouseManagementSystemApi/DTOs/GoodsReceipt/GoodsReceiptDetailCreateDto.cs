@@ -1,4 +1,4 @@
-namespace WarehouseManagementSystemApi.DTOs.GoodsReceipt
+ namespace WarehouseManagementSystemApi.DTOs.GoodsReceipt
 {
     public class GoodsReceiptDetailCreateDto
     {
@@ -10,3 +10,4 @@ namespace WarehouseManagementSystemApi.DTOs.GoodsReceipt
         public decimal QuantityReceived { get; set; }
     }
 }
+ 

@@ -44,6 +44,15 @@ namespace WarehouseManagementSystemApi.Extensions
             services.AddScoped<IDispatchService, DispatchService>();
             services.AddScoped<ICustomerService, CustomerService>();
 
+            // Detail services
+            services.AddScoped<IDispatchDetailService, DispatchDetailService>();
+            services.AddScoped<IGoodsReceiptDetailService, GoodsReceiptDetailService>();
+            services.AddScoped<IPurchaseOrderDetailService, PurchaseOrderDetailService>();
+            services.AddScoped<ISalesOrderDetailService, SalesOrderDetailService>();
+            services.AddScoped<ISalesReturnDetailService, SalesReturnDetailService>();
+            services.AddScoped<IStockAdjustmentDetailService, StockAdjustmentDetailService>();
+            services.AddScoped<IStockTransferDetailService, StockTransferDetailService>();
+
             // Auth Service
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();

@@ -22,7 +22,7 @@ namespace WarehouseManagementSystemApi.Services.Implementations
         public async Task<PurchaseOrderDetailListDto> CreateAsync(
             PurchaseOrderDetailCreateDto dto)
         {
-            var purchaseOrder = _mapper.Map<PurchaseOrderDetails>(dto);
+            var purchaseOrder = _mapper.Map<PurchaseOrderDetails>(dto); 
 
             await _unitOfWork.PurchaseOrderDetails.AddAsync(purchaseOrder);
             await _unitOfWork.SaveChangesAsync();

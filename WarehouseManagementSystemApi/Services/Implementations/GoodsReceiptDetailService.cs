@@ -20,7 +20,7 @@ namespace WarehouseManagementSystemApi.Services.Implementations
         }
 
         public async Task<GoodsReceiptDetailListDto> CreateAsync(
-            GoodsReceiptCreateDto dto)
+            GoodsReceiptDetailCreateDto dto)
         {
             var goodsReceipt = _mapper.Map<GoodsReceiptDetails>(dto);
 

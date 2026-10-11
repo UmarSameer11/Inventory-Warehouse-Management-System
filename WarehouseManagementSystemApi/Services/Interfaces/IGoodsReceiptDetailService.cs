@@ -4,9 +4,9 @@ namespace WarehouseManagementSystemApi.Services.Interfaces
 {
     public interface IGoodsReceiptDetailService
     {
-        Task<GoodsReceiptDetailCreateDto> CreateAsync(GoodsReceiptDetailCreateDto dto);
-        Task<IEnumerable<GoodsReceiptDetailCreateDto>> GetAllAsync();
-        Task<GoodsReceiptDetailCreateDto> GetByIdAsync(int id);
+        Task<GoodsReceiptDetailListDto> CreateAsync(GoodsReceiptDetailCreateDto dto);
+        Task<IEnumerable<GoodsReceiptDetailListDto>> GetAllAsync();
+        Task<GoodsReceiptDetailListDto> GetByIdAsync(int id);
         Task DeleteAsync(int id);
     }
 }
