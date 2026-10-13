@@ -17,7 +17,7 @@ namespace WarehouseManagementSystemApi.Models.GoodsReceipt
         public int BatchId { get; set; }
         [Precision(18, 3)]
         public decimal QuantityReceived { get; set; }
-        public GoodsReceipts GoodsReceipt { get; set; } = null!;
+        public GoodsReceipts GoodsReceipt { get; set; } = null!;  
         public PurchaseOrderDetails PurchaseOrderDetail { get; set; } = null!;
         public Product Product { get; set; } = null!;
         public Batches Batch { get; set; } = null!;

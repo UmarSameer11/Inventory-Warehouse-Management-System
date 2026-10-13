@@ -75,7 +75,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         {
             model.SalesReturns = await _salesReturnService.GetDropdownAsync();
             model.Products = await DropdownHelper.ProductsAsync(_productService, null);
-            model.Batches = await DropdownHelper.BatchesAsync(_batchService);
+            //model.Batches = await DropdownHelper.BatchesAsync(_batchService);
             model.ReturnReasons = await _returnReasonService.GetDropdownAsync();
         }
 
@@ -83,7 +83,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         {
             model.SalesReturns = await _salesReturnService.GetDropdownAsync(model.SalesReturnId);
             model.Products = await DropdownHelper.ProductsAsync(_productService, model.ProductId);
-            model.Batches = await DropdownHelper.BatchesAsync(_batchService);
+            //model.Batches = await DropdownHelper.BatchesAsync(_batchService);
             model.ReturnReasons = await _returnReasonService.GetDropdownAsync(model.ReturnReasonId);
         }
     }

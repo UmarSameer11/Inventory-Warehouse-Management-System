@@ -81,13 +81,13 @@
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="module-avatar"><i class="bi bi-card-checklist"></i></div>
                                         <div>
-                                            <div class="fw-semibold text-dark">@Lookup(lookups?.GoodsReceipts, item.GoodsReceiptId)</div>
+                                            @* <div class="fw-semibold text-dark">@Lookup(lookups?.GoodsReceipts, item.GoodsReceiptId)</div> *@
                                             <div class="text-muted small">Goods Receipt Detail #@item.GoodsReceiptDetailId</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>@Lookup(lookups?.Products, item.ProductId)</td>
-                                <td>@(item.BatchId.HasValue ? Lookup(lookups?.Batches, item.BatchId.Value) : "—")</td>
+                                @* <td>@Lookup(lookups?.Products, item.ProductId)</td> *@
+                                @* <td>@(item.BatchId.HasValue ? Lookup(lookups?.Batches, item.BatchId.Value) : "—")</td> *@
                                 <td>@item.Quantity.ToString("N2")</td>
                                 <td>@item.UnitPrice.ToString("N2")</td>
                                 <td class="text-end pe-4">

@@ -72,7 +72,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         {
             model.StockAdjustments = await _stockAdjustmentService.GetDropdownAsync();
             model.Products = await DropdownHelper.ProductsAsync(_productService, null);
-            model.Batches = await DropdownHelper.BatchesAsync(_batchService);
+            //model.Batches = await DropdownHelper.BatchesAsync(_batchService);
         }
 
         public async Task PopulateDropdownsAsync(StockAdjustmentDetailUpdateViewModel model)

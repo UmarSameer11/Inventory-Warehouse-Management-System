@@ -40,7 +40,7 @@ namespace WarehouseManagementSystemApi.Validators.GoodsReceipt
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("At least one line item is required.")
-                .Must(d => d.Select(i => new { i.PurchaseOrderDetailId, i.BatchNumber }).Distinct().Count() == d.Count)
+                .Must(d => d.Select(i => new { i.PurchaseOrderDetailId, i.BatchId }).Distinct().Count() == d.Count)
                 .WithMessage("The same Purchase Order line and Batch Number cannot be added more than once.");
 
             RuleForEach(x => x.Details)

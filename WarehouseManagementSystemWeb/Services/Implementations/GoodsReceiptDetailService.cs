@@ -70,16 +70,16 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
 
         public async Task PopulateDropdownsAsync(GoodsReceiptDetailCreateViewModel model)
         {
-            model.GoodsReceipts = await _goodsReceiptService.GetDropdownAsync();
-            model.Products = await DropdownHelper.ProductsAsync(_productService, null);
-            model.Batches = await DropdownHelper.BatchesAsync(_batchService);
+            //model.GoodsReceipts = await _goodsReceiptService.GetDropdownAsync();
+            //model.Products = await DropdownHelper.ProductsAsync(_productService, null);
+            //model.Batches = await DropdownHelper.BatchesAsync(_batchService);
         }
 
         public async Task PopulateDropdownsAsync(GoodsReceiptDetailUpdateViewModel model)
         {
             model.GoodsReceipts = await _goodsReceiptService.GetDropdownAsync(model.GoodsReceiptId);
             model.Products = await DropdownHelper.ProductsAsync(_productService, model.ProductId);
-            model.Batches = await DropdownHelper.BatchesAsync(_batchService);
+            //model.Batches = await DropdownHelper.BatchesAsync(_batchService);
         }
     }
 }

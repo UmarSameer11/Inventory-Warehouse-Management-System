@@ -16,11 +16,9 @@ namespace WarehouseManagementSystemApi.Validators.GoodsReceipt
                 .GreaterThan(0)
                 .WithMessage("Please select a valid Product.");
 
-            RuleFor(x => x.BatchNumber)
-                .NotEmpty()
-                .WithMessage("Batch Number is required.")
-                .MaximumLength(50)
-                .WithMessage("Batch Number cannot exceed 50 characters.");
+            RuleFor(x => x.BatchId)
+     .GreaterThan(0)
+     .WithMessage("Please select a valid Batch.");
 
             RuleFor(x => x.ManufacturingDate)
                 .NotEmpty()

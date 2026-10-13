@@ -10,7 +10,7 @@ namespace WarehouseManagementSystemApi.Models.GoodsReceipt
         [Key]
         public int GoodsReceiptId { get; set; }
         [MaxLength(30)]
-        public string GoodsReceiptNumber { get; set; } = null!;
+        public string GoodsReceiptNumber { get; set; } = null!; 
         public int PurchaseOrderId { get; set; }
         public int WarehouseId { get; set; }
         public int ReceivedByEmployeeId { get; set; }

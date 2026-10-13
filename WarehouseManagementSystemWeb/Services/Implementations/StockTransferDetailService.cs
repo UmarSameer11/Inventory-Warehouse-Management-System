@@ -72,14 +72,14 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         {
             model.StockTransfers = await _stockTransferService.GetDropdownAsync();
             model.Products = await DropdownHelper.ProductsAsync(_productService, null);
-            model.Batches = await DropdownHelper.BatchesAsync(_batchService);
+            //model.Batches = await DropdownHelper.BatchesAsync(_batchService);
         }
 
         public async Task PopulateDropdownsAsync(StockTransferDetailUpdateViewModel model)
         {
             model.StockTransfers = await _stockTransferService.GetDropdownAsync(model.StockTransferId);
             model.Products = await DropdownHelper.ProductsAsync(_productService, model.ProductId);
-            model.Batches = await DropdownHelper.BatchesAsync(_batchService);
+            //model.Batches = await DropdownHelper.BatchesAsync(_batchService);
         }
     }
 }

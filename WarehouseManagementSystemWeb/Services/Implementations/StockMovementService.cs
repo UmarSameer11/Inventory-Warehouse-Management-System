@@ -75,7 +75,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         {
             model.Warehouses = await DropdownHelper.WarehousesAsync(_warehouseService, null);
             model.Products = await DropdownHelper.ProductsAsync(_productService, null);
-            model.Batches = await DropdownHelper.BatchesAsync(_batchService);
+            //model.Batches = await DropdownHelper.BatchesAsync(_batchService);
             model.Employees = await DropdownHelper.EmployeesAsync(_employeeService);
         }
 

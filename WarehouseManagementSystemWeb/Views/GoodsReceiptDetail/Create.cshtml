@@ -35,26 +35,26 @@
                     </div>
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <label asp-for="GoodsReceiptId" class="form-label fw-semibold">Goods Receipt <span class="text-danger">*</span></label>
-                            <select asp-for="GoodsReceiptId" asp-items="Model.GoodsReceipts" class="form-select">
+                            @* <label asp-for="GoodsReceiptId" class="form-label fw-semibold">Goods Receipt <span class="text-danger">*</span></label> *@
+                            @* <select asp-for="GoodsReceiptId" asp-items="Model.GoodsReceipts" class="form-select"> *@
                                 <option value="">-- Select Goods Receipt --</option>
                             </select>
-                            <span asp-validation-for="GoodsReceiptId" class="text-danger small"></span>
+                            @* <span asp-validation-for="GoodsReceiptId" class="text-danger small"></span> *@
                         </div>
-                        <div class="col-md-6">
+                        @* <div class="col-md-6">
                             <label asp-for="ProductId" class="form-label fw-semibold">Product <span class="text-danger">*</span></label>
                             <select asp-for="ProductId" asp-items="Model.Products" class="form-select">
                                 <option value="">-- Select Product --</option>
                             </select>
                             <span asp-validation-for="ProductId" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
+                        </div> *@
+                        @* <div class="col-md-6">
                             <label asp-for="BatchId" class="form-label fw-semibold">Batch</label>
                             <select asp-for="BatchId" asp-items="Model.Batches" class="form-select">
                                 <option value="">-- None --</option>
                             </select>
                             <span asp-validation-for="BatchId" class="text-danger small"></span>
-                        </div>
+                        </div> *@
                         <div class="col-md-6">
                             <label asp-for="Quantity" class="form-label fw-semibold">Quantity <span class="text-danger">*</span></label>
                             <div class="input-group">

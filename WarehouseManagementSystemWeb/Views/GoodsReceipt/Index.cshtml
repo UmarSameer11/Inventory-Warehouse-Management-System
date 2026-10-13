@@ -89,7 +89,19 @@
                                 <td>@Lookup(lookups?.PurchaseOrders, item.PurchaseOrderId)</td>
                                 <td>@Lookup(lookups?.Warehouses, item.WarehouseId)</td>
                                 <td>@item.ReceiptDate.ToString("dd MMM yyyy")</td>
-                                <td><span class="status-badge status-pill" data-status="@item.Status.ToLowerInvariant()">@item.Status</span></td>
+                                <td>
+                                    
+@{
+    var status = item.Status ?? "Unknown";
+}
+
+<td>
+    <span class="status-badge status-pill"
+          data-status="@status.ToLowerInvariant()">
+        @status
+    </span>
+</td>
+                                </td>
                                 <td class="text-end pe-4">
                                     <div class="d-inline-flex gap-1">
                                         <a asp-controller="GoodsReceipt" asp-action="Detail" asp-route-id="@item.GoodsReceiptId" class="btn btn-sm btn-light action-btn" title="View"><i class="bi bi-eye"></i></a>
