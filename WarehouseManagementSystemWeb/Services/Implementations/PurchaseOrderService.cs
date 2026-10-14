@@ -83,5 +83,33 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                 })
                 .ToList();
         }
+
+        public async Task<PurchaseOrderForGrnViewModel?> GetForGrnByNumberAsync(
+            string purchaseOrderNumber)
+        {
+
+            if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
+                return null;
+
+            var endpoint =
+                $"{Endpoint}/by-number/{Uri.EscapeDataString(purchaseOrderNumber.Trim())}";
+
+            try
+            {
+                var response = await _apiService
+                    .GetAsync<ApiResponseViewModel<PurchaseOrderForGrnViewModel>>(
+                        endpoint);
+
+                return response?.Data;
+            }
+            catch (HttpRequestException ex)
+                when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+        }
     }
 }
+
+

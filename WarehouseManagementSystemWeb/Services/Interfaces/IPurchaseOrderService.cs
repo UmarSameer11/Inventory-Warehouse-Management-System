@@ -19,6 +19,7 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
         Task PopulateDropdownsAsync(PurchaseOrderUpdateViewModel model);
 
         /// <summary>PurchaseOrder options for the dropdowns of other forms.</summary>
-        Task<List<SelectListItem>> GetDropdownAsync(int? includeId = null); 
+        Task<List<SelectListItem>> GetDropdownAsync(int? includeId = null);
+        Task<PurchaseOrderForGrnViewModel?> GetForGrnByNumberAsync(string purchaseOrderNumber);
     }
 }

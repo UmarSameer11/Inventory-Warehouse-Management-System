@@ -1,20 +1,30 @@
+
+@using System.Globalization
 @using WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt
+
 @model GoodsReceiptCreateViewModel
 
 @{
     ViewData["Title"] = "Create Goods Receipt";
 }
 
-<link rel="stylesheet"
-      href="~/css/goods-receipt-create.css"
-      asp-append-version="true" />
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/GoodsReceipt/Create.css"
+          asp-append-version="true" />
+}
 
 <div class="grn-page">
+
+    <!-- PAGE HEADER -->
     <div class="grn-heading">
         <div>
             <span class="grn-eyebrow">INVENTORY MANAGEMENT</span>
             <h2>Create Goods Receipt</h2>
-            <p>Receive products against a purchase order and record their quantities.</p>
+            <p>
+                Receive products against a purchase order.
+                Remaining quantities can be received in future GRNs.
+            </p>
         </div>
 
         <a asp-controller="GoodsReceipt"
@@ -37,91 +47,142 @@
 
         <!-- GRN HEADER -->
         <section class="grn-card">
+
             <div class="grn-card-header">
                 <div class="grn-section-icon">
                     <i class="bi bi-receipt"></i>
                 </div>
+
                 <div>
                     <h5>Goods Receipt Information</h5>
-                    <p>Enter the general details of this receipt.</p>
+                    <p>Enter receipt and purchase order details.</p>
                 </div>
             </div>
 
             <div class="grn-card-body">
                 <div class="row g-3">
 
+                    <!-- RECEIPT NUMBER -->
                     <div class="col-md-6 col-lg-4">
-                        <label asp-for="ReceiptNumber" class="form-label">
+                        <label asp-for="ReceiptNumber"
+                               class="form-label">
                             Receipt Number <span class="required">*</span>
                         </label>
+
                         <input asp-for="ReceiptNumber"
                                class="form-control"
-                               placeholder="e.g. GRN-2026-001" />
+                               placeholder="e.g. GRN-2026-001"
+                               required />
+
                         <span asp-validation-for="ReceiptNumber"
                               class="text-danger"></span>
                     </div>
 
+                    <!-- PURCHASE ORDER NUMBER -->
                     <div class="col-md-6 col-lg-4">
-                        <label asp-for="PurchaseOrderId" class="form-label">
-                            Purchase Order <span class="required">*</span>
+                        <label for="PurchaseOrderNumber"
+                               class="form-label">
+                            Purchase Order Number
+                            <span class="required">*</span>
                         </label>
-                        <select asp-for="PurchaseOrderId"
-                                asp-items="Model.PurchaseOrders"
-                                class="form-select">
-                            <option value="">-- Select Purchase Order --</option>
-                        </select>
+
+                        <input type="text"
+                               id="PurchaseOrderNumber"
+                               class="form-control"
+                               placeholder="Enter PO number and press Enter"
+                               autocomplete="off"
+                               required />
+
+                        <!-- Actual database PO ID will be submitted -->
+                        <input type="hidden"
+                               asp-for="PurchaseOrderId"
+                               id="PurchaseOrderId" />
+
+                        <div id="poLoading"
+                             class="small text-muted mt-2 d-none">
+                            <span class="spinner-border spinner-border-sm"
+                                  role="status"></span>
+                            Loading purchase order products...
+                        </div>
+
+                        <div id="poMessage"
+                             class="small mt-2"
+                             role="status"
+                             aria-live="polite"></div>
+
                         <span asp-validation-for="PurchaseOrderId"
                               class="text-danger"></span>
                     </div>
 
+                    <!-- WAREHOUSE -->
                     <div class="col-md-6 col-lg-4">
-                        <label asp-for="WarehouseId" class="form-label">
+                        <label asp-for="WarehouseId"
+                               class="form-label">
                             Warehouse <span class="required">*</span>
                         </label>
+
                         <select asp-for="WarehouseId"
                                 asp-items="Model.Warehouses"
-                                class="form-select">
+                                class="form-select"
+                                required>
                             <option value="">-- Select Warehouse --</option>
                         </select>
+
                         <span asp-validation-for="WarehouseId"
                               class="text-danger"></span>
                     </div>
 
+                    <!-- RECEIPT DATE -->
                     <div class="col-md-6 col-lg-4">
-                        <label asp-for="ReceiptDate" class="form-label">
+                        <label asp-for="ReceiptDate"
+                               class="form-label">
                             Receipt Date <span class="required">*</span>
                         </label>
+
                         <input asp-for="ReceiptDate"
                                type="date"
                                class="form-control"
-                               value="@Model.ReceiptDate.ToString("yyyy-MM-dd")" />
+                               value="@Model.ReceiptDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)"
+                               required />
+
                         <span asp-validation-for="ReceiptDate"
                               class="text-danger"></span>
                     </div>
 
+                    <!-- RECEIVED BY -->
                     <div class="col-md-6 col-lg-4">
-                        <label asp-for="ReceivedByEmployeeId" class="form-label">
-                            Received By (Employee ID) <span class="required">*</span>
+                        <label asp-for="ReceivedByEmployeeId"
+                               class="form-label">
+                            Received By (Employee ID)
+                            <span class="required">*</span>
                         </label>
+
                         <input asp-for="ReceivedByEmployeeId"
                                type="number"
                                min="1"
                                class="form-control"
-                               placeholder="Enter employee ID" />
+                               placeholder="Enter employee ID"
+                               required />
+
                         <span asp-validation-for="ReceivedByEmployeeId"
                               class="text-danger"></span>
                     </div>
 
+                    <!-- STATUS -->
                     <div class="col-md-6 col-lg-4">
-                        <label asp-for="Status" class="form-label">
+                        <label asp-for="Status"
+                               class="form-label">
                             Status
                         </label>
-                        <select asp-for="Status" class="form-select">
+
+                        <select asp-for="Status"
+                                class="form-select">
                             <option value="Pending">Pending</option>
                             <option value="Approved">Approved</option>
                             <option value="Completed">Completed</option>
                             <option value="Cancelled">Cancelled</option>
                         </select>
+
                         <span asp-validation-for="Status"
                               class="text-danger"></span>
                     </div>
@@ -132,321 +193,122 @@
 
         <!-- PRODUCT DETAILS -->
         <section class="grn-card">
-            <div class="grn-card-header grn-details-header">
+
+            <div class="grn-card-header">
                 <div class="grn-title-group">
                     <div class="grn-section-icon product-icon">
                         <i class="bi bi-box-seam"></i>
                     </div>
+
                     <div>
-                        <h5>Received Products</h5>
-                        <p>Add one or more products to this goods receipt.</p>
+                        <h5>Purchase Order Products</h5>
+                        <p>
+                            Products will load automatically when you
+                            enter a PO number and press Enter.
+                        </p>
                     </div>
                 </div>
-
-                <button type="button"
-                        id="addProductBtn"
-                        class="grn-add-btn">
-                    <i class="bi bi-plus-lg"></i>
-                    Add Product
-                </button>
             </div>
 
             <div class="grn-card-body">
+
                 <div class="grn-table-wrapper">
-                    <table class="table grn-table">
+                    <table class="table grn-table align-middle">
+
                         <thead>
                             <tr>
-                                <th style="min-width: 220px;">Product</th>
-                                <th style="min-width: 170px;">Batch (Optional)</th>
-                                <th style="min-width: 140px;">Quantity</th>
-                                <th style="min-width: 150px;">Unit Price</th>
-                                <th style="min-width: 130px;">Line Total</th>
-                                <th class="text-center" style="width: 75px;">Action</th>
+                                <th style="min-width:210px;">Product</th>
+                                <th style="min-width:110px;">Ordered Qty</th>
+                                <th style="min-width:145px;">
+                                    Previously Received
+                                </th>
+                                <th style="min-width:120px;">
+                                    Remaining Qty
+                                </th>
+                                <th style="min-width:145px;">
+                                    Receiving Now
+                                </th>
+                                <th style="min-width:160px;">Batch</th>
+                                <th style="min-width:125px;">Unit Price</th>
+                                <th style="min-width:120px;">Line Total</th>
                             </tr>
                         </thead>
 
                         <tbody id="productRows">
-                            @for (var i = 0; i < Model.Details.Count; i++)
-                            {
-                                <tr class="product-row">
-                                    <td>
-                                        <select name="Details[@i].ProductId"
-                                                id="Details_@(i)__ProductId"
-                                                class="form-select product-select"
-                                                required>
-                                            <option value="">-- Select Product --</option>
-                                            @foreach (var product in Model.Products)
-                                            {
-                                                <option value="@product.Value"
-                                                        selected="@(product.Value == Model.Details[i].ProductId.ToString())">
-                                                    @product.Text
-                                                </option>
-                                            }
-                                        </select>
-                                    </td>
-
-                                    <td>
-                                        <select name="Details[@i].BatchId"
-                                                id="Details_@(i)__BatchId"
-                                                class="form-select">
-                                            <option value="">No batch selected</option>
-                                            @foreach (var batch in Model.Batches)
-                                            {
-                                                <option value="@batch.Value"
-                                                        selected="@(Model.Details[i].BatchId.HasValue && batch.Value == Model.Details[i].BatchId.Value.ToString())">
-                                                    @batch.Text
-                                                </option>
-                                            }
-                                        </select>
-                                    </td>
-
-                                    <td>
-                                        <input name="Details[@i].Quantity"
-                                               id="Details_@(i)__Quantity"
-                                               type="number"
-                                               min="0.001"
-                                               step="0.001"
-                                               value="@(Model.Details[i].Quantity > 0 ? Model.Details[i].Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture) : "")"
-                                               class="form-control quantity-input"
-                                               placeholder="0.000"
-                                               required />
-                                    </td>
-
-                                    <td>
-                                        <input name="Details[@i].UnitPrice"
-                                               id="Details_@(i)__UnitPrice"
-                                               type="number"
-                                               min="0"
-                                               step="0.01"
-                                               value="@(Model.Details[i].UnitPrice > 0 ? Model.Details[i].UnitPrice.ToString(System.Globalization.CultureInfo.InvariantCulture) : "")"
-                                               class="form-control price-input"
-                                               placeholder="0.00"
-                                               required />
-                                    </td>
-
-                                    <td>
-                                        <span class="line-total">0.00</span>
-                                    </td>
-
-                                    <td class="text-center">
-                                        <button type="button"
-                                                class="grn-remove-btn remove-product-btn"
-                                                title="Remove product"
-                                                aria-label="Remove product">
-                                            <i class="bi bi-trash3"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
+                            <tr id="emptyProductsRow">
+                                <td colspan="8"
+                                    class="text-center py-5 text-muted">
+                                    <i class="bi bi-box-seam fs-3 d-block mb-2"></i>
+                                    Enter a PO number to load products.
+                                </td>
+                            </tr>
                         </tbody>
+
                     </table>
                 </div>
 
-                <div class="grn-table-hint">
+                <div class="grn-table-hint mt-3">
                     <i class="bi bi-info-circle"></i>
-                    Add a separate row for each product you receive.
+                    Enter only the quantity physically received.
+                    Unreceived quantities remain available for future GRNs.
                 </div>
 
-                <div class="grn-total-panel">
+                <!-- TOTALS -->
+                <div class="grn-total-panel mt-4">
+
                     <div>
-                        <span class="grn-total-label">Total Products</span>
+                        <span class="grn-total-label">
+                            Products Being Received
+                        </span>
                         <strong id="totalProducts">0</strong>
                     </div>
+
+                    <div>
+                        <span class="grn-total-label">
+                            Total Quantity
+                        </span>
+                        <strong id="totalQuantity">0.000</strong>
+                    </div>
+
                     <div class="grn-grand-total">
-                        <span class="grn-total-label">Estimated Total</span>
+                        <span class="grn-total-label">
+                            Estimated Total
+                        </span>
                         <strong id="grandTotal">0.00</strong>
                     </div>
+
                 </div>
+
             </div>
         </section>
 
         <!-- FORM ACTIONS -->
         <div class="grn-form-actions">
+
             <a asp-controller="GoodsReceipt"
                asp-action="Index"
                class="grn-cancel-btn">
                 Cancel
             </a>
 
-            <button type="submit" id="saveGrnBtn" class="grn-save-btn">
+            <button type="submit"
+                    id="saveGrnBtn"
+                    class="grn-save-btn">
                 <i class="bi bi-check2-circle"></i>
                 Save Goods Receipt
             </button>
+
         </div>
+
     </form>
 </div>
 
-<!-- Template for dynamically added product rows -->
-<template id="productRowTemplate">
-    <tr class="product-row">
-        <td>
-            <select name="Details[__index__].ProductId"
-                    id="Details___index____ProductId"
-                    class="form-select product-select"
-                    required>
-                <option value="">-- Select Product --</option>
-                @foreach (var product in Model.Products)
-                {
-                    <option value="@product.Value">@product.Text</option>
-                }
-            </select>
-        </td>
-
-        <td>
-            <select name="Details[__index__].BatchId"
-                    id="Details___index____BatchId"
-                    class="form-select">
-                <option value="">No batch selected</option>
-                @foreach (var batch in Model.Batches)
-                {
-                    <option value="@batch.Value">@batch.Text</option>
-                }
-            </select>
-        </td>
-
-        <td>
-            <input name="Details[__index__].Quantity"
-                   id="Details___index____Quantity"
-                   type="number"
-                   min="0.001"
-                   step="0.001"
-                   class="form-control quantity-input"
-                   placeholder="0.000"
-                   required />
-        </td>
-
-        <td>
-            <input name="Details[__index__].UnitPrice"
-                   id="Details___index____UnitPrice"
-                   type="number"
-                   min="0"
-                   step="0.01"
-                   class="form-control price-input"
-                   placeholder="0.00"
-                   required />
-        </td>
-
-        <td>
-            <span class="line-total">0.00</span>
-        </td>
-
-        <td class="text-center">
-            <button type="button"
-                    class="grn-remove-btn remove-product-btn"
-                    title="Remove product"
-                    aria-label="Remove product">
-                <i class="bi bi-trash3"></i>
-            </button>
-        </td>
-    </tr>
-</template>
-
-
-@section Styles { <link rel="stylesheet" href="~/css/GoodsReceipt/Create.css" asp-append-version="true" /> }
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script src="~/js/GoodsReceipt/Create.js" asp-append-version="true"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/GoodsReceipt/Create.js"
+            asp-append-version="true"></script>
 }
-
-
-
-@* @model WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt.GoodsReceiptCreateViewModel
-
-@{
-    ViewData["Title"] = "Create Goods Receipt";
-}
-
-<div class="container-fluid px-4 py-4">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-        <div>
-            <h3 class="fw-bold mb-1">Create Goods Receipt</h3>
-            <p class="text-muted mb-0">Add a new goods receipt to the system.</p>
-        </div>
-        <a asp-controller="GoodsReceipt" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
-    </div>
-
-    <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white border-bottom py-3">
-            <div class="d-flex align-items-center gap-3">
-                <div class="create-icon"><i class="bi bi-box-arrow-in-down"></i></div>
-                <div>
-                    <h5 class="fw-semibold mb-1">Goods Receipt Information</h5>
-                    <span class="text-muted small">Enter the information for the new goods receipt.</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-body p-4">
-            <form asp-controller="GoodsReceipt" asp-action="Create" method="post" id="goodsReceiptCreateForm">
-                @Html.AntiForgeryToken()
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
-                <div class="form-section">
-                    <div class="section-heading mb-4">
-                        <h6 class="fw-bold mb-1">Goods Receipt Details</h6>
-                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
-                    </div>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <label asp-for="ReceiptNumber" class="form-label fw-semibold">Receipt Number <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
-                                <input asp-for="ReceiptNumber" type="text" class="form-control" placeholder="Enter receipt number" autocomplete="off" />
-                            </div>
-                            <span asp-validation-for="ReceiptNumber" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="PurchaseOrderId" class="form-label fw-semibold">Purchase Order <span class="text-danger">*</span></label>
-                            <select asp-for="PurchaseOrderId" asp-items="Model.PurchaseOrders" class="form-select">
-                                <option value="">-- Select Purchase Order --</option>
-                            </select>
-                            <span asp-validation-for="PurchaseOrderId" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="WarehouseId" class="form-label fw-semibold">Warehouse <span class="text-danger">*</span></label>
-                            <select asp-for="WarehouseId" asp-items="Model.Warehouses" class="form-select">
-                                <option value="">-- Select Warehouse --</option>
-                            </select>
-                            <span asp-validation-for="WarehouseId" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="ReceiptDate" class="form-label fw-semibold">Receipt Date <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
-                                <input asp-for="ReceiptDate" type="date" class="form-control" />
-                            </div>
-                            <span asp-validation-for="ReceiptDate" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="ReceivedByEmployeeId" class="form-label fw-semibold">Employee Id <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
-                                <input asp-for="ReceivedByEmployeeId" type="text" class="form-control" placeholder="Enter employee id" autocomplete="off" />
-                            </div>
-                            <span asp-validation-for="ReceivedByEmployeeId" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="Status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-flag"></i></span>
-                                <input asp-for="Status" type="text" class="form-control" placeholder="e.g. Pending" autocomplete="off" list="statusOptions" />
-                                <datalist id="statusOptions"><option value="Pending"></option><option value="Approved"></option><option value="Completed"></option><option value="Cancelled"></option></datalist>
-                            </div>
-                            <span asp-validation-for="Status" class="text-danger small"></span>
-                        </div>
-                    </div>
-                </div>
-                <hr class="my-4" />
-                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
-                    <a asp-controller="GoodsReceipt" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
-                    <button type="submit" class="btn btn-primary px-4" id="createGoodsReceiptBtn"><i class="bi bi-check-lg me-2"></i>Create Goods Receipt</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-@section Styles { <link rel="stylesheet" href="~/css/GoodsReceipt/Create.css" asp-append-version="true" /> }
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script src="~/js/GoodsReceipt/Create.js" asp-append-version="true"></script>
-} *@

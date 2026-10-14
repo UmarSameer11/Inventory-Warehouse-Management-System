@@ -58,6 +58,25 @@ namespace WarehouseManagementSystemWeb.Auth
             }
 
             var response = await base.SendAsync(request, cancellationToken);
+            
+if (!isAnonymous)
+            {
+                var token = await http.GetTokenAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    AuthConstants.AccessToken);
+
+                System.Diagnostics.Debug.WriteLine(
+                    $"API URL: {request.RequestUri}");
+
+                System.Diagnostics.Debug.WriteLine(
+                    $"Access Token Available: {!string.IsNullOrWhiteSpace(token)}");
+
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    request.Headers.Authorization =
+                        new AuthenticationHeaderValue("Bearer", token);
+                }
+            }
 
             if (!isAnonymous
                 && response.StatusCode == HttpStatusCode.Unauthorized
@@ -70,5 +89,6 @@ namespace WarehouseManagementSystemWeb.Auth
 
             return response;
         }
+
     }
 }

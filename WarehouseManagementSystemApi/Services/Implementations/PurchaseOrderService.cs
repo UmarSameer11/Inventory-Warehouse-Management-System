@@ -1,22 +1,27 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WarehouseManagementSystemApi.DTOs.PurchaseOrder;
 using WarehouseManagementSystemApi.Models.PurchaseOrder;
 using WarehouseManagementSystemApi.Repositories.Interfaces;
 using WarehouseManagementSystemApi.Services.Interfaces;
+using static WarehouseManagementSystemApi.DTOs.PurchaseOrder.PurchaseOrderForGrnDto;
 
 namespace WarehouseManagementSystemApi.Services.Implementations;
 
 public class PurchaseOrderService : IPurchaseOrderService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPurchaseOrderRepository _repository;
     private readonly IMapper _mapper;
 
     public PurchaseOrderService(
         IUnitOfWork unitOfWork,
+        IPurchaseOrderRepository repository,
         IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _repository = repository;
     }
 
     public async Task<PurchaseOrderListDto> CreateAsync(
@@ -76,4 +81,15 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task<PurchaseOrderForGrnDto?>
+             GetForGrnByNumberAsync(string purchaseOrderNumber)
+    {
+        if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
+            return null;
+
+        return await _repository.GetForGrnByNumberAsync(
+            purchaseOrderNumber.Trim());
+    }
 }
+
