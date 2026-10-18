@@ -7,7 +7,7 @@ namespace WarehouseManagementSystemWeb.Controllers.PurchaseOrder
 {
     public class PurchaseOrderController : Controller
     {
-        private readonly IPurchaseOrderService _purchaseOrderService;
+        private readonly IPurchaseOrderService _purchaseOrderService; 
 
         public PurchaseOrderController(IPurchaseOrderService purchaseOrderService)
         {
@@ -164,39 +164,5 @@ namespace WarehouseManagementSystemWeb.Controllers.PurchaseOrder
 
             return RedirectToAction(nameof(Index));
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetPurchaseOrderForGrn(
-     string purchaseOrderNumber)
-        {
-            if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
-            {
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "Purchase Order Number is required."
-                });
-            }
-
-            var purchaseOrder = await _purchaseOrderService
-                .GetForGrnByNumberAsync(purchaseOrderNumber);
-
-            if (purchaseOrder == null)
-            {
-                return NotFound(new
-                {
-                    success = false,
-                    message = "Purchase Order not found."
-                });
-            }
-
-            return Ok(new
-            {
-                success = true,
-                data = purchaseOrder
-            });
-        }
-
-
     }
 }

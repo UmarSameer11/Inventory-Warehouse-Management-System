@@ -2,7 +2,7 @@
 
 namespace WarehouseManagementSystemApi.Repositories.Interfaces
 {
-    public interface IPurchaseOrderRepository
+    public interface IGoodsReceiptRepository
     {
         public Task<PurchaseOrderForGrnDto?> GetForGrnByNumberAsync(string purchaseOrderNumber);
     }

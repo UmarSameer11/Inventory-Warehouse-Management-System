@@ -1,4 +1,295 @@
-@model WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder.PurchaseOrderCreateViewModel
+
+@using System.Globalization
+@using WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder
+
+@model PurchaseOrderCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Purchase Order";
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/PurchaseOrder/Create.css"
+          asp-append-version="true" />
+}
+
+<div class="po-page">
+
+    <div class="po-heading">
+        <div>
+            <span class="po-eyebrow">INVENTORY MANAGEMENT</span>
+            <h2>Create Purchase Order</h2>
+            <p>
+                Select a supplier and add the products your company
+                needs to purchase.
+            </p>
+        </div>
+
+        <a asp-controller="PurchaseOrder"
+           asp-action="Index"
+           class="po-back-btn">
+            <i class="bi bi-arrow-left"></i>
+            Back to List
+        </a>
+    </div>
+
+    <form asp-controller="PurchaseOrder"
+          asp-action="Create"
+          method="post"
+          id="purchaseOrderForm">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger po-validation-summary"></div>
+
+        <!-- PURCHASE ORDER INFORMATION -->
+        <section class="po-card">
+
+            <div class="po-card-header">
+                <div class="po-section-icon">
+                    <i class="bi bi-receipt"></i>
+                </div>
+
+                <div>
+                    <h5>Purchase Order Information</h5>
+                    <p>Enter the supplier and order details.</p>
+                </div>
+            </div>
+
+            <div class="po-card-body">
+                <div class="row g-3">
+
+                    <div class="col-md-6 col-lg-4">
+                        <label asp-for="SupplierId"
+                               class="form-label">
+                            Supplier <span class="required">*</span>
+                        </label>
+
+                        <select asp-for="SupplierId"
+                                asp-items="Model.Suppliers"
+                                class="form-select"
+                                required>
+                            <option value="">-- Select Supplier --</option>
+                        </select>
+
+                        <span asp-validation-for="SupplierId"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <label asp-for="OrderDate"
+                               class="form-label">
+                            Order Date <span class="required">*</span>
+                        </label>
+
+                        <input asp-for="OrderDate"
+                               type="date"
+                               class="form-control"
+                               value="@Model.OrderDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)"
+                               required />
+
+                        <span asp-validation-for="OrderDate"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <label asp-for="ExpectedDeliveryDate"
+                               class="form-label">
+                            Expected Delivery Date
+                        </label>
+
+                        <input asp-for="ExpectedDeliveryDate"
+                               type="date"
+                               class="form-control"
+                               value="@Model.ExpectedDeliveryDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)" />
+
+                        <span asp-validation-for="ExpectedDeliveryDate"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Remarks"
+                               class="form-label">
+                            Remarks
+                        </label>
+
+                        <textarea asp-for="Remarks"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter any additional instructions..."></textarea>
+
+                        <span asp-validation-for="Remarks"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ORDERED PRODUCTS -->
+        <section class="po-card">
+
+            <div class="po-card-header po-products-header">
+                <div class="po-title-group">
+                    <div class="po-section-icon product-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+
+                    <div>
+                        <h5>Purchase Order Products</h5>
+                        <p>Add all products required for this order.</p>
+                    </div>
+                </div>
+
+                <button type="button"
+                        id="addProductBtn"
+                        class="po-add-btn">
+                    <i class="bi bi-plus-circle"></i>
+                    Add Product
+                </button>
+            </div>
+
+            <div class="po-card-body">
+
+                <div class="po-table-wrapper">
+                    <table class="table po-table align-middle">
+                        <thead>
+                            <tr>
+                                <th style="min-width:260px;">Product</th>
+                                <th style="min-width:140px;">Quantity</th>
+                                <th style="min-width:160px;">Unit Price</th>
+                                <th style="min-width:160px;">Line Total</th>
+                                <th class="text-center" style="width:90px;">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="productRows">
+                            <!-- Rows are added by Create.js -->
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end">
+                                    <strong>Grand Total</strong>
+                                </td>
+                                <td>
+                                    <strong id="grandTotal">0.00</strong>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div id="productMessage"
+                     class="po-message"
+                     role="status"
+                     aria-live="polite">
+                    Add at least one product to your purchase order.
+                </div>
+
+                <div class="po-hint">
+                    <i class="bi bi-info-circle"></i>
+                    Add each required product with its ordered quantity
+                    and agreed unit price.
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ACTIONS -->
+        <div class="po-form-actions">
+
+            <a asp-controller="PurchaseOrder"
+               asp-action="Index"
+               class="po-cancel-btn">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    id="savePurchaseOrderBtn"
+                    class="po-save-btn">
+                <i class="bi bi-check2-circle"></i>
+                Save Purchase Order
+            </button>
+
+        </div>
+
+    </form>
+</div>
+
+<!-- TEMPLATE USED FOR EACH PRODUCT ROW -->
+<template id="productRowTemplate">
+    <tr class="po-product-row">
+
+        <td>
+            <select class="form-select product-select"
+                    name="Details[__index__].ProductId"
+                    required>
+                <option value="">-- Select Product --</option>
+                @foreach (var product in Model.ProductList)
+                {
+                    <option value="@product.Value">@product.Text</option>
+                }
+            </select>
+
+            <span class="text-danger product-error"></span>
+        </td>
+
+        <td>
+            <input type="number"
+                   class="form-control quantity-input"
+                   name="Details[__index__].Quantity"
+                   min="0.001"
+                   step="0.001"
+                   value="1"
+                   placeholder="Quantity"
+                   required />
+
+            <span class="text-danger quantity-error"></span>
+        </td>
+
+        <td>
+            <input type="number"
+                   class="form-control price-input"
+                   name="Details[__index__].UnitPrice"
+                   min="0.01"
+                   step="0.01"
+                   placeholder="Unit price"
+                   required />
+
+            <span class="text-danger price-error"></span>
+        </td>
+
+        <td>
+            <span class="line-total">0.00</span>
+        </td>
+
+        <td class="text-center">
+            <button type="button"
+                    class="po-remove-btn remove-product-btn"
+                    title="Remove product"
+                    aria-label="Remove product">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+
+    </tr>
+</template>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/PurchaseOrder/Create.js"
+            asp-append-version="true"></script>
+}
+
+
+@* @model WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder.PurchaseOrderCreateViewModel
 
 @{
     ViewData["Title"] = "Create Purchase Order";
@@ -82,4 +373,4 @@
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="~/js/PurchaseOrder/Create.js" asp-append-version="true"></script>
-}
+} *@

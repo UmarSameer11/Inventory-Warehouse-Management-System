@@ -14,36 +14,7 @@ public class PurchaseOrderController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] PurchaseOrderUpdateDto dto) { await _service.UpdateAsync(id, dto); return Ok(new { Message = "PurchaseOrder updated successfully." }); }
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id) { await _service.DeleteAsync(id); return Ok(new { Message = "PurchaseOrder deleted successfully." }); }
-
-
-    [HttpGet("by-number/{purchaseOrderNumber}")]
-    public async Task<IActionResult> GetForGrnByNumber(
-        string purchaseOrderNumber)
-    {
-        if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
-            return BadRequest(new
-            {
-                Success = false,
-                Message = "Purchase order number is required."
-            });
-
-        var purchaseOrder = await _service.GetForGrnByNumberAsync(
-            purchaseOrderNumber.Trim());
-
-        if (purchaseOrder == null)
-            return NotFound(new
-            {
-                Success = false,
-                Message = "Purchase order not found."
-            });
-
-        return Ok(new
-        {
-            Success = true,
-            Message = "Purchase order loaded successfully.",
-            Data = purchaseOrder
-        });
+    public async Task<IActionResult> Delete(int id) { await _service.DeleteAsync(id); return Ok(new { Message = "PurchaseOrder deleted successfully." }); 
     }
 
 }

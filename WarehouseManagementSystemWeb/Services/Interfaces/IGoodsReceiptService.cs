@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WarehouseManagementSystemWeb.Application.ViewModels.Common;
 using WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt;
+using WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder;
 
 namespace WarehouseManagementSystemWeb.Services.Interfaces
 {
@@ -20,5 +21,6 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
 
         /// <summary>GoodsReceipt options for the dropdowns of other forms.</summary>
         Task<List<SelectListItem>> GetDropdownAsync(int? includeId = null);
+        Task<PurchaseOrderForGrnViewModel?> GetForGrnByNumberAsync(string purchaseOrderNumber);
     }
 }

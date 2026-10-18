@@ -11,12 +11,12 @@ namespace WarehouseManagementSystemApi.Services.Implementations;
 public class PurchaseOrderService : IPurchaseOrderService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPurchaseOrderRepository _repository;
+    private readonly IGoodsReceiptRepository _repository;
     private readonly IMapper _mapper;
 
     public PurchaseOrderService(
         IUnitOfWork unitOfWork,
-        IPurchaseOrderRepository repository,
+        IGoodsReceiptRepository repository,
         IMapper mapper)
     {
         _unitOfWork = unitOfWork;
@@ -82,14 +82,6 @@ public class PurchaseOrderService : IPurchaseOrderService
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task<PurchaseOrderForGrnDto?>
-             GetForGrnByNumberAsync(string purchaseOrderNumber)
-    {
-        if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
-            return null;
-
-        return await _repository.GetForGrnByNumberAsync(
-            purchaseOrderNumber.Trim());
-    }
+    
 }
 

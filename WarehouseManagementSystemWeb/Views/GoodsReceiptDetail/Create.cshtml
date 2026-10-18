@@ -1,4 +1,4 @@
-@model WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceiptDetail.GoodsReceiptDetailCreateViewModel
+@* @model WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceiptDetail.GoodsReceiptDetailCreateViewModel
 
 @{
     ViewData["Title"] = "Create Goods Receipt Detail";
@@ -55,7 +55,7 @@
                             </select>
                             <span asp-validation-for="BatchId" class="text-danger small"></span>
                         </div> *@
-                        <div class="col-md-6">
+@*                         <div class="col-md-6">
                             <label asp-for="Quantity" class="form-label fw-semibold">Quantity <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-123"></i></span>
@@ -87,4 +87,4 @@
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="~/js/GoodsReceiptDetail/Create.js" asp-append-version="true"></script>
-}
+} *@ 

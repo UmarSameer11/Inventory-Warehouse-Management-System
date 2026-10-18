@@ -43,7 +43,7 @@ namespace WarehouseManagementSystemApi.Extensions
             services.AddScoped<IGoodsReceiptService, GoodsReceiptService>();
             services.AddScoped<IDispatchService, DispatchService>();
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
+            services.AddScoped<IGoodsReceiptRepository, GoodsReceiptRepository>();
 
             // Detail services
             services.AddScoped<IDispatchDetailService, DispatchDetailService>();

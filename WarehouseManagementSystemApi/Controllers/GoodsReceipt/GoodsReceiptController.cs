@@ -44,4 +44,33 @@ public class GoodsReceiptController : ControllerBase
             Message = "GoodsReceipt deleted successfully."
         });
     }
+
+    [HttpGet("by-number/{purchaseOrderNumber}")]
+    public async Task<IActionResult> GetForGrnByNumber(
+       string purchaseOrderNumber)
+    {
+        if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
+            return BadRequest(new
+            {
+                Success = false,
+                Message = "Purchase order number is required."
+            });
+
+        var purchaseOrder = await _service.GetForGrnByNumberAsync(
+            purchaseOrderNumber.Trim());
+
+        if (purchaseOrder == null)
+            return NotFound(new
+            {
+                Success = false,
+                Message = "Purchase order not found."
+            });
+
+        return Ok(new
+        {
+            Success = true,
+            Message = "Purchase order loaded successfully.",
+            Data = purchaseOrder
+        });
+    }
 }

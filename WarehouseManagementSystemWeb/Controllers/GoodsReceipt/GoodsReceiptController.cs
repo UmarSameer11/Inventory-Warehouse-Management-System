@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt;
 using WarehouseManagementSystemWeb.Common;
+using WarehouseManagementSystemWeb.Services.Implementations;
 using WarehouseManagementSystemWeb.Services.Interfaces;
 
 namespace WarehouseManagementSystemWeb.Controllers.GoodsReceipt
@@ -29,7 +30,7 @@ namespace WarehouseManagementSystemWeb.Controllers.GoodsReceipt
             {
                 ReceiptDate = DateTime.Today
             };
-
+            //await _goodsReceiptService.GetForGrnByNumberAsync(model);
             await _goodsReceiptService.PopulateDropdownsAsync(model);
 
             return View(model);
@@ -55,7 +56,14 @@ namespace WarehouseManagementSystemWeb.Controllers.GoodsReceipt
                 }
                 catch (HttpRequestException ex)
                 {
-                    ModelState.AddModelError(string.Empty, ApiErrorMessage.From(ex, "Failed to create goods receipt."));
+                    System.Diagnostics.Debug.WriteLine(
+                        $"GRN CREATE ERROR: {ex}");
+
+                    ModelState.AddModelError(
+                        string.Empty,
+                        ApiErrorMessage.From(
+                            ex,
+                            "Failed to create goods receipt."));
                 }
             }
 
@@ -163,6 +171,36 @@ namespace WarehouseManagementSystemWeb.Controllers.GoodsReceipt
             TempData["SuccessMessage"] = "Goods receipt deleted successfully.";
 
             return RedirectToAction(nameof(Index));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPurchaseOrderForGrn(string purchaseOrderNumber)
+        {
+            if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Purchase Order Number is required."
+                });
+            }
+
+            var purchaseOrder = await _goodsReceiptService
+                .GetForGrnByNumberAsync(purchaseOrderNumber);
+
+            if (purchaseOrder == null)
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Purchase Order not found."
+                });
+            }
+
+            return Ok(new
+            {
+                success = true,
+                data = purchaseOrder
+            });
         }
     }
 }

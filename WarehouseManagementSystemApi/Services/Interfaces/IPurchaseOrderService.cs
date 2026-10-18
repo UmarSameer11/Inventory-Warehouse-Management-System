@@ -8,7 +8,4 @@ public interface IPurchaseOrderService
     Task UpdateAsync(int id, PurchaseOrderUpdateDto dto);
     Task DeleteAsync(int id);
 
-    Task<PurchaseOrderForGrnDto?> GetForGrnByNumberAsync(
-           string purchaseOrderNumber);
-
 }

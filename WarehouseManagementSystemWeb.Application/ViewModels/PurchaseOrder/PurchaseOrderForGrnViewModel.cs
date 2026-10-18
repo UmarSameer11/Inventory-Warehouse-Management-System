@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder
+namespace WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder 
 {
         public class PurchaseOrderForGrnViewModel
-        {
+        { 
             public int PurchaseOrderId { get; set; }
 
             public string PurchaseOrderNumber { get; set; } = string.Empty;

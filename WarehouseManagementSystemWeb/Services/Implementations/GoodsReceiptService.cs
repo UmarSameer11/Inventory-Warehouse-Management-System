@@ -1,7 +1,9 @@
-using System.Net;
+
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net;
 using WarehouseManagementSystemWeb.Application.ViewModels.Common;
 using WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt;
+using WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder;
 using WarehouseManagementSystemWeb.Services.Interfaces;
 
 namespace WarehouseManagementSystemWeb.Services.Implementations
@@ -29,13 +31,15 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             try
             {
                 var response = await _apiService
-                    .GetAsync<ApiResponseViewModel<IEnumerable<GoodsReceiptListViewModel>>>(Endpoint);
+                    .GetAsync<ApiResponseViewModel<IEnumerable<GoodsReceiptListViewModel>>>(
+                        Endpoint);
 
-                return response?.Data ?? Enumerable.Empty<GoodsReceiptListViewModel>();
+                return response?.Data
+                    ?? Enumerable.Empty<GoodsReceiptListViewModel>();
             }
-            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            catch (HttpRequestException ex)
+                when (ex.StatusCode == HttpStatusCode.NotFound)
             {
-                // The API answers 404 when there are no goods receipt records yet.
                 return Enumerable.Empty<GoodsReceiptListViewModel>();
             }
         }
@@ -45,39 +49,67 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             try
             {
                 var response = await _apiService
-                    .GetByIdAsync<ApiResponseViewModel<GoodsReceiptUpdateViewModel>>(Endpoint, id);
+                    .GetByIdAsync<ApiResponseViewModel<GoodsReceiptUpdateViewModel>>(
+                        Endpoint,
+                        id);
 
                 return response?.Data;
             }
-            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            catch (HttpRequestException ex)
+                when (ex.StatusCode == HttpStatusCode.NotFound)
             {
                 return null;
             }
         }
 
-        public async Task<ApiResponseViewModel<object>?> CreateAsync(GoodsReceiptCreateViewModel model)
-            => await _apiService.PostAsync<GoodsReceiptCreateViewModel, ApiResponseViewModel<object>>(Endpoint, model);
+        public async Task<ApiResponseViewModel<object>?> CreateAsync(
+            GoodsReceiptCreateViewModel model)
+        {
+            return await _apiService
+                .PostAsync<GoodsReceiptCreateViewModel, ApiResponseViewModel<object>>(
+                    Endpoint,
+                    model);
+        }
 
-        public async Task<ApiResponseViewModel<object>?> UpdateAsync(GoodsReceiptUpdateViewModel model)
-            => await _apiService.PutAsync<GoodsReceiptUpdateViewModel, ApiResponseViewModel<object>>(
-                $"{Endpoint}/{model.GoodsReceiptId}", model);
+        public async Task<ApiResponseViewModel<object>?> UpdateAsync(
+            GoodsReceiptUpdateViewModel model)
+        {
+            return await _apiService
+                .PutAsync<GoodsReceiptUpdateViewModel, ApiResponseViewModel<object>>(
+                    $"{Endpoint}/{model.GoodsReceiptId}",
+                    model);
+        }
 
         public async Task<bool> DeleteAsync(int id)
-            => await _apiService.DeleteAsync($"{Endpoint}/{id}");
-
-        public async Task PopulateDropdownsAsync(GoodsReceiptCreateViewModel model)
         {
-            model.PurchaseOrders = await _purchaseOrderService.GetDropdownAsync();
-            model.Warehouses = await DropdownHelper.WarehousesAsync(_warehouseService, null);
+            return await _apiService.DeleteAsync($"{Endpoint}/{id}");
         }
 
-        public async Task PopulateDropdownsAsync(GoodsReceiptUpdateViewModel model)
+        public async Task PopulateDropdownsAsync(
+            GoodsReceiptCreateViewModel model)
         {
-            model.PurchaseOrders = await _purchaseOrderService.GetDropdownAsync(model.PurchaseOrderId);
-            model.Warehouses = await DropdownHelper.WarehousesAsync(_warehouseService, model.WarehouseId);
+            model.PurchaseOrders =
+                await _purchaseOrderService.GetDropdownAsync();
+
+            model.Warehouses =
+                await DropdownHelper.WarehousesAsync(_warehouseService, null);
         }
 
-        public async Task<List<SelectListItem>> GetDropdownAsync(int? includeId = null)
+        public async Task PopulateDropdownsAsync(
+            GoodsReceiptUpdateViewModel model)
+        {
+            model.PurchaseOrders =
+                await _purchaseOrderService.GetDropdownAsync(
+                    model.PurchaseOrderId);
+
+            model.Warehouses =
+                await DropdownHelper.WarehousesAsync(
+                    _warehouseService,
+                    model.WarehouseId);
+        }
+
+        public async Task<List<SelectListItem>> GetDropdownAsync(
+            int? includeId = null)
         {
             var items = await GetAllAsync();
 
@@ -89,6 +121,30 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                     Text = x.ReceiptNumber
                 })
                 .ToList();
+        }
+
+        public async Task<PurchaseOrderForGrnViewModel?> GetForGrnByNumberAsync(string purchaseOrderNumber)
+        {
+            if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
+            {
+                return null;
+            }
+
+            var endpoint =
+                $"{Endpoint}/by-number/{Uri.EscapeDataString(purchaseOrderNumber.Trim())}";
+
+            try
+            {
+                var response = await _apiService
+                    .GetAsync<ApiResponseViewModel<ApiResponseViewModel<PurchaseOrderForGrnViewModel>>>(endpoint);
+
+                return response?.Data?.Data;
+            }
+            catch (HttpRequestException ex)
+                when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
         }
     }
 }

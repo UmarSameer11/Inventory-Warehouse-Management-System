@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WarehouseManagementSystemWeb.Application.ViewModels.Common;
+using WarehouseManagementSystemWeb.Application.ViewModels.Product;
 using WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder;
 using WarehouseManagementSystemWeb.Services.Interfaces;
 
@@ -12,11 +13,13 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
 
         private readonly IApiService _apiService;
         private readonly ISupplierService _supplierService;
+        private readonly IProductService _productService;
 
-        public PurchaseOrderService(IApiService apiService, ISupplierService supplierService)
+        public PurchaseOrderService(IApiService apiService, ISupplierService supplierService, IProductService productService)
         {
             _apiService = apiService;
             _supplierService = supplierService;
+            _productService = productService;
         }
 
         public async Task<IEnumerable<PurchaseOrderListViewModel>> GetAllAsync()
@@ -63,13 +66,24 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         public async Task PopulateDropdownsAsync(PurchaseOrderCreateViewModel model)
         {
             model.Suppliers = await _supplierService.GetDropdownAsync();
+            var product = await _productService.GetAllAsync();
+            model.ProductList = product.Select(c => new SelectListItem
+            {
+                Value = c!.ProductId.ToString(),
+                Text = c!.ProductName,
+            }).ToList();
         }
+     
 
         public async Task PopulateDropdownsAsync(PurchaseOrderUpdateViewModel model)
         {
             model.Suppliers = await _supplierService.GetDropdownAsync(model.SupplierId);
         }
 
+        //public async Task PopulateDropdownsAsync(ProductCreateViewModel model)
+        //{
+        //   _productService.
+        //}
         public async Task<List<SelectListItem>> GetDropdownAsync(int? includeId = null)
         {
             var items = await GetAllAsync();
@@ -84,31 +98,24 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                 .ToList();
         }
 
-        public async Task<PurchaseOrderForGrnViewModel?> GetForGrnByNumberAsync(
-            string purchaseOrderNumber)
-        {
+        //public async Task<ProductCreateViewModel> GetDropdownForProductAsync()
+        //{
+        //    var product = await _productService.GetAllAsync();
 
-            if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
-                return null;
+        //    var result = new ProductCreateViewModel
+        //    {
+        //        ProductCategories = product.Select(c => new SelectListItem
+        //        {
+        //            Value = c!.ProductId.ToString(),
+        //            Text = c!.ProductName,
+        //        }).ToList()
 
-            var endpoint =
-                $"{Endpoint}/by-number/{Uri.EscapeDataString(purchaseOrderNumber.Trim())}";
+        //    };
 
-            try
-            {
-                var response = await _apiService
-                    .GetAsync<ApiResponseViewModel<PurchaseOrderForGrnViewModel>>(
-                        endpoint);
+        //    return result;
+        //}
 
-                return response?.Data;
-            }
-            catch (HttpRequestException ex)
-                when (ex.StatusCode == HttpStatusCode.NotFound)
-            {
-                return null;
-            }
 
-        }
     }
 }
 

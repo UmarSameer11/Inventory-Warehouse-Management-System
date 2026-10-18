@@ -54,7 +54,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
 
             return result;
         }
-
+     
         // The API answers 404 when the Category/UnitOfMeasure tables are empty; treat
         // that the same as an empty list instead of letting the Create/Update page crash.
         private async Task<List<ProductCategoryListViewModel?>> GetAllProductCategoriesAsync()
@@ -99,5 +99,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             var response = await _apiService.PutAsync<ProductUpdateViewModel, ApiResponseViewModel<object>>($"/api/Product/{model.ProductId}", model);
             return response;
         }
+
+     
     }
 }

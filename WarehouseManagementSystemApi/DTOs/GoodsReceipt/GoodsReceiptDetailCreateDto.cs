@@ -2,7 +2,7 @@
 {
     public class GoodsReceiptDetailCreateDto
     {
-        public int PurchaseOrderDetailId { get; set; }
+        public int PurchaseOrderDetailId { get; set; } 
         public int ProductId { get; set; }
         //public string BatchNumber { get; set; } = null!;
         public int BatchId { get; set; }

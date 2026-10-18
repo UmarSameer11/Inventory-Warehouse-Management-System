@@ -1,5 +1,6 @@
 using AutoMapper;
 using WarehouseManagementSystemApi.DTOs.GoodsReceipt;
+using WarehouseManagementSystemApi.DTOs.PurchaseOrder;
 using WarehouseManagementSystemApi.Models.GoodsReceipt;
 using WarehouseManagementSystemApi.Repositories.Interfaces;
 using WarehouseManagementSystemApi.Services.Interfaces;
@@ -9,13 +10,16 @@ namespace WarehouseManagementSystemApi.Services.Implementations;
 public class GoodsReceiptService : IGoodsReceiptService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IGoodsReceiptRepository _repository;
     private readonly IMapper _mapper;
 
     public GoodsReceiptService(
         IUnitOfWork unitOfWork,
+        IGoodsReceiptRepository repository,
         IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _repository = repository;
         _mapper = mapper;
     }
 
@@ -25,6 +29,13 @@ public class GoodsReceiptService : IGoodsReceiptService
         var goodsReceipt = _mapper.Map<GoodsReceipts>(dto);
 
         await _unitOfWork.GoodsReceipts.AddAsync(goodsReceipt);
+
+        foreach (var detail in goodsReceipt.Details)
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"PurchaseOrderDetailId: {detail.PurchaseOrderDetailId}, " +
+                $"ProductId: {detail.ProductId}");
+        }
         await _unitOfWork.SaveChangesAsync();
 
         return _mapper.Map<GoodsReceiptListDto>(goodsReceipt);
@@ -59,5 +70,25 @@ public class GoodsReceiptService : IGoodsReceiptService
         _unitOfWork.GoodsReceipts.Delete(goodsReceipt);
 
         await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task<PurchaseOrderForGrnDto?> GetForGrnByNumberAsync(
+     string purchaseOrderNumber)
+    {
+        if (string.IsNullOrWhiteSpace(purchaseOrderNumber))
+        {
+            throw new ArgumentException(
+                "Purchase order number is required.",
+                nameof(purchaseOrderNumber));
+        }
+
+        if (_repository == null)
+        {
+            throw new InvalidOperationException(
+                "GoodsReceipt repository is not initialized.");
+        }
+
+        return await _repository.GetForGrnByNumberAsync(
+            purchaseOrderNumber.Trim());
     }
 }
