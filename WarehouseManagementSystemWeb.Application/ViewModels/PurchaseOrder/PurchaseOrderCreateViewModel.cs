@@ -22,7 +22,7 @@ namespace WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder
 
         public string? Remarks { get; set; }
 
-        public List<PurchaseOrderDetailCreateViewModel> Products { get; set; }
+        public List<PurchaseOrderDetailCreateViewModel> Details { get; set; }
             = new();
 
         // Dropdown lookup
