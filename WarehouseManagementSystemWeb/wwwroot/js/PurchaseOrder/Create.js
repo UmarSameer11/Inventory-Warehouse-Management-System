@@ -25,18 +25,20 @@ document.addEventListener("DOMContentLoaded", function () {
         productMessage.classList.toggle("text-muted", !isError);
     }
 
-    function reindexRows() {
-        const rows = productRows.querySelectorAll(".po-product-row");
+ 
+function reindexRows() {
+    const rows = productRows.querySelectorAll(".po-product-row");
 
-        rows.forEach(function (row, index) {
-            row.querySelectorAll("[name]").forEach(function (input) {
-                input.name = input.name.replace(
-                    /Details\[\d+\]/,
-                    `Details[${index}]`
-                );
-            });
+    rows.forEach(function (row, index) {
+        row.querySelectorAll("[name]").forEach(function (input) {
+            input.name = input.name.replace(
+                /Details\[(?:__index__|\d+)\]/,
+                `Details[${index}]`
+            );
         });
-    }
+    });
+}
+
 
     function updateTotals() {
         const rows = productRows.querySelectorAll(".po-product-row");

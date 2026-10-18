@@ -5,7 +5,8 @@ namespace WarehouseManagementSystemApi.DTOs.PurchaseOrder
         public int SupplierId { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime? ExpectedDeliveryDate { get; set; }
+        public string PurchaseOrderNumber { get; set; } = null!;
         public string? Remarks { get; set; }
-        public List<PurchaseOrderDetailCreateDto> Details { get; set; } = new();
+        public List<PurchaseOrderDetailCreateDto> Details { get; set; } = new(); 
     }
 }

@@ -8,3 +8,4 @@ namespace WarehouseManagementSystemApi.DTOs.PurchaseOrder
         public decimal UnitPrice { get; set; }
     }
 }
+ 

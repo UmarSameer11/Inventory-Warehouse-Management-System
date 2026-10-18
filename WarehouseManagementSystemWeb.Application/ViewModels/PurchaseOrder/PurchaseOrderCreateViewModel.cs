@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder
@@ -11,17 +9,13 @@ namespace WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder
     public class PurchaseOrderCreateViewModel
     {
         public int PurchaseOrderId { get; set; }
-
         [Required]
         public int SupplierId { get; set; }
-
         [Required]
         public DateTime OrderDate { get; set; } = DateTime.Today;
-
+        public string PurchaseOrderNumber { get; set; } = null!;
         public DateTime? ExpectedDeliveryDate { get; set; }
-
         public string? Remarks { get; set; }
-
         public List<PurchaseOrderDetailCreateViewModel> Details { get; set; }
             = new();
 
@@ -42,12 +36,6 @@ namespace WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder
 
         [Range(0.01, double.MaxValue)]
         public decimal UnitPrice { get; set; }
-  
-        //public string PurchaseOrderNumber { get; set; } = null!;
-        //public int SupplierId { get; set; }
-        //public DateTime OrderDate { get; set; }
-        //public string Status { get; set; } = null!;
 
-        //public List<SelectListItem> Suppliers { get; set; } = new();
     }
 }
