@@ -1,18 +1,61 @@
+
 document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("poSearch");
+    const statusFilter = document.getElementById("statusFilter");
+    const rowsContainer = document.getElementById("purchaseOrderRows");
+    const visibleOrders = document.getElementById("visibleOrders");
+    const noResults = document.getElementById("poNoResults");
 
-    const searchInput = document.getElementById("purchaseOrderSearch");
-    const table = document.getElementById("purchaseOrderTable");
+    if (!searchInput || !statusFilter || !rowsContainer) {
+        return;
+    }
 
-    if (!searchInput || !table) return;
+    function filterPurchaseOrders() {
+        const searchText = searchInput.value
+            .trim()
+            .toLowerCase();
 
-    searchInput.addEventListener("keyup", function () {
-        const searchValue = this.value.toLowerCase().trim();
+        const selectedStatus = statusFilter.value
+            .trim()
+            .toLowerCase();
 
-        table.querySelectorAll("tbody tr").forEach(function (row) {
-            row.style.display =
-                row.textContent.toLowerCase().includes(searchValue) ? "" : "none";
+        const rows = Array.from(
+            rowsContainer.querySelectorAll(".po-list-row")
+        );
+
+        let visibleCount = 0;
+
+        rows.forEach(function (row) {
+            const searchableText = row.dataset.search || "";
+            const status = row.dataset.status || "";
+
+            const matchesSearch =
+                searchableText.includes(searchText);
+
+            const matchesStatus =
+                !selectedStatus || status === selectedStatus;
+
+            const shouldShow = matchesSearch && matchesStatus;
+
+            row.hidden = !shouldShow;
+
+            if (shouldShow) {
+                visibleCount++;
+            }
         });
-    });
 
-    // Success / error toasts are shown by ~/js/Alert/showSuccessToast.js (loaded in the layout).
+        if (visibleOrders) {
+            visibleOrders.textContent = visibleCount;
+        }
+
+        if (noResults) {
+            noResults.hidden =
+                rows.length === 0 || visibleCount > 0;
+        }
+    }
+
+    searchInput.addEventListener("input", filterPurchaseOrders);
+    statusFilter.addEventListener("change", filterPurchaseOrders);
+
+    filterPurchaseOrders();
 });

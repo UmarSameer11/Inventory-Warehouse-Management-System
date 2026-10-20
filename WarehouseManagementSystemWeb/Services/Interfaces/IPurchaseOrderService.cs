@@ -20,8 +20,6 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
 
         /// <summary>PurchaseOrder options for the dropdowns of other forms.</summary>
         Task<List<SelectListItem>> GetDropdownAsync(int? includeId = null);
-        //Task PopulateDropdownsAsync(ProductCreateViewModel model);
-        //Task<Task<ProductCreateViewModel>> GetDropdownForProductAsync();
 
     }
 }

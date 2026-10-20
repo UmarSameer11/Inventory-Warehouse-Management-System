@@ -1,90 +1,389 @@
-@model WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder.PurchaseOrderUpdateViewModel
+
+@using System.Globalization
+@using WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder
+
+@model PurchaseOrderUpdateViewModel
 
 @{
     ViewData["Title"] = "Update Purchase Order";
 }
 
-<div class="container-fluid px-4 py-4">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/PurchaseOrder/Update.css"
+          asp-append-version="true" />
+}
+
+<div class="po-page">
+
+    <div class="po-heading">
         <div>
-            <h3 class="fw-bold mb-1">Update Purchase Order</h3>
-            <p class="text-muted mb-0">Update purchase order information.</p>
+            <span class="po-eyebrow">INVENTORY MANAGEMENT</span>
+            <h2>Update Purchase Order</h2>
+            <p>
+                Update purchase order information and manage its products.
+            </p>
         </div>
-        <a asp-controller="PurchaseOrder" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+
+        <a asp-controller="PurchaseOrder"
+           asp-action="Index"
+           class="po-back-btn">
+            <i class="bi bi-arrow-left"></i>
+            Back to List
+        </a>
     </div>
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white border-bottom py-3">
-            <div class="d-flex align-items-center gap-3">
-                <div class="update-icon"><i class="bi bi-cart-plus"></i></div>
+    <form asp-controller="PurchaseOrder"
+          asp-action="Edit"
+          asp-route-id="@Model.PurchaseOrderId"
+          method="post"
+          id="purchaseOrderForm">
+
+        @Html.AntiForgeryToken()
+
+        <input asp-for="PurchaseOrderId" type="hidden" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger po-validation-summary"></div>
+
+        <!-- PURCHASE ORDER INFORMATION -->
+        <section class="po-card">
+
+            <div class="po-card-header">
+                <div class="po-section-icon">
+                    <i class="bi bi-receipt"></i>
+                </div>
+
                 <div>
-                    <h5 class="fw-semibold mb-1">Purchase Order Information</h5>
-                    <span class="text-muted small">Modify the purchase order information below.</span>
+                    <h5>Purchase Order Information</h5>
+                    <p>Update supplier and order details.</p>
                 </div>
             </div>
+
+            <div class="po-card-body">
+                <div class="row g-3">
+
+                    <div class="col-md-6 col-lg-4">
+                        <label asp-for="SupplierId" class="form-label">
+                            Supplier <span class="required">*</span>
+                        </label>
+
+                        <select asp-for="SupplierId"
+                                asp-items="Model.Suppliers"
+                                class="form-select"
+                                required>
+                            <option value="">-- Select Supplier --</option>
+                        </select>
+
+                        <span asp-validation-for="SupplierId"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <label asp-for="PurchaseOrderNumber"
+                               class="form-label">
+                            Purchase Order Number
+                        </label>
+
+                        <input asp-for="PurchaseOrderNumber"
+                               class="form-control"
+                               readonly />
+
+                        <span asp-validation-for="PurchaseOrderNumber"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <label asp-for="OrderDate" class="form-label">
+                            Order Date <span class="required">*</span>
+                        </label>
+
+                        <input asp-for="OrderDate"
+                               type="date"
+                               class="form-control"
+                               value="@Model.OrderDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)"
+                               required />
+
+                        <span asp-validation-for="OrderDate"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <label asp-for="ExpectedDeliveryDate"
+                               class="form-label">
+                            Expected Delivery Date
+                        </label>
+
+                        <input asp-for="ExpectedDeliveryDate"
+                               type="date"
+                               class="form-control"
+                               value="@Model.ExpectedDeliveryDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)" />
+
+                        <span asp-validation-for="ExpectedDeliveryDate"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Remarks" class="form-label">
+                            Remarks
+                        </label>
+
+                        <textarea asp-for="Remarks"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter additional instructions..."></textarea>
+
+                        <span asp-validation-for="Remarks"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ORDERED PRODUCTS -->
+        <section class="po-card">
+
+            <div class="po-card-header po-products-header">
+                <div class="po-title-group">
+                    <div class="po-section-icon product-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+
+                    <div>
+                        <h5>Purchase Order Products</h5>
+                        <p>Edit existing products or add new products.</p>
+                    </div>
+                </div>
+
+                <button type="button"
+                        id="addProductBtn"
+                        class="po-add-btn">
+                    <i class="bi bi-plus-circle"></i>
+                    Add Product
+                </button>
+            </div>
+
+            <div class="po-card-body">
+
+                <div class="po-table-wrapper">
+                    <table class="table po-table align-middle">
+                        <thead>
+                            <tr>
+                                <th style="min-width:260px;">Product</th>
+                                <th style="min-width:140px;">Quantity</th>
+                                <th style="min-width:160px;">Unit Price</th>
+                                <th style="min-width:160px;">Line Total</th>
+                                <th class="text-center" style="width:90px;">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="productRows">
+
+                            @if (Model.Details != null)
+                            {
+                                @for (var i = 0; i < Model.Details.Count; i++)
+                                {
+                                    var detail = Model.Details[i];
+
+                                    <tr class="po-product-row">
+
+                                        <td>
+                                            <input type="hidden"
+                                                   class="detail-id"
+                                                   name="Details[@i].PurchaseOrderDetailId"
+                                                   value="@detail.PurchaseOrderDetailId" />
+
+                                            <select class="form-select product-select"
+                                                    name="Details[@i].ProductId"
+                                                    required>
+                                                <option value="">-- Select Product --</option>
+
+                                                @foreach (var product in Model.ProductList)
+                                                {
+                                                    if (product.Value == detail.ProductId.ToString())
+                                                    {
+                                                        <option value="@product.Value" selected>
+                                                            @product.Text
+                                                        </option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@product.Value">
+                                                            @product.Text
+                                                        </option>
+                                                    }
+                                                }
+                                            </select>
+
+                                            <span class="text-danger product-error"></span>
+                                        </td>
+
+                                        <td>
+                                            <input type="number"
+                                                   class="form-control quantity-input"
+                                                   name="Details[@i].Quantity"
+                                                   value="@detail.Quantity.ToString("0.###", CultureInfo.InvariantCulture)"
+                                                   min="0.001"
+                                                   step="0.001"
+                                                   required />
+
+                                            <span class="text-danger quantity-error"></span>
+                                        </td>
+
+                                        <td>
+                                            <input type="number"
+                                                   class="form-control price-input"
+                                                   name="Details[@i].UnitPrice"
+                                                   value="@detail.UnitPrice.ToString("0.00", CultureInfo.InvariantCulture)"
+                                                   min="0.01"
+                                                   step="0.01"
+                                                   required />
+
+                                            <span class="text-danger price-error"></span>
+                                        </td>
+
+                                        <td>
+                                            <span class="line-total">0.00</span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <button type="button"
+                                                    class="po-remove-btn remove-product-btn"
+                                                    title="Remove product"
+                                                    aria-label="Remove product">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end">
+                                    <strong>Grand Total</strong>
+                                </td>
+                                <td>
+                                    <strong id="grandTotal">0.00</strong>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div id="productMessage"
+                     class="po-message"
+                     role="status"
+                     aria-live="polite">
+                    Review the existing products before updating the order.
+                </div>
+
+                <div class="po-hint">
+                    <i class="bi bi-info-circle"></i>
+                    Existing products are loaded from this purchase order.
+                    New rows will be added when you select Add Product.
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ACTIONS -->
+        <div class="po-form-actions">
+
+            <a asp-controller="PurchaseOrder"
+               asp-action="Index"
+               class="po-cancel-btn">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    id="savePurchaseOrderBtn"
+                    class="po-save-btn">
+                <i class="bi bi-check2-circle"></i>
+                Update Purchase Order
+            </button>
+
         </div>
 
-        <div class="card-body p-4">
-            <form asp-controller="PurchaseOrder" asp-action="Update" method="post" id="purchaseOrderUpdateForm">
-                @Html.AntiForgeryToken()
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger validation-summary" role="alert"></div>
-                <div class="form-section">
-                    <div class="section-heading mb-4">
-                        <h6 class="fw-bold mb-1">Purchase Order Details</h6>
-                        <p class="text-muted small mb-0">Fields marked with <span class="text-danger">*</span> are required.</p>
-                    </div>
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Purchase Order ID</label>
-                            <input asp-for="PurchaseOrderId" class="form-control readonly-field" readonly />
-                        </div>
-                        <div class="col-md-8 d-none d-md-block"></div>
-                        <div class="col-md-6">
-                            <label asp-for="PurchaseOrderNumber" class="form-label fw-semibold">Purchase Order Number <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
-                                <input asp-for="PurchaseOrderNumber" type="text" class="form-control" placeholder="Enter purchase order number" autocomplete="off" />
-                            </div>
-                            <span asp-validation-for="PurchaseOrderNumber" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="SupplierId" class="form-label fw-semibold">Supplier <span class="text-danger">*</span></label>
-                            <select asp-for="SupplierId" asp-items="Model.Suppliers" class="form-select">
-                                <option value="">-- Select Supplier --</option>
-                            </select>
-                            <span asp-validation-for="SupplierId" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="OrderDate" class="form-label fw-semibold">Order Date <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
-                                <input asp-for="OrderDate" type="date" class="form-control" />
-                            </div>
-                            <span asp-validation-for="OrderDate" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="Status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-flag"></i></span>
-                                <input asp-for="Status" type="text" class="form-control" placeholder="e.g. Pending" autocomplete="off" list="statusOptions" />
-                                <datalist id="statusOptions"><option value="Pending"></option><option value="Approved"></option><option value="Completed"></option><option value="Cancelled"></option></datalist>
-                            </div>
-                            <span asp-validation-for="Status" class="text-danger small"></span>
-                        </div>
-                    </div>
-                </div>
-                <hr class="my-4" />
-                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
-                    <a asp-controller="PurchaseOrder" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-x-lg me-2"></i>Cancel</a>
-                    <button type="submit" class="btn btn-primary px-4" id="updatePurchaseOrderBtn"><i class="bi bi-check-lg me-2"></i>Update Purchase Order</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    </form>
 </div>
 
-@section Styles { <link rel="stylesheet" href="~/css/PurchaseOrder/Update.css" asp-append-version="true" /> }
+<!-- TEMPLATE FOR NEW PRODUCT ROWS -->
+<template id="productRowTemplate">
+    <tr class="po-product-row">
+
+        <td>
+            <input type="hidden"
+                   class="detail-id"
+                   name="Details[__index__].PurchaseOrderDetailId"
+                   value="0" />
+
+            <select class="form-select product-select"
+                    name="Details[__index__].ProductId"
+                    required>
+                <option value="">-- Select Product --</option>
+
+                @foreach (var product in Model.ProductList)
+                {
+                    <option value="@product.Value">@product.Text</option>
+                }
+            </select>
+
+            <span class="text-danger product-error"></span>
+        </td>
+
+        <td>
+            <input type="number"
+                   class="form-control quantity-input"
+                   name="Details[__index__].Quantity"
+                   min="0.001"
+                   step="0.001"
+                   value="1"
+                   required />
+
+            <span class="text-danger quantity-error"></span>
+        </td>
+
+        <td>
+            <input type="number"
+                   class="form-control price-input"
+                   name="Details[__index__].UnitPrice"
+                   min="0.01"
+                   step="0.01"
+                   placeholder="Unit price"
+                   required />
+
+            <span class="text-danger price-error"></span>
+        </td>
+
+        <td>
+            <span class="line-total">0.00</span>
+        </td>
+
+        <td class="text-center">
+            <button type="button"
+                    class="po-remove-btn remove-product-btn"
+                    title="Remove product"
+                    aria-label="Remove product">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+
+    </tr>
+</template>
+
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script src="~/js/PurchaseOrder/Update.js" asp-append-version="true"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/PurchaseOrder/Update.js"
+            asp-append-version="true"></script>
 }
