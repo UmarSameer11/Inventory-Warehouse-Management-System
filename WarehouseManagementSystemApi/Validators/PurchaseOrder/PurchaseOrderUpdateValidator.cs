@@ -39,8 +39,8 @@ namespace WarehouseManagementSystemApi.Validators.PurchaseOrder
                 .Must(d => d.Select(i => i.ProductId).Distinct().Count() == d.Count)
                 .WithMessage("The same product cannot be added more than once.");
 
-            RuleForEach(x => x.Details)
-                .SetValidator(new PurchaseOrderDetailCreateValidator());
+            //RuleForEach(x => x.Details)
+            //    .SetValidator(new PurchaseOrderDetailCreateValidator());
         }
     }
 }

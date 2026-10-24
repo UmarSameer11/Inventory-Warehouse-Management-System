@@ -107,6 +107,16 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
         {
             model.Suppliers = await _supplierService
                 .GetDropdownAsync(model.SupplierId);
+
+            var products = await _productService.GetAllAsync();
+
+            model.ProductList = products
+                .Select(product => new SelectListItem
+                {
+                    Value = product!.ProductId.ToString(),
+                    Text = product.ProductName
+                })
+                .ToList();
         }
 
         public async Task<List<SelectListItem>> GetDropdownAsync(
@@ -123,5 +133,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                 })
                 .ToList();
         }
+
+      
     }
 }

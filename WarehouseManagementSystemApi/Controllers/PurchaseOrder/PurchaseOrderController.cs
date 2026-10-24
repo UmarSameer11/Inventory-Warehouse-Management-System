@@ -5,7 +5,7 @@ using WarehouseManagementSystemApi.Services.Interfaces;
 
 namespace WarehouseManagementSystemApi.Controllers.PurchaseOrder;
 
-[Route("api/[controller]")]
+[Route("api/[controller]")] 
 [ApiController]
 public class PurchaseOrderController : ControllerBase
 {
@@ -32,7 +32,7 @@ public class PurchaseOrderController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        return Ok(await _service.GetByIdAsync(id));
+        return Ok(await _service.GetPoWithProductDetail(id));
     }
 
     [HttpPut("{id:int}")]
@@ -58,4 +58,11 @@ public class PurchaseOrderController : ControllerBase
             Message = "PurchaseOrder deleted successfully."
         });
     }
+
+    //[HttpGet("{id}")]
+    //public async Task<IActionResult> IdForUpdation(int id)
+    //{
+    //    var po = await _service.GetPoWithProductDetail(id);
+    //    return Ok(po);
+    //}
 }

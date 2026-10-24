@@ -7,5 +7,6 @@ public interface IPurchaseOrderService
     Task<PurchaseOrderListDto> GetByIdAsync(int id);
     Task UpdateAsync(int id, PurchaseOrderUpdateDto dto);
     Task DeleteAsync(int id);
+    Task<PurchaseOrderUpdateDto?> GetPoWithProductDetail(int id);
 
 }

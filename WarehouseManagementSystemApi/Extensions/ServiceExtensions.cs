@@ -16,6 +16,7 @@ namespace WarehouseManagementSystemApi.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IApiPerformanceRepository, ApiPerformanceRepository>();
+            services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
 
             // Services
             services.AddScoped<IEmployeeService, EmployeeService>();

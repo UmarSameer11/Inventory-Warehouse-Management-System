@@ -88,7 +88,7 @@ namespace WarehouseManagementSystemWeb.Controllers.PurchaseOrder
             {
                 try
                 {
-                    var response = await _purchaseOrderService.UpdateAsync(model);
+                    var response = await _purchaseOrderService.UpdateAsync(model); 
 
                     if (response?.Success == true)
                     {
@@ -164,5 +164,6 @@ namespace WarehouseManagementSystemWeb.Controllers.PurchaseOrder
 
             return RedirectToAction(nameof(Index));
         }
+
     }
 }
