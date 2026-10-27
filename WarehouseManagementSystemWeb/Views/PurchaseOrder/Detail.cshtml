@@ -1,71 +1,290 @@
-@model WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder.PurchaseOrderUpdateViewModel
+@using System.Globalization
+@using WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder
+
+@model PurchaseOrderDetailViewModel
 
 @{
     ViewData["Title"] = "Purchase Order Details";
+
+    var culture = CultureInfo.GetCultureInfo("en-PK");
+    var grandTotal = Model.Details.Sum(x => x.LineTotal);
 }
 
-<div class="container-fluid px-4 py-4">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/PurchaseOrder/Detail.css"
+          asp-append-version="true" />
+}
+
+<div class="po-page">
+
+    <!-- PAGE HEADER -->
+    <div class="po-heading">
         <div>
-            <h3 class="fw-bold mb-1">Purchase Order Details</h3>
-            <p class="text-muted mb-0">View complete purchase order information.</p>
+            <span class="po-eyebrow">INVENTORY MANAGEMENT</span>
+
+            <h2>Purchase Order Details</h2>
+
+            <p>
+                View complete purchase order information and ordered products.
+            </p>
         </div>
-        <div class="d-flex gap-2">
-            <a asp-controller="PurchaseOrder" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
-            <a asp-controller="PurchaseOrder" asp-action="Update" asp-route-id="@Model.PurchaseOrderId" class="btn btn-primary px-4"><i class="bi bi-pencil-square me-2"></i>Edit</a>
+
+        <div class="po-heading-actions">
+            <a asp-controller="PurchaseOrder"
+               asp-action="Index"
+               class="po-back-btn">
+                <i class="bi bi-arrow-left"></i>
+                Back to List
+            </a>
+
+            <a asp-controller="PurchaseOrder"
+               asp-action="Update"
+               asp-route-id="@Model.PurchaseOrderId"
+               class="po-edit-btn">
+                <i class="bi bi-pencil-square"></i>
+                Edit Purchase Order
+            </a>
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white border-bottom py-3">
-            <div class="d-flex align-items-center gap-3">
-                <div class="detail-icon"><i class="bi bi-cart-plus"></i></div>
+    <!-- PURCHASE ORDER HEADER -->
+    <section class="po-card">
+
+        <div class="po-card-header">
+
+            <div class="po-section-icon">
+                <i class="bi bi-receipt"></i>
+            </div>
+
+            <div>
+                <h5>Purchase Order Information</h5>
+                <p>Basic information about this purchase order.</p>
+            </div>
+
+            <div class="po-status">
+                <span class="po-status-label">PO ID</span>
+                <span class="po-status-value">#@Model.PurchaseOrderId</span>
+            </div>
+
+        </div>
+
+        <div class="po-card-body">
+
+            <div class="row g-4">
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label">Purchase Order Number</label>
+                    <div class="po-detail-value">
+                        <i class="bi bi-hash"></i>
+                        @Model.PurchaseOrderNumber
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label">Supplier</label>
+                    <div class="po-detail-value">
+                        <i class="bi bi-building"></i>
+                        @Model.SupplierName
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label">Order Date</label>
+                    <div class="po-detail-value">
+                        <i class="bi bi-calendar3"></i>
+                        @Model.OrderDate.ToString("dd MMM yyyy")
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label">Expected Delivery Date</label>
+                    <div class="po-detail-value">
+                        <i class="bi bi-calendar-check"></i>
+
+                        @(Model.ExpectedDeliveryDate.HasValue
+                            ? Model.ExpectedDeliveryDate.Value.ToString("dd MMM yyyy")
+                            : "Not specified")
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label">Order Status</label>
+                    <div class="po-detail-value">
+                        <i class="bi bi-info-circle"></i>
+                        @(string.IsNullOrWhiteSpace(Model.Status.ToString())
+                            ? "Not specified"
+                            : Model.Status.ToString())
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Remarks</label>
+                    <div class="po-detail-value po-remarks">
+                        @(string.IsNullOrWhiteSpace(Model.Remarks)
+                            ? "No remarks available."
+                            : Model.Remarks)
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- PURCHASE ORDER PRODUCTS -->
+    <section class="po-card">
+
+        <div class="po-card-header po-products-header">
+
+            <div class="po-title-group">
+
+                <div class="po-section-icon product-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+
                 <div>
-                    <h5 class="fw-semibold mb-1">Purchase Order Information</h5>
-                    <span class="text-muted small">Complete information and current status.</span>
+                    <h5>Purchase Order Products</h5>
+                    <p>All products included in this purchase order.</p>
                 </div>
+
             </div>
+
+            <div class="po-product-count">
+                <i class="bi bi-boxes"></i>
+                @Model.Details.Count Product(s)
+            </div>
+
         </div>
 
-        <div class="card-body p-4">
-            <div class="form-section">
-                <div class="section-heading mb-4">
-                    <h6 class="fw-bold mb-1">Purchase Order Details</h6>
-                    <p class="text-muted small mb-0">Basic information about this record.</p>
+        <div class="po-card-body">
+
+            @if (Model.Details.Any())
+            {
+                <div class="po-table-wrapper">
+
+                    <table class="table po-table align-middle">
+
+                        <thead>
+                            <tr>
+                                <th style="width:80px;">Sr#</th>
+                                <th>Product</th>
+                                @* <th>Product ID</th> *@
+                                <th class="text-end">Quantity</th>
+                                <th class="text-end">Unit Price</th>
+                                <th class="text-end">Line Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                var rowNumber = 1;
+                            }
+
+                            @foreach (var item in Model.Details)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="po-row-number">
+                                            @rowNumber
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="po-product-name">
+                                            <span class="po-product-icon">
+                                                <i class="bi bi-box"></i>
+                                            </span>
+
+                                            <span>@item.ProductName</span>
+                                        </div>
+                                    </td>
+
+                                  @*   <td>
+                                        <span class="po-product-id">
+                                            #@item.ProductId
+                                        </span>
+                                    </td> *@
+
+                                    <td class="text-end">
+                                        @item.Quantity.ToString("N3", culture)
+                                    </td>
+
+                                    <td class="text-end">
+                                        @item.UnitPrice.ToString("N2", culture)
+                                    </td>
+
+                                    <td class="text-end fw-semibold">
+                                        @item.LineTotal.ToString("N2", culture)
+                                    </td>
+                                </tr>
+
+                                rowNumber++;
+                            }
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-end">
+                                    Grand Total
+                                </td>
+
+                                <td class="text-end po-grand-total">
+                                    @grandTotal.ToString("N2", culture)
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
                 </div>
+            }
+            else
+            {
+                <div class="po-empty-state">
+                    <i class="bi bi-inbox"></i>
 
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Purchase Order ID</label>
-                        <div class="detail-value">@Model.PurchaseOrderId</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Purchase Order Number</label>
-                        <div class="detail-value">@Model.PurchaseOrderNumber</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Supplier</label>
-                        <div class="detail-value">@(Model.Suppliers.FirstOrDefault(x => x.Value == Model.SupplierId.ToString())?.Text ?? ("#" + Model.SupplierId))</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Order Date</label>
-                        <div class="detail-value">@Model.OrderDate.ToString("dd MMM yyyy")</div>
-                    </div>
-                    @* <div class="col-md-6">
-                        <label class="form-label fw-semibold">Status</label>
-                        <div class="detail-value"><span class="status-badge status-pill" data-status="@Model.Status.ToLowerInvariant()">@Model.Status</span></div>
-                    </div> *@
+                    <h6>No Products Found</h6>
+
+                    <p>
+                        No product details are available for this purchase order.
+                    </p>
                 </div>
-            </div>
+            }
 
-            <hr class="my-4" />
-
-            <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
-                <a asp-controller="PurchaseOrder" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
-                <a asp-controller="PurchaseOrder" asp-action="Update" asp-route-id="@Model.PurchaseOrderId" class="btn btn-primary px-4"><i class="bi bi-pencil-square me-2"></i>Edit Purchase Order</a>
-            </div>
         </div>
+
+    </section>
+
+    <!-- FOOTER ACTIONS -->
+    <div class="po-form-actions">
+
+        <a asp-controller="PurchaseOrder"
+           asp-action="Index"
+           class="po-cancel-btn">
+            <i class="bi bi-arrow-left"></i>
+            Back to List
+        </a>
+
+        <a asp-controller="PurchaseOrder"
+           asp-action="Update"
+           asp-route-id="@Model.PurchaseOrderId"
+           class="po-save-btn">
+            <i class="bi bi-pencil-square"></i>
+            Edit Purchase Order
+        </a>
+
     </div>
+
 </div>
 
-@section Styles { <link rel="stylesheet" href="~/css/PurchaseOrder/Detail.css" asp-append-version="true" /> }
+    
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/js/PurchaseOrder/Detail.js"
+            asp-append-version="true"></script>
+}

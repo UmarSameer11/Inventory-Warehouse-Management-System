@@ -8,7 +8,7 @@ namespace WarehouseManagementSystemWeb.Controllers.PurchaseOrder
     public class PurchaseOrderController : Controller
     {
         private readonly IPurchaseOrderService _purchaseOrderService; 
-
+         
         public PurchaseOrderController(IPurchaseOrderService purchaseOrderService)
         {
             _purchaseOrderService = purchaseOrderService;
@@ -112,16 +112,14 @@ namespace WarehouseManagementSystemWeb.Controllers.PurchaseOrder
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
-            var model = await _purchaseOrderService.GetByIdAsync(id);
+            var model = await _purchaseOrderService.GetDetailByIdAsync(id);
 
             if (model == null)
             {
                 TempData["ErrorMessage"] = "Purchase order not found.";
                 return RedirectToAction(nameof(Index));
             }
-
-            // Lets the page show names instead of raw ids.
-            await _purchaseOrderService.PopulateDropdownsAsync(model);
+            
 
             return View(model);
         }

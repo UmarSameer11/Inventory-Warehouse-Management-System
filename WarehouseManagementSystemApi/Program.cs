@@ -17,12 +17,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices();
+builder.Services.AddScoped<IAuthService, AuthService>();
+//builder.Services.AddScoped<WarehouseManagementSystemApi.Services.Interfaces.IAuthService, WarehouseManagementSystemApi.Services.Implementations.AuthService>();
 
 // ---- Authentication & authorization (Identity + JWT + sessions + rate limiting) ----
 builder.Services.AddIdentityServices();                              // must come before AddJwtAuthentication
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthRateLimiting(builder.Configuration);
-
+//builder.Services.AddScoped<ValidationFilter>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
@@ -76,6 +78,7 @@ builder.Host.UseSerilog((context, configuration) =>
 });
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

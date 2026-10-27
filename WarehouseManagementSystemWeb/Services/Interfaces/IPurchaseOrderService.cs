@@ -9,6 +9,7 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
     {
         Task<IEnumerable<PurchaseOrderListViewModel>> GetAllAsync();
         Task<PurchaseOrderUpdateViewModel?> GetByIdAsync(int id);
+        Task<PurchaseOrderDetailViewModel?> GetDetailByIdAsync(int id);
         Task<ApiResponseViewModel<object>?> CreateAsync(PurchaseOrderCreateViewModel model);
         Task<ApiResponseViewModel<object>?> UpdateAsync(PurchaseOrderUpdateViewModel model);
         Task<bool> DeleteAsync(int id);

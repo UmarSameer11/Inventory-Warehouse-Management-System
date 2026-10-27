@@ -57,66 +57,6 @@ public class PurchaseOrderService : IPurchaseOrderService
         return _mapper.Map<PurchaseOrderListDto>(purchaseOrder);
     }
 
-    //public async Task UpdateAsync(
-    //int id,
-    //PurchaseOrderUpdateDto dto)
-    //{
-    //    var purchaseOrder =
-    //        await _purchase.GetPurchaseOrderForUpdation(id)
-    //        ?? throw new KeyNotFoundException(
-    //            "Purchase Order not found.");
-
-    //    if (dto.PurchaseOrderId != id)
-    //    {
-    //        throw new ArgumentException(
-    //            "Purchase Order ID does not match.");
-    //    }
-
-    //    // Update Purchase Order header
-    //    purchaseOrder.SupplierId = dto.SupplierId;
-    //    purchaseOrder.OrderDate = dto.OrderDate;
-    //    purchaseOrder.ExpectedDeliveryDate = dto.ExpectedDeliveryDate;
-    //    purchaseOrder.Remarks = dto.Remarks;
-
-    //    // Update existing details or add new details
-    //    foreach (var detailDto in dto.Details)
-    //    {
-    //        var existingDetail = purchaseOrder.Details
-    //            .FirstOrDefault(d =>
-    //                d.PurchaseOrderDetailId ==
-    //                detailDto.PurchaseOrderDetailId);
-
-    //        if (existingDetail != null)
-    //        {
-    //            // Update existing detail instead of deleting it
-    //            existingDetail.ProductId = detailDto.ProductId;
-    //            existingDetail.Quantity = detailDto.Quantity;
-    //            existingDetail.UnitPrice = detailDto.UnitPrice;
-    //        }
-    //        else
-    //        {
-    //            if (detailDto.PurchaseOrderDetailId != 0)
-    //            {
-    //                throw new InvalidOperationException(
-    //                    $"Purchase Order Detail ID " +
-    //                    $"{detailDto.PurchaseOrderDetailId} was not found.");
-    //            }
-
-    //            // Add a new detail
-    //            purchaseOrder.Details.Add(new PurchaseOrderDetails
-    //            {
-    //                PurchaseOrderId = purchaseOrder.PurchaseOrderId,
-    //                ProductId = detailDto.ProductId,
-    //                Quantity = detailDto.Quantity,
-    //                UnitPrice = detailDto.UnitPrice
-    //            });
-    //        }
-    //    }
-
-    //    // Do not call Update(purchaseOrder) if this entity is tracked.
-    //    await _unitOfWork.SaveChangesAsync();
-    //}
-
     public async Task UpdateAsync(
         int id,
         PurchaseOrderUpdateDto dto)

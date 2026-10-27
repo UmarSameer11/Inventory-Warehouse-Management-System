@@ -11,7 +11,7 @@ namespace WarehouseManagementSystemApi.Controllers.Account
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ServiceFilter(typeof(ValidationFilter))]
+    //[ServiceFilter(typeof(ValidationFilter))]
     public class AccountController : ControllerBase
     {
         private readonly IAuthService _authService;

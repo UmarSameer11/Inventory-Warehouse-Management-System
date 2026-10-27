@@ -63,6 +63,24 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
             }
         }
 
+        public async Task<PurchaseOrderDetailViewModel?> GetDetailByIdAsync(int id)
+        {
+            try
+            {
+                var response = await _apiService
+                    .GetByIdAsync<ApiResponseViewModel<PurchaseOrderDetailViewModel>>(
+                        Endpoint,
+                        id);
+
+                return response?.Data;
+            }
+            catch (HttpRequestException ex)
+                when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
         public async Task<ApiResponseViewModel<object>?> CreateAsync(
             PurchaseOrderCreateViewModel model)
         {
