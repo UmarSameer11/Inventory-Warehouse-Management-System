@@ -13,7 +13,6 @@ namespace WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder
         public int SupplierId { get; set; }
         [Required]
         public DateTime OrderDate { get; set; } = DateTime.Today;
-        public string PurchaseOrderNumber { get; set; } = null!;
         public DateTime? ExpectedDeliveryDate { get; set; }
         public string? Remarks { get; set; }
         public List<PurchaseOrderDetailCreateViewModel> Details { get; set; }

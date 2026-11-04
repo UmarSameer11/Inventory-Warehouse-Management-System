@@ -1,3 +1,5 @@
+using WarehouseManagementSystemApi.Models.PurchaseOrder;
+
 namespace WarehouseManagementSystemApi.DTOs.PurchaseOrder
 {
     public class PurchaseOrderListDto
@@ -12,5 +14,6 @@ namespace WarehouseManagementSystemApi.DTOs.PurchaseOrder
         public string? Remarks { get; set; }
         public int ItemCount { get; set; }
         public decimal TotalAmount { get; set; }
+        public ICollection<PurchaseOrderDetailListDto> Details { get; set; } = new List<PurchaseOrderDetailListDto>();
     }
 }

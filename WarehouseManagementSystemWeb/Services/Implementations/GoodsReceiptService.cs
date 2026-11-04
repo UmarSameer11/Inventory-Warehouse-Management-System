@@ -5,6 +5,7 @@ using WarehouseManagementSystemWeb.Application.ViewModels.Common;
 using WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt;
 using WarehouseManagementSystemWeb.Application.ViewModels.PurchaseOrder;
 using WarehouseManagementSystemWeb.Services.Interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WarehouseManagementSystemWeb.Services.Implementations
 {
@@ -61,6 +62,25 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                 return null;
             }
         }
+        public async Task<GoodsReceiptDetailViewModel?> GetDetailByIdAsync(int id)
+        {
+            try
+            {
+                var response = await _apiService
+                    .GetByIdAsync<ApiResponseViewModel<GoodsReceiptDetailViewModel>>(
+                        Endpoint,
+                        id);
+
+                return response?.Data;
+          
+
+            }
+            catch (HttpRequestException ex)
+                when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
 
         public async Task<ApiResponseViewModel<object>?> CreateAsync(
             GoodsReceiptCreateViewModel model)
@@ -87,6 +107,16 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
 
         public async Task PopulateDropdownsAsync(
             GoodsReceiptCreateViewModel model)
+        {
+            model.PurchaseOrders =
+                await _purchaseOrderService.GetDropdownAsync();
+
+            model.Warehouses =
+                await DropdownHelper.WarehousesAsync(_warehouseService, null);
+        }
+
+        public async Task PopulateDropdownsAsync(
+         GoodsReceiptDetailViewModel model)
         {
             model.PurchaseOrders =
                 await _purchaseOrderService.GetDropdownAsync();

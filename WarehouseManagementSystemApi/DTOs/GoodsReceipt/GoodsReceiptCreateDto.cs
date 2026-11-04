@@ -3,7 +3,6 @@ namespace WarehouseManagementSystemApi.DTOs.GoodsReceipt
     public class GoodsReceiptCreateDto
     {
         public int PurchaseOrderId { get; set; }
-        public string GoodsReceiptNumber { get; set; } 
         public int WarehouseId { get; set; }
         public int ReceivedByEmployeeId { get; set; } 
         public DateTime ReceivedDate { get; set; }

@@ -26,7 +26,8 @@ public class PurchaseOrderController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAllAsync());
+        var res = await _service.GetPoListWithSuppNameAsync();
+        return Ok(res);
     }
 
     [HttpGet("{id:int}")]

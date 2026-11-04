@@ -17,8 +17,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices();
-builder.Services.AddScoped<IAuthService, AuthService>();
-//builder.Services.AddScoped<WarehouseManagementSystemApi.Services.Interfaces.IAuthService, WarehouseManagementSystemApi.Services.Implementations.AuthService>();
 
 // ---- Authentication & authorization (Identity + JWT + sessions + rate limiting) ----
 builder.Services.AddIdentityServices();                              // must come before AddJwtAuthentication

@@ -9,6 +9,7 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
     {
         Task<IEnumerable<GoodsReceiptListViewModel>> GetAllAsync();
         Task<GoodsReceiptUpdateViewModel?> GetByIdAsync(int id);
+        Task<GoodsReceiptDetailViewModel?> GetDetailByIdAsync(int id);
         Task<ApiResponseViewModel<object>?> CreateAsync(GoodsReceiptCreateViewModel model);
         Task<ApiResponseViewModel<object>?> UpdateAsync(GoodsReceiptUpdateViewModel model);
         Task<bool> DeleteAsync(int id);
@@ -18,6 +19,8 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
 
         /// <summary>Fills the dropdown lists of the Update form (the current selection stays selectable).</summary>
         Task PopulateDropdownsAsync(GoodsReceiptUpdateViewModel model);
+        /// Used in get GRN and Detail
+        Task PopulateDropdownsAsync(GoodsReceiptDetailViewModel model);
 
         /// <summary>GoodsReceipt options for the dropdowns of other forms.</summary>
         Task<List<SelectListItem>> GetDropdownAsync(int? includeId = null);

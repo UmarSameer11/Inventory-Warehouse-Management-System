@@ -1,75 +1,324 @@
-@model WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt.GoodsReceiptUpdateViewModel
+@model WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt.GoodsReceiptDetailViewModel
 
 @{
     ViewData["Title"] = "Goods Receipt Details";
+
+    var totalQuantity = Model.Details.Sum(x => x.QuantityReceived);
+    var totalAmount = Model.Details.Sum(x => x.TotalAmount);
 }
 
-<div class="container-fluid px-4 py-4">
+<div class="container-fluid px-4 py-4 grn-detail-page">
+
+    <!-- Page Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
             <h3 class="fw-bold mb-1">Goods Receipt Details</h3>
-            <p class="text-muted mb-0">View complete goods receipt information.</p>
+            <p class="text-muted mb-0">View complete goods receipt information and received products.</p>
         </div>
-        <div class="d-flex gap-2">
-            <a asp-controller="GoodsReceipt" asp-action="Index" class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
-            <a asp-controller="GoodsReceipt" asp-action="Update" asp-route-id="@Model.GoodsReceiptId" class="btn btn-primary px-4"><i class="bi bi-pencil-square me-2"></i>Edit</a>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-controller="GoodsReceipt"
+               asp-action="Index"
+               class="btn btn-outline-secondary px-4">
+                <i class="bi bi-arrow-left me-2"></i>Back
+            </a>
+
+            <button type="button" id="printGrnBtn" class="btn btn-outline-dark px-4">
+                <i class="bi bi-printer me-2"></i>Print
+            </button>
+
+            <a asp-controller="GoodsReceipt"
+               asp-action="Update"
+               asp-route-id="@Model.GoodsReceiptId"
+               class="btn btn-primary px-4">
+                <i class="bi bi-pencil-square me-2"></i>Edit GRN
+            </a>
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
+    <!-- GRN Header Information -->
+    <div class="card border-0 shadow-sm mb-4">
+
         <div class="card-header bg-white border-bottom py-3">
             <div class="d-flex align-items-center gap-3">
-                <div class="detail-icon"><i class="bi bi-box-arrow-in-down"></i></div>
+                <div class="detail-icon">
+                    <i class="bi bi-box-arrow-in-down"></i>
+                </div>
+
                 <div>
                     <h5 class="fw-semibold mb-1">Goods Receipt Information</h5>
-                    <span class="text-muted small">Complete information and current status.</span>
+                    <span class="text-muted small">Basic information about this goods receipt.</span>
                 </div>
             </div>
         </div>
 
         <div class="card-body p-4">
-            <div class="form-section">
-                <div class="section-heading mb-4">
-                    <h6 class="fw-bold mb-1">Goods Receipt Details</h6>
-                    <p class="text-muted small mb-0">Basic information about this record.</p>
-                </div>
 
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Goods Receipt ID</label>
-                        <div class="detail-value">@Model.GoodsReceiptId</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Receipt Number</label>
-                        <div class="detail-value">@Model.ReceiptNumber</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Purchase Order</label>
-                        <div class="detail-value">@(Model.PurchaseOrders.FirstOrDefault(x => x.Value == Model.PurchaseOrderId.ToString())?.Text ?? ("#" + Model.PurchaseOrderId))</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Warehouse</label>
-                        <div class="detail-value">@(Model.Warehouses.FirstOrDefault(x => x.Value == Model.WarehouseId.ToString())?.Text ?? ("#" + Model.WarehouseId))</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Receipt Date</label>
-                        <div class="detail-value">@Model.ReceiptDate.ToString("dd MMM yyyy")</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Status</label>
-                        <div class="detail-value"><span class="status-badge status-pill" data-status="@Model.Status.ToLowerInvariant()">@Model.Status</span></div>
-                    </div>
-                </div>
+            <div class="section-heading mb-4">
+                <h6 class="fw-bold mb-1">GRN Header</h6>
+                <p class="text-muted small mb-0">Receipt and warehouse information.</p>
             </div>
 
-            <hr class="my-4" />
+            <div class="row g-4">
 
-            <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
-                <a asp-controller="GoodsReceipt" asp-action="Index" class="btn btn-light border px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
-                <a asp-controller="GoodsReceipt" asp-action="Update" asp-route-id="@Model.GoodsReceiptId" class="btn btn-primary px-4"><i class="bi bi-pencil-square me-2"></i>Edit Goods Receipt</a>
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-semibold">Goods Receipt ID</label>
+                    <div class="detail-value">#@Model.GoodsReceiptId</div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-semibold">Receipt Number</label>
+                    <div class="detail-value receipt-number">
+                        @Model.ReceiptNumber
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-semibold">Purchase Order</label>
+                    <div class="detail-value">
+                        @Model.PurchaseOrderNumber
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-semibold">Warehouse</label>
+                    <div class="detail-value">
+                        @Model.WarehouseName
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-semibold">Received By</label>
+                    <div class="detail-value">
+                        @Model.ReceivedByEmployeeName
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-semibold">Receipt Date</label>
+                    <div class="detail-value">
+                        @Model.ReceiptDate.ToString("dd MMM yyyy")
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-semibold">Supplier Invoice Number</label>
+                    <div class="detail-value">
+                        @(Model.SupplierInvoiceNumber ?? "N/A")
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-semibold">Status</label>
+                    <div>
+                        <span class="grn-status"
+                              data-status="@Model.Status">
+                            @Model.Status
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-semibold">Remarks</label>
+                    <div class="detail-value">
+                        @(string.IsNullOrWhiteSpace(Model.Remarks) ? "N/A" : Model.Remarks)
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+
+    <!-- GRN Product Details -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="detail-icon product-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+
+                <div>
+                    <h5 class="fw-semibold mb-1">Received Product Details</h5>
+                    <span class="text-muted small">Products and quantities received against this purchase order.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+                <div>
+                    <h6 class="fw-bold mb-1">GRN Items</h6>
+                    <p class="text-muted small mb-0">
+                        Total products: @Model.Details.Count
+                    </p>
+                </div>
+
+                <div class="grn-search">
+                    <i class="bi bi-search"></i>
+                    <input type="text"
+                           id="grnProductSearch"
+                           class="form-control"
+                           placeholder="Search product..." />
+                </div>
+
+            </div>
+
+            <div class="table-responsive">
+                <table class="table align-middle grn-detail-table" id="grnDetailsTable">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Product</th>
+                            <th>PO Detail ID</th>
+                            <th>Batch Number</th>
+                            <th class="text-end">Ordered Qty</th>
+                            <th class="text-end">Received Qty</th>
+                            <th class="text-end">Unit Price</th>
+                            <th class="text-end">Total Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.Details.Any())
+                        {
+                            var index = 1;
+
+                            foreach (var item in Model.Details)
+                            {
+                                <tr class="grn-detail-row">
+                                    <td>@index</td>
+
+                                    <td>
+                                        <div class="product-name">
+                                            @item.ProductName
+                                        </div>
+                                    </td>
+
+                                    <td>@item.PurchaseOrderDetailId</td>
+
+                                    <td>
+                                        <span class="batch-number">
+                                            @item.BatchNumber
+                                        </span>
+                                    </td>
+
+                                    <td class="text-end quantity-cell">
+                                        @item.OrderedQuantity.ToString("N3")
+                                    </td>
+
+                                    <td class="text-end received-quantity">
+                                        @item.QuantityReceived.ToString("N3")
+                                    </td>
+
+                                    <td class="text-end">
+                                        @item.UnitPrice.ToString("N2")
+                                    </td>
+
+                                    <td class="text-end fw-semibold amount-cell"
+                                        data-amount="@item.TotalAmount">
+                                        @item.TotalAmount.ToString("N2")
+                                    </td>
+                                </tr>
+
+                                index++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">
+                                    No product details found for this goods receipt.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-end fw-bold">
+                                Grand Total
+                            </td>
+
+                            <td class="text-end fw-bold" id="totalReceivedQuantity">
+                                @totalQuantity.ToString("N3")
+                            </td>
+
+                            <td></td>
+
+                            <td class="text-end fw-bold" id="grandTotal">
+                                @totalAmount.ToString("N2")
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-6">
+            <div class="summary-card">
+                <div class="summary-icon quantity-summary">
+                    <i class="bi bi-boxes"></i>
+                </div>
+
+                <div>
+                    <span class="text-muted small">Total Received Quantity</span>
+                    <h4 class="fw-bold mb-0">
+                        @totalQuantity.ToString("N3")
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="summary-card">
+                <div class="summary-icon amount-summary">
+                    <i class="bi bi-currency-exchange"></i>
+                </div>
+
+                <div>
+                    <span class="text-muted small">Total GRN Amount</span>
+                    <h4 class="fw-bold mb-0">
+                        Rs. @totalAmount.ToString("N2")
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="d-flex justify-content-end gap-2">
+        <a asp-controller="GoodsReceipt"
+           asp-action="Index"
+           class="btn btn-light border px-4">
+            <i class="bi bi-arrow-left me-2"></i>Back
+        </a>
+
+        <a asp-controller="GoodsReceipt"
+           asp-action="Update"
+           asp-route-id="@Model.GoodsReceiptId"
+           class="btn btn-primary px-4">
+            <i class="bi bi-pencil-square me-2"></i>Edit Goods Receipt
+        </a>
+    </div>
+
 </div>
 
-@section Styles { <link rel="stylesheet" href="~/css/GoodsReceipt/Detail.css" asp-append-version="true" /> }
+@section Styles {
+    <link rel="stylesheet" href="~/css/GoodsReceipt/Detail.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/GoodsReceipt/Detail.js" asp-append-version="true"></script>
+}

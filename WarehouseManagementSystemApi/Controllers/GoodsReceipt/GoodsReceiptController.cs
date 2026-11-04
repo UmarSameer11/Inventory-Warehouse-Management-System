@@ -5,7 +5,7 @@ using WarehouseManagementSystemApi.Services.Interfaces;
 namespace WarehouseManagementSystemApi.Controllers.GoodsReceipt;
 
 [Route("api/[controller]")]
-[ApiController]
+[ApiController] 
 public class GoodsReceiptController : ControllerBase
 {
     private readonly IGoodsReceiptService _service;

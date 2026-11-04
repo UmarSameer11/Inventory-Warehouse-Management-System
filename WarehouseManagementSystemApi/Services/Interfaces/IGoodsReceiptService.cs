@@ -1,5 +1,6 @@
 using WarehouseManagementSystemApi.DTOs.GoodsReceipt;
 using WarehouseManagementSystemApi.DTOs.PurchaseOrder;
+using WarehouseManagementSystemApi.Models.GoodsReceipt;
 namespace WarehouseManagementSystemApi.Services.Interfaces;
 public interface IGoodsReceiptService
 {

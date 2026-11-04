@@ -13,6 +13,17 @@ builder.Services.AddControllersWithViews(options =>
 
     // 401 / 403 coming back from the API -> login page / access denied page.
     options.Filters.Add<ApiExceptionFilter>();
+})
+.ConfigureApplicationPartManager(manager =>
+{
+    var apiParts = manager.ApplicationParts
+        .Where(p => p.Name == "WarehouseManagementSystemApi")
+        .ToList();
+
+    foreach (var part in apiParts)
+    {
+        manager.ApplicationParts.Remove(part);
+    }
 });
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddWebAuthentication(builder.Environment);

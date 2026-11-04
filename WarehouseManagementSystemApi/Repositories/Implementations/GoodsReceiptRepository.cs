@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WarehouseManagementSystemApi.Data;
 using WarehouseManagementSystemApi.DTOs.PurchaseOrder;
+using WarehouseManagementSystemApi.Models.GoodsReceipt;
 using WarehouseManagementSystemApi.Repositories.Interfaces;
 
 namespace WarehouseManagementSystemApi.Repositories.Implementations
@@ -71,5 +72,41 @@ namespace WarehouseManagementSystemApi.Repositories.Implementations
             return result;
         }
 
+        public async Task<GoodsReceipts?> GetGoodReceiptByIdAsync(int id)
+        {
+            return await _context.GoodsReceipts
+                .Include(g => g.PurchaseOrder)
+                    .ThenInclude(p => p.Supplier)
+                .Include(g => g.Warehouse)
+                .Include(g => g.ReceivedByEmployee)
+                .Include(g => g.Details)
+                    .ThenInclude(d => d.Product)
+                .Include(g => g.Details)
+                    .ThenInclude(d => d.Batch)
+                .FirstOrDefaultAsync(g => g.GoodsReceiptId == id);
+        }
+
+        //public Task<IEnumerable<GoodsReceipts>?> GetGoodReceiptListAsync()
+        //{
+        //    return await _context.PurchaseOrders
+        //       .Include(a => a.Supplier)
+        //       .Include(a => a.Details)
+        //       .ThenInclude(s => s.Product)
+        //       .ToListAsync();
+        //}
+
+        public async Task<int> GetLastGrnNumberAsync(int year)
+        {
+            var prefix = "GRN-2026-";
+
+            var numbers = await _context.GoodsReceipts
+                .Where(s => s.GoodsReceiptNumber.StartsWith(prefix))
+                .Select(s => s.GoodsReceiptNumber)
+                .ToListAsync();
+
+            return numbers
+              .Select(number => int.TryParse(
+         number.Substring(prefix.Length), out var result) ? result : 0).DefaultIfEmpty(0).Max();
+        }
     }
 }

@@ -1,64 +1,79 @@
-﻿using AutoMapper;
-using WarehouseManagementSystemApi.DTOs.GoodsReceipt;
-using WarehouseManagementSystemApi.Models.GoodsReceipt;
-using WarehouseManagementSystemApi.Repositories.Interfaces;
-using WarehouseManagementSystemApi.Services.Interfaces;
+﻿//using AutoMapper;
+//using WarehouseManagementSystemApi.DTOs.GoodsReceipt;
+//using WarehouseManagementSystemApi.Models.GoodsReceipt;
+//using WarehouseManagementSystemApi.Repositories.Interfaces;
+//using WarehouseManagementSystemApi.Services.Interfaces;
 
-namespace WarehouseManagementSystemApi.Services.Implementations
-{
-    public class GoodsReceiptDetailService : IGoodsReceiptDetailService
-    {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+//namespace WarehouseManagementSystemApi.Services.Implementations
+//{
+//    public class GoodsReceiptDetailService : IGoodsReceiptDetailService
+//    {
+//        private readonly IUnitOfWork _unitOfWork;
+//        private readonly IMapper _mapper;
 
-        public GoodsReceiptDetailService(
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
+//        public GoodsReceiptDetailService(
+//            IUnitOfWork unitOfWork,
+//            IMapper mapper)
+//        {
+//            _unitOfWork = unitOfWork;
+//            _mapper = mapper;
+//        }
 
-        public async Task<GoodsReceiptDetailListDto> CreateAsync(
-            GoodsReceiptDetailCreateDto dto)
-        {
-            var goodsReceipt = _mapper.Map<GoodsReceiptDetails>(dto);
+//        public async Task<GoodsReceiptDetailListDto> CreateAsync(
+//            GoodsReceiptDetailCreateDto dto)
+//        {
+//            var goodsReceipt = _mapper.Map<GoodsReceiptDetails>(dto);
 
-            await _unitOfWork.GoodsReceiptDetails.AddAsync(goodsReceipt);
-            await _unitOfWork.SaveChangesAsync();
+//            await _unitOfWork.GoodsReceiptDetails.AddAsync(goodsReceipt);
+//            await _unitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<GoodsReceiptDetailListDto>(goodsReceipt);
-        }
+//            return _mapper.Map<GoodsReceiptDetailListDto>(goodsReceipt);
+//        }
 
-        public async Task<IEnumerable<GoodsReceiptDetailListDto>> GetAllAsync()
-        {
-            var goodsReceipts =
-                await _unitOfWork.GoodsReceiptDetails.GetAllAsync();
+//        public async Task<IEnumerable<GoodsReceiptDetailListDto>> GetAllAsync()
+//        {
+//            var goodsReceipts =
+//                await _unitOfWork.GoodsReceiptDetails.GetAllAsync();
 
-            return _mapper.Map<IEnumerable<GoodsReceiptDetailListDto>>(
-                goodsReceipts);
-        }
+//            return _mapper.Map<IEnumerable<GoodsReceiptDetailListDto>>(
+//                goodsReceipts);
+//        }
 
-        public async Task<GoodsReceiptDetailListDto> GetByIdAsync(int id)
-        {
-            var goodsReceipt =
-                await _unitOfWork.GoodsReceiptDetails.GetByIdAsync(id)
-                ?? throw new KeyNotFoundException(
-                    "GoodsReceipt detail not found.");
+//        public async Task<GoodsReceiptDetailListDto> GetByIdAsync(int id)
+//        {
+//            var goodsReceipt =
+//                await _unitOfWork.GoodsReceiptDetails.GetByIdAsync(id)
+//                ?? throw new KeyNotFoundException(
+//                    "GoodsReceipt detail not found.");
 
-            return _mapper.Map<GoodsReceiptDetailListDto>(goodsReceipt);
-        }
+//            return _mapper.Map<GoodsReceiptDetailListDto>(goodsReceipt);
+//        }
 
-        public async Task DeleteAsync(int id)
-        {
-            var goodsReceipt =
-                await _unitOfWork.GoodsReceiptDetails.GetByIdAsync(id)
-                ?? throw new KeyNotFoundException(
-                    "GoodsReceipt detail not found.");
+//        public async Task DeleteAsync(int id)
+//        {
+//            var goodsReceipt =
+//                await _unitOfWork.GoodsReceiptDetails.GetByIdAsync(id)
+//                ?? throw new KeyNotFoundException(
+//                    "GoodsReceipt detail not found.");
 
-            _unitOfWork.GoodsReceiptDetails.Delete(goodsReceipt);
+//            _unitOfWork.GoodsReceiptDetails.Delete(goodsReceipt);
 
-            await _unitOfWork.SaveChangesAsync();
-        }
-    }
-}
+//            await _unitOfWork.SaveChangesAsync();
+//        }
+
+//        Task<DTOs.GoodsReceipt.GoodsReceiptDetailListDto> IGoodsReceiptDetailService.CreateAsync(GoodsReceiptDetailCreateDto dto)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        Task<IEnumerable<DTOs.GoodsReceipt.GoodsReceiptDetailListDto>> IGoodsReceiptDetailService.GetAllAsync()
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        Task<DTOs.GoodsReceipt.GoodsReceiptDetailListDto> IGoodsReceiptDetailService.GetByIdAsync(int id)
+//        {
+//            throw new NotImplementedException();
+//        }
+//    }
+//}

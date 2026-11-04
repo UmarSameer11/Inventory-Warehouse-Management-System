@@ -30,8 +30,13 @@ public class PurchaseOrderService : IPurchaseOrderService
     public async Task<PurchaseOrderListDto> CreateAsync(
         PurchaseOrderCreateDto dto)
     {
+        var year = DateTime.Now.Year;
+        var lastNum = await _purchase.GetLastPurchaseOrderNumberAsync(year);
+        var nextNumber = lastNum + 1;
+
         var purchaseOrder = _mapper.Map<PurchaseOrders>(dto);
 
+        purchaseOrder.PurchaseOrderNumber = $"PO-{year}-{nextNumber:D3}";
         await _unitOfWork.PurchaseOrders.AddAsync(purchaseOrder);
         await _unitOfWork.SaveChangesAsync();
 
@@ -66,9 +71,9 @@ public class PurchaseOrderService : IPurchaseOrderService
             ?? throw new KeyNotFoundException(
                 "PurchaseOrder not found.");
 
-        _mapper.Map(dto, purchaseOrder);
+        var po = _mapper.Map(dto, purchaseOrder);
 
-        _unitOfWork.PurchaseOrders.Update(purchaseOrder);
+        _unitOfWork.PurchaseOrders.Update(po);
 
         await _unitOfWork.SaveChangesAsync();
     }
@@ -90,6 +95,12 @@ public class PurchaseOrderService : IPurchaseOrderService
         var purchaseOrder = await _purchase.GetPurchaseOrderForUpdation(id);
 
         return _mapper.Map<PurchaseOrderUpdateDto>(purchaseOrder);
+    }
+
+    public async Task<IEnumerable<PurchaseOrderListDto>?> GetPoListWithSuppNameAsync()
+    {
+        var po = await _purchase.GetPurchaseOrderList();
+        return _mapper.Map<IEnumerable<PurchaseOrderListDto>>(po);
     }
 }
 

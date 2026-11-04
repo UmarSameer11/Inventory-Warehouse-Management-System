@@ -26,7 +26,14 @@ public class GoodsReceiptService : IGoodsReceiptService
     public async Task<GoodsReceiptListDto> CreateAsync(
         GoodsReceiptCreateDto dto)
     {
+        var year = DateTime.Now.Year;
+
+        var grnLastNo = await _repository.GetLastGrnNumberAsync(year);
+        var nextNumber = grnLastNo + 1;
+
         var goodsReceipt = _mapper.Map<GoodsReceipts>(dto);
+
+        goodsReceipt.GoodsReceiptNumber = $"GRN-{year}-{nextNumber:D3}"; 
 
         await _unitOfWork.GoodsReceipts.AddAsync(goodsReceipt);
 
@@ -53,7 +60,7 @@ public class GoodsReceiptService : IGoodsReceiptService
     public async Task<GoodsReceiptListDto> GetByIdAsync(int id)
     {
         var goodsReceipt =
-            await _unitOfWork.GoodsReceipts.GetByIdAsync(id)
+            await _repository.GetGoodReceiptByIdAsync(id)
             ?? throw new KeyNotFoundException(
                 "GoodsReceipt not found.");
 

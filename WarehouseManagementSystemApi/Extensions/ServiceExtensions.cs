@@ -48,7 +48,7 @@ namespace WarehouseManagementSystemApi.Extensions
 
             // Detail services
             services.AddScoped<IDispatchDetailService, DispatchDetailService>();
-            services.AddScoped<IGoodsReceiptDetailService, GoodsReceiptDetailService>();
+            //services.AddScoped<IGoodsReceiptDetailService, GoodsReceiptDetailService>();
             services.AddScoped<IPurchaseOrderDetailService, PurchaseOrderDetailService>();
             services.AddScoped<ISalesOrderDetailService, SalesOrderDetailService>();
             services.AddScoped<ISalesReturnDetailService, SalesReturnDetailService>();
