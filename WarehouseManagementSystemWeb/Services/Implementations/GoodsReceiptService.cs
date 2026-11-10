@@ -148,7 +148,7 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                 .Select(x => new SelectListItem
                 {
                     Value = x.GoodsReceiptId.ToString(),
-                    Text = x.ReceiptNumber
+                    Text = x.GoodsReceiptNumber
                 })
                 .ToList();
         }

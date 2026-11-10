@@ -46,6 +46,7 @@ using WarehouseManagementSystemApi.DTOs.VehicleAssignment;
 using WarehouseManagementSystemApi.Models.VehicleAssignment;
 using WarehouseManagementSystemApi.DTOs.VehicleType;
 using WarehouseManagementSystemApi.Models.VehicleType;
+//using GoodsReceiptDetailListDto = WarehouseManagementSystemApi.Models.GoodsReceipt.GoodsReceiptDetailListDto;
 namespace WarehouseManagementSystemApi.Mappings
 {
     public class MappingProfile : Profile
@@ -131,7 +132,8 @@ namespace WarehouseManagementSystemApi.Mappings
             CreateMap<GoodsReceipts, GoodsReceiptListDto>()
     .ForMember(dest => dest.PurchaseOrderNumber,
         opt => opt.MapFrom(src => src.PurchaseOrder.PurchaseOrderNumber))
-
+    .ForMember(dest => dest.Status,
+        opt => opt.MapFrom(src => src.PurchaseOrder.Status))
     .ForMember(dest => dest.SupplierName,
         opt => opt.MapFrom(src => src.PurchaseOrder.Supplier.SupplierName))
 
@@ -144,13 +146,12 @@ namespace WarehouseManagementSystemApi.Mappings
     .ForMember(dest => dest.Details,
         opt => opt.MapFrom(src => src.Details));
 
-            CreateMap<GoodsReceiptDetails, Models.GoodsReceipt.GoodsReceiptDetailListDto>()
-                .ForMember(dest => dest.ProductName,
-                    opt => opt.MapFrom(src => src.Product.ProductName))
-                 .ForMember(dest => dest.UnitPrice,
-                    opt => opt.MapFrom(src => src.Product.UnitPrice))
-                .ForMember(dest => dest.BatchNumber,
-                    opt => opt.MapFrom(src => src.Batch.BatchNumber));
+            CreateMap<GoodsReceiptDetails, GoodsReceiptDetailListDto>()
+     .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+     .ForMember(d => d.BatchNumber, o => o.MapFrom(s => s.Batch.BatchNumber))
+     .ForMember(d => d.OrderedQuantity, o => o.MapFrom(s => s.PurchaseOrderDetail.Quantity))
+     .ForMember(d => d.UnitPrice, o => o.MapFrom(s => s.Product.UnitPrice));
+
             CreateMap<PurchaseOrderCreateDto, PurchaseOrders>().ReverseMap();
             CreateMap<PurchaseOrders, PurchaseOrderListDto>()
                  .ForMember(dest => dest.SupplierName, opt => opt.MapFrom(src => src.Supplier.SupplierName)).ReverseMap()
@@ -196,10 +197,10 @@ namespace WarehouseManagementSystemApi.Mappings
                 .ForMember(d => d.BatchNumber, o => o.MapFrom(s => s.Batch.BatchNumber))
                 .ForMember(d => d.ExpiryDate, o => o.MapFrom(s => s.Batch.ExpiryDate));
             CreateMap<GoodsReceiptDetailCreateDto, GoodsReceiptDetails>();
-            CreateMap<GoodsReceiptDetails, Models.GoodsReceipt.GoodsReceiptDetailListDto>()
-                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
-                .ForMember(d => d.BatchNumber, o => o.MapFrom(s => s.Batch.BatchNumber))
-               ;
+            //CreateMap<GoodsReceiptDetails, Models.GoodsReceipt.GoodsReceiptDetailListDto>()
+            //    .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+            //    .ForMember(d => d.BatchNumber, o => o.MapFrom(s => s.Batch.BatchNumber))
+            //    .ForMember(d => d.UnitPrice, o => o.MapFrom(s => s.Product.UnitPrice));
             CreateMap<PurchaseOrderDetailCreateDto, PurchaseOrderDetails>().ReverseMap();
             CreateMap<PurchaseOrderDetails, PurchaseOrderDetailUpdateDto>()
                 .ForMember(dest => dest.ProductName,opt => opt.MapFrom(src => src.Product.ProductName));
@@ -208,6 +209,7 @@ namespace WarehouseManagementSystemApi.Mappings
             CreateMap<PurchaseOrderDetails, PurchaseOrderDetailListDto>()
                 .ForMember(d => d.ProductCode, o => o.MapFrom(s => s.Product.ProductCode))
                 .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.ProductName))
+                .ForMember(d => d.UnitPrice, o => o.MapFrom(s => s.Product.UnitPrice))
                 .ForMember(d => d.UnitName, o => o.MapFrom(s => s.Product.UnitOfMeasure.UnitName))
                 .ForMember(d => d.LineTotal, o => o.MapFrom(s => s.Quantity * s.UnitPrice));
             CreateMap<SalesOrderDetailCreateDto, SalesOrderDetails>().ReverseMap();

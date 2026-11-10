@@ -15,7 +15,7 @@ namespace WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt
         public int ReceivedByEmployeeId { get; set; }
 
         public int WarehouseId { get; set; }
-
+        public string WarehouseName { get; set; } = null!;
         public DateTime ReceiptDate { get; set; } = DateTime.Today;
 
         public string Status { get; set; } = "Pending";

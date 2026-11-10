@@ -51,10 +51,10 @@ public class GoodsReceiptService : IGoodsReceiptService
     public async Task<IEnumerable<GoodsReceiptListDto>> GetAllAsync()
     {
         var goodsReceipts =
-            await _unitOfWork.GoodsReceipts.GetAllAsync();
+            await _repository.GetAllGoodReceiptAsync();
 
-        return _mapper.Map<IEnumerable<GoodsReceiptListDto>>(
-            goodsReceipts);
+        var result =  _mapper.Map<IEnumerable<GoodsReceiptListDto>>(goodsReceipts);
+        return result;
     }
 
     public async Task<GoodsReceiptListDto> GetByIdAsync(int id)
@@ -64,7 +64,9 @@ public class GoodsReceiptService : IGoodsReceiptService
             ?? throw new KeyNotFoundException(
                 "GoodsReceipt not found.");
 
-        return _mapper.Map<GoodsReceiptListDto>(goodsReceipt);
+        var result = _mapper.Map<GoodsReceiptListDto>(goodsReceipt);
+        var res=  result.Details.FirstOrDefault()?.UnitPrice;
+        return result;
     }
 
     public async Task DeleteAsync(int id)

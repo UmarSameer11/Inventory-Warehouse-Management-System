@@ -15,6 +15,15 @@ namespace WarehouseManagementSystemApi.Repositories.Implementations
             _context = context;
         }
 
+        public async Task<IEnumerable<GoodsReceipts?>> GetAllGoodReceiptAsync()
+        {
+            var result = await _context.GoodsReceipts
+                .Include(s => s.PurchaseOrder)
+                .Include(s => s.Warehouse)
+                .ToListAsync();
+            return result;
+        }
+
         public async Task<PurchaseOrderForGrnDto?> GetForGrnByNumberAsync(
             string purchaseOrderNumber)
         {
@@ -76,7 +85,8 @@ namespace WarehouseManagementSystemApi.Repositories.Implementations
         {
             return await _context.GoodsReceipts
                 .Include(g => g.PurchaseOrder)
-                    .ThenInclude(p => p.Supplier)
+                .ThenInclude(g => g.Details)
+                    //.ThenInclude(p => p.Supplier)
                 .Include(g => g.Warehouse)
                 .Include(g => g.ReceivedByEmployee)
                 .Include(g => g.Details)
@@ -85,15 +95,6 @@ namespace WarehouseManagementSystemApi.Repositories.Implementations
                     .ThenInclude(d => d.Batch)
                 .FirstOrDefaultAsync(g => g.GoodsReceiptId == id);
         }
-
-        //public Task<IEnumerable<GoodsReceipts>?> GetGoodReceiptListAsync()
-        //{
-        //    return await _context.PurchaseOrders
-        //       .Include(a => a.Supplier)
-        //       .Include(a => a.Details)
-        //       .ThenInclude(s => s.Product)
-        //       .ToListAsync();
-        //}
 
         public async Task<int> GetLastGrnNumberAsync(int year)
         {

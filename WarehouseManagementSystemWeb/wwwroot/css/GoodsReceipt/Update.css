@@ -1,152 +1,115 @@
-/* ============================================
-   Module Form Page
-   ============================================ */
 
-.card {
-    border-radius: 12px;
+.grn-update-page {
+    color: #263445;
 }
 
-.card-header {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
+    .grn-update-page .card {
+        border-radius: 12px;
+    }
 
-.create-icon,
-.update-icon,
-.detail-icon,
-.delete-icon {
-    width: 46px;
-    height: 46px;
+    .grn-update-page .card-header {
+        border-bottom: 1px solid #edf0f3;
+        border-radius: 12px 12px 0 0;
+    }
+
+.grn-section-icon {
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    font-size: 21px;
-}
-
-.create-icon,
-.update-icon,
-.detail-icon {
-    background-color: #eef4ff;
+    background: #edf4ff;
     color: #0d6efd;
+    font-size: 20px;
 }
 
-.delete-icon {
-    background-color: #fff1f2;
-    color: #dc3545;
+.grn-update-page .form-label {
+    color: #344054;
+    font-size: 14px;
+    margin-bottom: 8px;
 }
 
-.form-section {
-    padding: 4px 0;
-}
-
-.section-heading h6 {
-    color: #212529;
-}
-
-.form-control,
-.form-select {
-    min-height: 42px;
+.grn-update-page .form-control,
+.grn-update-page .form-select {
+    min-height: 43px;
+    border-color: #dfe3e8;
     border-radius: 7px;
+    font-size: 14px;
 }
 
-.form-control:focus,
-.form-select:focus {
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.10);
+.grn-update-page textarea.form-control {
+    min-height: 75px;
 }
 
-.input-group-text {
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
-    color: #6c757d;
-}
-
-.input-group .form-control {
-    border-left: 0;
-}
-
-.input-group:focus-within .input-group-text {
+.grn-update-page .form-control:focus,
+.grn-update-page .form-select:focus {
     border-color: #86b7fe;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
 }
 
-.status-switch {
+.grn-update-page .readonly-field {
+    background-color: #f5f7fa;
+    color: #667085;
+    cursor: not-allowed;
+}
+
+.grn-update-page .table th {
+    padding: 15px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    color: #667085;
+}
+
+.grn-update-page .table td {
+    padding: 15px 12px;
+    font-size: 13px;
+}
+
+.grn-update-page .received-quantity {
+    min-width: 115px;
+    max-width: 140px;
+    margin-left: auto;
+}
+
+.batch-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: #f0f4f8;
+    color: #475467;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.grn-update-page tfoot td {
+    padding: 17px 12px;
+}
+
+.grn-update-page .btn {
     min-height: 42px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.status-switch .form-check-input {
-    width: 2.5em;
-    height: 1.35em;
-    cursor: pointer;
-}
-
-.status-switch .form-check-label {
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.readonly-field,
-.detail-value {
-    background-color: #f8f9fa;
-}
-
-.detail-value {
-    min-height: 42px;
-    display: flex;
-    align-items: center;
-    padding: 10px 13px;
-    border: 1px solid #e9ecef;
     border-radius: 7px;
-    color: #343a40;
-    font-size: 0.95rem;
+    font-weight: 600;
+    font-size: 14px;
 }
 
-.validation-summary:empty {
+.grn-update-page .text-danger {
+    font-size: 12px;
+}
+
+.grn-update-page .validation-summary:empty {
     display: none;
 }
 
-.text-danger {
-    font-size: 0.85rem;
-}
-
-.btn {
-    min-height: 42px;
-    border-radius: 7px;
-}
-
-hr {
-    opacity: 0.12;
-}
-
-.alert-warning {
-    border-radius: 8px;
-    border: 1px solid #ffe69c;
-}
-
-.badge {
-    font-size: 0.82rem;
-    padding: 7px 10px;
-    border-radius: 6px;
-}
-
-@media (max-width: 576px) {
-    .container-fluid {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
+@media (max-width: 767px) {
+    .grn-update-page {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
     }
 
-    .card-body {
-        padding: 20px !important;
-    }
-
-    .create-icon,
-    .update-icon,
-    .detail-icon,
-    .delete-icon {
-        width: 42px;
-        height: 42px;
-        font-size: 19px;
-    }
+        .grn-update-page .card-body {
+            padding: 18px !important;
+        }
 }

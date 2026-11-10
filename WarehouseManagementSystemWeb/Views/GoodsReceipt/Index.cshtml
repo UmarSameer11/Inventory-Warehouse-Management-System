@@ -65,7 +65,7 @@
                     <tr>
                         <th class="ps-4 text-muted small fw-semibold">GOODS RECEIPT</th>
                         <th class="text-muted small fw-semibold">PURCHASE ORDER</th>
-                        <th class="text-muted small fw-semibold">WAREHOUSE</th>
+                        @* <th class="text-muted small fw-semibold">WAREHOUSE</th> *@
                         <th class="text-muted small fw-semibold">RECEIPT DATE</th>
                         <th class="text-muted small fw-semibold">STATUS</th>
                         <th class="text-end pe-4 text-muted small fw-semibold">ACTIONS</th>
@@ -81,26 +81,26 @@
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="module-avatar"><i class="bi bi-box-arrow-in-down"></i></div>
                                         <div>
-                                            <div class="fw-semibold text-dark">@item.ReceiptNumber</div>
+                                            <div class="fw-semibold text-dark">@item.GoodsReceiptNumber</div>
                                             <div class="text-muted small">Goods Receipt #@item.GoodsReceiptId</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>@Lookup(lookups?.PurchaseOrders, item.PurchaseOrderId)</td>
-                                <td>@Lookup(lookups?.Warehouses, item.WarehouseId)</td>
+                                <td>@item.PurchaseOrderNumber</td>
+                                @* <td>@item.WarehouseName</td> *@
                                 <td>@item.ReceiptDate.ToString("dd MMM yyyy")</td>
                                 <td>
-                                    
-@{
-    var status = item.Status ?? "Unknown";
-}
 
-<td>
-    <span class="status-badge status-pill"
-          data-status="@status.ToLowerInvariant()">
-        @status
-    </span>
-</td>
+                                    @{
+                                        var status = item.Status ?? "Unknown";
+                                    }
+
+                                    <td>
+                                        <span class="status-badge status-pill"
+                                              data-status="@status.ToLowerInvariant()">
+                                            @status
+                                        </span>
+                                    </td>
                                 </td>
                                 <td class="text-end pe-4">
                                     <div class="d-inline-flex gap-1">

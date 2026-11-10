@@ -75,7 +75,7 @@ namespace WarehouseManagementSystemWeb.Controllers.GoodsReceipt
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var model = await _goodsReceiptService.GetByIdAsync(id);
+            var model = await _goodsReceiptService.GetDetailByIdAsync(id);
 
             if (model == null)
             {

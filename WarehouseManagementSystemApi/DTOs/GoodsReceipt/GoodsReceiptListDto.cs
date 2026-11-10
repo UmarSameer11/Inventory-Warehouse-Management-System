@@ -10,7 +10,7 @@ namespace WarehouseManagementSystemApi.Models.GoodsReceipt
         public int PurchaseOrderId { get; set; }
 
         public string PurchaseOrderNumber { get; set; } = null!;
-
+        public string Status { get; set; } = null!;
         public string SupplierName { get; set; } = null!;
 
         public int WarehouseId { get; set; }
@@ -46,6 +46,7 @@ namespace WarehouseManagementSystemApi.Models.GoodsReceipt
         public int BatchId { get; set; }
 
         public string BatchNumber { get; set; } = null!;
+        public decimal OrderedQuantity { get; set; }
 
         public decimal QuantityReceived { get; set; }
     }

@@ -9,7 +9,7 @@ namespace WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt
     {
         public int GoodsReceiptId { get; set; }
 
-        public string ReceiptNumber { get; set; } = null!;
+        public string GoodsReceiptNumber { get; set; } = null!;
 
         public int PurchaseOrderId { get; set; }
 

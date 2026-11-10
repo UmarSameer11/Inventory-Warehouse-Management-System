@@ -14,6 +14,6 @@ namespace WarehouseManagementSystemApi.DTOs.GoodsReceipt
         public string? SupplierInvoiceNumber { get; set; }
         public string? Remarks { get; set; }
         public decimal TotalQuantity { get; set; }
-        public List<GoodsReceiptDetailListDto> Details { get; set; } = new();
+        public List<Models.GoodsReceipt.GoodsReceiptDetailListDto> Details { get; set; } = new();
     }
 }

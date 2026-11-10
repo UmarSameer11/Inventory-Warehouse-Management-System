@@ -9,6 +9,7 @@ namespace WarehouseManagementSystemApi.Repositories.Interfaces
         public Task<PurchaseOrderForGrnDto?> GetForGrnByNumberAsync(string purchaseOrderNumber);
         Task<int> GetLastGrnNumberAsync(int year);
         Task<GoodsReceipts?> GetGoodReceiptByIdAsync(int id);
+        Task<IEnumerable<GoodsReceipts?>> GetAllGoodReceiptAsync();
         //Task<IEnumerable<GoodsReceipts>?> GetGoodReceiptListAsync();
     }
 }

@@ -59,7 +59,7 @@ namespace WarehouseManagementSystemWeb.Auth
 
             var response = await base.SendAsync(request, cancellationToken);
             
-if (!isAnonymous)
+            if (!isAnonymous)
             {
                 var token = await http.GetTokenAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
