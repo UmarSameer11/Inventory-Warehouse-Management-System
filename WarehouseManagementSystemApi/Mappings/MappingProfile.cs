@@ -129,6 +129,8 @@ namespace WarehouseManagementSystemApi.Mappings
             CreateMap<Dispatches, DispatchListDto>().ReverseMap();
             CreateMap<DispatchUpdateDto, Dispatches>().ReverseMap();
             CreateMap<GoodsReceiptCreateDto, GoodsReceipts>().ReverseMap();
+            CreateMap<GoodsReceiptUpdateDto, GoodsReceipts>().ReverseMap();
+            CreateMap<GoodsReceiptDetails, GoodsReceiptDetailUpdateDto>().ReverseMap();
             CreateMap<GoodsReceipts, GoodsReceiptListDto>()
     .ForMember(dest => dest.PurchaseOrderNumber,
         opt => opt.MapFrom(src => src.PurchaseOrder.PurchaseOrderNumber))

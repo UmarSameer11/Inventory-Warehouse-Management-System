@@ -1,5 +1,5 @@
 
-@model WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt.GoodsReceiptDetailViewModel
+@model WarehouseManagementSystemWeb.Application.ViewModels.GoodsReceipt.GoodsReceiptUpdateViewModel
 
 @{
     ViewData["Title"] = "Update Goods Receipt";
@@ -96,11 +96,15 @@
 
                     <!-- Received By -->
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Received By</label>
-                        <input asp-for="ReceivedByEmployeeName"
-                               class="form-control readonly-field"
-                               readonly />
-                    </div>
+    <label class="form-label fw-semibold">Received By</label>
+
+    <input asp-for="ReceivedByEmployeeName"
+           class="form-control readonly-field"
+           readonly />
+
+    <input type="hidden"
+           asp-for="ReceivedByEmployeeId" />
+</div>
 
                     <!-- Receipt Date -->
                     <div class="col-md-6">
@@ -205,6 +209,8 @@
                                 <tr class="grn-product-row">
 
                                     <td class="ps-4">
+                                        <input type="hidden"
+                                                asp-for="Details[i].GoodsReceiptDetailId" />
                                         <input type="hidden"
                                                asp-for="Details[i].PurchaseOrderDetailId" />
 

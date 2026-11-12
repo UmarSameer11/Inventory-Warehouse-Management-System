@@ -62,12 +62,12 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                 return null;
             }
         }
-        public async Task<GoodsReceiptDetailViewModel?> GetDetailByIdAsync(int id)
+        public async Task<GoodsReceiptUpdateViewModel?> GetDetailByIdAsync(int id)
         {
             try
             {
                 var response = await _apiService
-                    .GetByIdAsync<ApiResponseViewModel<GoodsReceiptDetailViewModel>>(
+                    .GetByIdAsync<ApiResponseViewModel<GoodsReceiptUpdateViewModel>>(
                         Endpoint,
                         id);
 
@@ -176,5 +176,16 @@ namespace WarehouseManagementSystemWeb.Services.Implementations
                 return null;
             }
         }
+
+        //public async Task<GoodsReceiptDeleteViewModel?> GetByIdForDeleteAsync(int id)
+        //{
+        //    var result = await GetDetailByIdAsync(id);
+
+        //    if (result == null)
+        //        return null;
+
+        //    return _mapper.Map<GoodsReceiptDeleteViewModel>(result);
+
+        //}
     }
 }

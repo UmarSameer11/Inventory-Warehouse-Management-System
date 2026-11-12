@@ -90,8 +90,10 @@ namespace WarehouseManagementSystemWeb.Controllers.GoodsReceipt
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Update(GoodsReceiptUpdateViewModel model)
         {
+          
             if (ModelState.IsValid)
             {
                 try
@@ -104,11 +106,15 @@ namespace WarehouseManagementSystemWeb.Controllers.GoodsReceipt
                         return RedirectToAction(nameof(Index));
                     }
 
-                    ModelState.AddModelError(string.Empty, response?.Message ?? "Failed to update goods receipt.");
+                    ModelState.AddModelError(
+                        string.Empty,
+                        response?.Message ?? "Failed to update goods receipt.");
                 }
                 catch (HttpRequestException ex)
                 {
-                    ModelState.AddModelError(string.Empty, ApiErrorMessage.From(ex, "Failed to update goods receipt."));
+                    ModelState.AddModelError(
+                        string.Empty,
+                        ApiErrorMessage.From(ex, "Failed to update goods receipt."));
                 }
             }
 
@@ -116,6 +122,7 @@ namespace WarehouseManagementSystemWeb.Controllers.GoodsReceipt
 
             return View(model);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Detail(int id)

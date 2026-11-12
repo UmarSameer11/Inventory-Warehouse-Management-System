@@ -1,152 +1,130 @@
-/* ============================================
-   Module Form Page
-   ============================================ */
 
-.card {
-    border-radius: 12px;
+/* PAGE */
+.grn-delete-page {
+    max-width: 1600px;
 }
 
-.card-header {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+/* WARNING */
+.grn-delete-warning {
+    background-color: #fff4f4;
+    border: 1px solid #f5c2c7;
+    border-left: 5px solid #dc3545;
+    border-radius: 8px;
+    color: #842029;
+    padding: 18px 20px;
 }
 
-.create-icon,
-.update-icon,
-.detail-icon,
-.delete-icon {
-    width: 46px;
-    height: 46px;
+/* SECTION ICON */
+.grn-delete-section-icon {
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    font-size: 21px;
-}
-
-.create-icon,
-.update-icon,
-.detail-icon {
-    background-color: #eef4ff;
-    color: #0d6efd;
-}
-
-.delete-icon {
-    background-color: #fff1f2;
+    background: #fff0f0;
     color: #dc3545;
+    font-size: 20px;
+    flex-shrink: 0;
 }
 
-.form-section {
-    padding: 4px 0;
+/* CARD */
+.grn-delete-page .card {
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.section-heading h6 {
-    color: #212529;
+.grn-delete-page .card-header {
+    border-bottom: 1px solid #edf0f2;
 }
 
-.form-control,
-.form-select {
-    min-height: 42px;
-    border-radius: 7px;
+/* FORM LABELS */
+.grn-delete-page .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 7px;
 }
 
-.form-control:focus,
-.form-select:focus {
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.10);
-}
-
-.input-group-text {
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
-    color: #6c757d;
-}
-
-.input-group .form-control {
-    border-left: 0;
-}
-
-.input-group:focus-within .input-group-text {
-    border-color: #86b7fe;
-}
-
-.status-switch {
-    min-height: 42px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.status-switch .form-check-input {
-    width: 2.5em;
-    height: 1.35em;
-    cursor: pointer;
-}
-
-.status-switch .form-check-label {
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.readonly-field,
-.detail-value {
-    background-color: #f8f9fa;
-}
-
-.detail-value {
-    min-height: 42px;
-    display: flex;
-    align-items: center;
-    padding: 10px 13px;
+/* READONLY FIELDS */
+.readonly-field {
+    background-color: #f8f9fa !important;
+    color: #495057;
     border: 1px solid #e9ecef;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.remarks-field {
+    min-height: 65px;
+    height: auto;
+    white-space: pre-wrap;
+}
+
+/* TABLE */
+.grn-delete-page .table thead th {
+    font-size: 12px;
+    font-weight: 700;
+    color: #495057;
+    white-space: nowrap;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.grn-delete-page .table tbody td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 14px;
+}
+
+.grn-delete-page .table tfoot td {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+/* BATCH */
+.batch-badge {
+    display: inline-block;
+    background: #f1f3f5;
+    color: #495057;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* BUTTONS */
+.grn-delete-page .btn {
     border-radius: 7px;
-    color: #343a40;
-    font-size: 0.95rem;
-}
-
-.validation-summary:empty {
-    display: none;
-}
-
-.text-danger {
-    font-size: 0.85rem;
-}
-
-.btn {
+    font-weight: 600;
     min-height: 42px;
-    border-radius: 7px;
+    transition: all 0.2s ease;
 }
 
-hr {
-    opacity: 0.12;
+.grn-delete-page .btn-danger:hover {
+    background-color: #bb2d3b;
+    transform: translateY(-1px);
 }
 
-.alert-warning {
-    border-radius: 8px;
-    border: 1px solid #ffe69c;
+.grn-delete-page .btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 
-.badge {
-    font-size: 0.82rem;
-    padding: 7px 10px;
-    border-radius: 6px;
-}
+/* RESPONSIVE */
+@media (max-width: 768px) {
 
-@media (max-width: 576px) {
-    .container-fluid {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
+    .grn-delete-page {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
     }
 
-    .card-body {
-        padding: 20px !important;
-    }
+        .grn-delete-page .card-body {
+            padding: 18px !important;
+        }
 
-    .create-icon,
-    .update-icon,
-    .detail-icon,
-    .delete-icon {
-        width: 42px;
-        height: 42px;
-        font-size: 19px;
-    }
+        .grn-delete-page .table {
+            min-width: 850px;
+        }
 }

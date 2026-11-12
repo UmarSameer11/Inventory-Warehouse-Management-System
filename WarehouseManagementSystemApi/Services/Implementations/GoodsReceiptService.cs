@@ -100,4 +100,18 @@ public class GoodsReceiptService : IGoodsReceiptService
         return await _repository.GetForGrnByNumberAsync(
             purchaseOrderNumber.Trim());
     }
+
+    public async Task UpdateGoodsReceiptAsync(int id, GoodsReceiptUpdateDto dto)
+    {
+        var grn = await _unitOfWork.GoodsReceipts.GetByIdAsync(id);
+
+        if (grn == null)
+            throw new KeyNotFoundException("Grn not found.");
+
+        _mapper.Map(dto, grn);
+
+        _unitOfWork.GoodsReceipts.Update(grn);
+
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

@@ -1,24 +1,42 @@
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    const form = document.getElementById("deleteGoodsReceiptForm");
-    const button = document.getElementById("deleteGoodsReceiptBtn");
+    const deleteForm = document.getElementById("goodsReceiptDeleteForm");
+    const deleteButton = document.getElementById("deleteGoodsReceiptBtn");
 
-    if (!form || !button) return;
+    if (!deleteForm || !deleteButton) {
+        return;
+    }
 
-    form.addEventListener("submit", function (event) {
+    let isConfirmed = false;
 
-        const confirmed = confirm(
-            "Are you sure you want to delete this goods receipt? This action cannot be undone."
-        );
+    deleteForm.addEventListener("submit", function (event) {
 
-        if (!confirmed) {
+        if (!isConfirmed) {
+
             event.preventDefault();
+
+            const confirmed = window.confirm(
+                "Are you sure you want to delete this Goods Receipt?\n\n" +
+                "This action cannot be undone."
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            isConfirmed = true;
+            deleteButton.click();
+
             return;
         }
 
-        button.disabled = true;
-        button.innerHTML =
-            '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>' +
+        deleteButton.disabled = true;
+
+        deleteButton.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-2"></span>' +
             'Deleting...';
+
     });
+
 });

@@ -9,7 +9,8 @@ namespace WarehouseManagementSystemWeb.Services.Interfaces
     {
         Task<IEnumerable<GoodsReceiptListViewModel>> GetAllAsync();
         Task<GoodsReceiptUpdateViewModel?> GetByIdAsync(int id);
-        Task<GoodsReceiptDetailViewModel?> GetDetailByIdAsync(int id);
+        Task<GoodsReceiptUpdateViewModel?> GetDetailByIdAsync(int id);
+        //Task<GoodsReceiptDeleteViewModel?> GetByIdForDeleteAsync(int id);
         Task<ApiResponseViewModel<object>?> CreateAsync(GoodsReceiptCreateViewModel model);
         Task<ApiResponseViewModel<object>?> UpdateAsync(GoodsReceiptUpdateViewModel model);
         Task<bool> DeleteAsync(int id);

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WarehouseManagementSystemApi.DTOs.Employee;
 using WarehouseManagementSystemApi.DTOs.GoodsReceipt;
 using WarehouseManagementSystemApi.Services.Interfaces;
 
@@ -32,6 +33,14 @@ public class GoodsReceiptController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         return Ok(await _service.GetByIdAsync(id));
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, [FromBody] GoodsReceiptUpdateDto grn)
+    {
+        await _service.UpdateGoodsReceiptAsync(id, grn);
+
+        return Ok(new { Message = "GRN updated successfully" });
     }
 
     [HttpDelete("{id:int}")]
